@@ -1,0 +1,106 @@
+extends layout
+
+block content
+  .wrapper
+    .content
+      .space-100
+      .container
+        .row
+          .col-md-8.mx-auto
+            .card
+              .card-header.px-4
+                .d-flex.justify-content-between
+                  h5.title.my-auto.py-0 내 정보 수정
+                  button.btn.btn-primary.btn-round(type='button', onclick='fnUpdateProfile("#{user._id}")') 정보수정
+              .card-body
+                form#formProfile
+                  .row
+                    .col-md-6
+                      .form-group
+                        label ID (수정불가)
+                        input.form-control(type='text', disabled='', value=user.user_id)
+                  .row
+                    .col-md-6
+                      .form-group
+                        label 이름
+                        input.form-control(type='text', placeholder='이름', value=user.user_nick, name='user_nick')
+                    .col-md-6
+                      .form-group
+                        label Email
+                        input.form-control(type='email', placeholder='Email' value=user.user_email, name='user_email')
+                  .row
+                    .col-md-4
+                      .form-group
+                        label 팀
+                        select.selectpicker.d-block#user_team(data-style="select-with-transition btn-neutral btn-round border text-dark" name='user_team')
+                          option(value='조정팀', selected=user.user_team==='조정팀') 조정팀
+                          option(value='공사팀', selected=user.user_team==='공사팀') 공사팀
+                          option(value='사업팀', selected=user.user_team==='사업팀') 사업팀
+                          option(value='통역팀', selected=user.user_team === '통역팀') 통역팀
+                    .col-md-4
+                      .form-group
+                        label 지역
+                        select.selectpicker.d-block#user_region(data-style="select-with-transition btn-neutral btn-round border text-dark" name='user_region')
+                          each item in region
+                            option(value=item.region_name, selected=user.user_region===item.region_name) #{item.region_name}
+                    .col-md-4
+                      .form-group
+                        label 현장명
+                        input.form-control(type='text', placeholder='현장명 입력', name='work_place' value=user.work_place)
+                  .row
+                    .col-md-4
+                      .form-group
+                        label 나이
+                        input.form-control(type='number', placeholder='나이', value=user.age, name='age')
+                    .col-md-4
+                      .form-group
+                        label 생년월일
+                        input.form-control(type='text', placeholder='생년월일', value=user.birthday, name='birthday')
+                    .col-md-4
+                      .form-group
+                        label 성별
+                        input.form-control(type='text', placeholder='성별', value=user.gender, name='gender')
+          //.col-md-4
+          //  .card.card-user
+          //    .image
+          //      img(src='../../assets/img/bg5.jpg', alt='...')
+          //    .card-body
+          //      .author
+          //        a(href='#')
+          //          img.avatar.border-gray(src=user.profile_image, alt='...')
+          //          h5.title Mike Andrew
+          //    hr
+          //    .button-container
+          //      button.btn.btn-neutral.btn-icon.btn-round.btn-lg(href='#')
+          //        i.fab.fa-facebook-square
+          //      button.btn.btn-neutral.btn-icon.btn-round.btn-lg(href='#')
+          //        i.fab.fa-twitter
+          //      button.btn.btn-neutral.btn-icon.btn-round.btn-lg(href='#')
+          //        i.fab.fa-google-plus-square
+block append_js
+  script.
+    function fnUpdateProfile(id){
+      let xhr = new XMLHttpRequest();
+      let formData = $('#formProfile').serialize();
+      xhr.open("PUT", '/users/profile/' + id, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          let res = JSON.parse(this.response);
+          console.log('res : ', res);
+          if (res.ok === 1) {
+            $.notify({
+              message: '정상적으로 수정되었습니다.'
+            }, {
+              type: 'success',
+              placement: {from: "top", align: "right"},
+              template: now_ui_template,
+              delay: 2000
+            });
+          } else {
+            alert('수정실패! 관리자에게 문의해주세요');
+          }
+        }
+      };
+      xhr.send(formData);
+    }

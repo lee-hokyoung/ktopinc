@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .wrapper.admin-view
+    .container
+      //.row.content-middle.mx-0.px-0
+      //  .col-12.h-100
+      .card.content-middle
+        .card-body
+          .row.flex-xl-nowrap
+            .col-12.col-md-3.col-xl-2.d-none.d-md-block
+              form.d-flex.justify-content-start
+                button.btn.btn-link.d-md-none.p-0(type='button', data-toggle='collapse', data-target='#bd-docs-nav', aria-controls='bd-docs-nav', aria-expanded='false', aria-label='Toggle docs navigation')
+                  svg(xmlns='http://www.w3.org/2000/svg', width='30', height='30', viewBox='0 0 30 30', role='img', focusable='false')
+                    title Menu
+                    path(stroke='currentColor', stroke-linecap='round', stroke-miterlimit='10', stroke-width='2', d='M4 7h22M4 15h22M4 23h22')
+              nav#bd-docs-nav.bd-links.collapse
+                ul.nav.nav-pills.nav-pills-info.flex-column
+                  li.nav-item
+                    a.nav-link(href='/admin' class=side_active==='member'?'active':'') 직원관리
+                  li.nav-item
+                    a.nav-link(href='/admin/attendance' class=side_active==='attendance'?'active':'') 근태관리
+                  li.nav-item
+                    a.nav-link(href='/admin/work' class=side_active==='work'?'active':'') 작업관리
+            .col-12.col-md-9.col-xl-10.overflow-auto(style='max-height:70vh')
+              block sub_content
+

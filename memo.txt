@@ -1,0 +1,10 @@
+버퍼 메모리 삭제 명령어
+sync
+sudo sh -c "echo 1 > /proc/sys/vm/drop_caches"
+sync
+sudo sh -c "echo 2 > /proc/sys/vm/drop_caches"
+sync
+sudo sh -c "echo 3 > /proc/sys/vm/drop_caches"
+
+locale 변경
+sudo ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime

@@ -1,0 +1,214 @@
+extends admin_layout
+
+block content
+  .panel-header.panel-header-sm
+  .content
+    .row
+      .col-12
+        .card
+          .card-header
+            h4.card-title 직원관리
+            #member_search
+            //.row
+            //  .col-4
+            //    .input-group
+            //      .input-group-prepend
+            //        .input-group-text
+            //          i.fa.fa-user-circle
+            //      input.form-control(type='text', placeholder='이름을 입력해주세요.')
+
+          .card-body.overflow-auto(style='max-height:800px;')
+            .table-full-width.table-responsive
+              table.table#memberTable
+                thead
+                  tr
+                    th #
+                    th 아이디
+                    th 이름
+                    th 이메일
+                    th 가입유형
+                    th 상태
+                    th 한비자 ID
+                    //th
+                tbody
+                  each m, i in member
+                    tr
+                      th #{i + 1}
+                      td #{m.user_id}
+                      td(style='min-width:80px;')
+                        a(href='#', data-toggle="modal", onclick='fnGetUserProfile("' + m._id.toString() + '")') #{m.user_nick}
+                      td #{m.user_email}
+                      td #{m.provider}
+                      td.memeber-status
+                        select.selectpicker(data-style="select-with-transition btn-round btn-member-status", data-value=m._id.toString())
+                          option(value='1' selected=m.status===1) 정상
+                          option(value='2' selected=m.status===2) 휴직
+                          option(value='3' selected=m.status===3) 퇴사
+                      td #{m.han_id}
+    input#selected_user(type='hidden')
+    #userProfileModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="userProfileModalLabel", aria-hidden="true")
+      .modal-dialog.modal-lg(role="document")
+        .modal-content
+          .modal-header
+            h5#userProfileModalLabel.modal-title 직원정보
+            button.close(type="button" data-dismiss="modal" aria-label="Close")
+              span(aria-hidden="true") ×
+          .modal-body
+            form#formProfile
+              .row
+                .col-md-6
+                  .form-group
+                    label ID (수정불가)
+                    input.form-control(type='text', disabled, name='user_id')
+              .row
+                .col-md-6
+                  .form-group
+                    label 이름
+                    input.form-control(type='text', placeholder='이름', name='user_nick')
+                .col-md-6
+                  .form-group
+                    label Email
+                    input.form-control(type='email', placeholder='Email', name='user_email')
+              .row
+                .col-md-4
+                  .form-group
+                    label 팀
+                    select.selectpicker.d-block#user_team(data-style="select-with-transition btn-neutral btn-round border text-dark" name='user_team')
+                      option(value='', selected) 선택안함
+                      option(value='조정팀') 조정팀
+                      option(value='공사팀') 공사팀
+                      option(value='사업팀') 사업팀
+                .col-md-4
+                  .form-group
+                    label 지역
+                    select.selectpicker.d-block#user_region(data-style="select-with-transition btn-neutral btn-round border text-dark" name='user_region')
+                      option(value='', selected) 선택안함
+                      each item in region
+                        option(value=item.region_name) #{item.region_name}
+                .col-md-4
+                  .form-group
+                    label 현장명
+                    input.form-control(type='text', placeholder='현장명 입력', name='work_place')
+              .row
+                .col-md-4
+                  .form-group
+                    label 나이
+                    input.form-control(type='number', placeholder='나이', name='age')
+                .col-md-4
+                  .form-group
+                    label 생년월일
+                    input.form-control(type='text', placeholder='생년월일', name='birthday')
+                .col-md-4
+                  .form-group
+                    label 성별
+                    input.form-control(type='text', placeholder='성별', name='gender')
+              .row
+                .col-md-6
+                  .form-group
+                    label 한비자 연동 ID
+                    input.form-control(type='text', name='han_id')
+          .modal-footer.justify-content-start
+            button.btn.btn-danger.mr-3(type="button" data-dismiss="modal") 닫기
+            button.btn.btn-info(type="button", onclick='fnUpdateProfile()') 수정
+
+block append_js
+  script.
+    $(document).ready(function(){
+      // dataTable
+      $('#memberTable').dataTable({
+        paging:false,
+        // searching:true,
+        info:false,
+        initComplete: function () {
+          $("#memberTable_filter").detach().appendTo('#member_search');
+        }
+      })
+    });
+    // 직원 정보 불러오기
+    fnGetUserProfile = function(id){
+      let xhr = new XMLHttpRequest();
+      xhr.open("GET", "/admin/memberProfile/" + id, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          let res = JSON.parse(this.response);
+          document.querySelector('#selected_user').value = res._id;
+          document.querySelector('input[name="user_id"]').value = res.user_id;
+          document.querySelector('input[name="user_nick"]').value = res.user_nick;
+          document.querySelector('input[name="user_email"]').value = res.user_email;
+          $('#user_team').selectpicker('val', res.user_team);
+          $('#user_region').selectpicker('val', res.user_region);
+          // document.querySelector('input[name="user_region"]').value = res.user_region;
+          document.querySelector('input[name="work_place"]').value = res.work_place || '';
+          document.querySelector('input[name="age"]').value = res.age || '';
+          document.querySelector('input[name="birthday"]').value = res.birthday || '';
+          document.querySelector('input[name="gender"]').value = res.gender || '';
+          document.querySelector('input[name="han_id"]').value = res.han_id || '';
+
+          $('#userProfileModal').modal('show');
+        }
+      };
+      xhr.send();
+    }
+    // 직원 정보 수정
+    fnUpdateProfile = function(){
+      let formData = $('#formProfile').serialize();
+      console.log(formData);
+      let id = document.querySelector('#selected_user').value;
+      let xhr = new XMLHttpRequest();
+      xhr.open("PUT", "/users/profile/" + id, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          let res = JSON.parse(this.response);
+          if (res.ok === 1) {
+            $.notify({
+              message: '정상적으로 수정되었습니다'
+            }, {
+              type: 'success',
+              placement: {from: "top", align: "right"},
+              template: now_ui_template,
+              delay: 2000
+            });
+          } else {
+            $.notify('수정실패! 관리자에게 문의해 주세요.', {
+              type: 'danger',
+              placement: {from: "top", align: "right"},
+              template: now_ui_template,
+              delay: 2000
+            });
+          }
+        }
+      };
+      xhr.send(formData);
+    }
+    $('.memeber-status select').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+      let _id = e.target.dataset.value;
+      let val = e.target.value;
+      let xhr = new XMLHttpRequest();
+      xhr.open("PUT", "/admin/member/" + _id + "/" + val, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          let res = JSON.parse(this.response);
+          if (res.ok === 1) {
+            $.notify({
+              message:'정상적으로 수정되었습니다'
+            },{
+              type:'success',
+              placement: {from: "top", align: "right"},
+              template:now_ui_template,
+              delay:2000
+            });
+          } else{
+            $.notify('수정실패! 관리자에게 문의해 주세요.', {
+              type: 'danger',
+              placement: {from: "top", align: "right"},
+              template: now_ui_template,
+              delay: 2000
+            });
+          }
+        }
+      };
+      xhr.send();
+    });

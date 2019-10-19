@@ -1,0 +1,35 @@
+.col-md-4
+  form#formStart
+    .card.card-tasks
+      .card-header
+        .d-flex.justify-content-between
+          h4.card-title 출근시간
+          button.btn.btn-primary(type='button' onclick='fnCreate("start_time", "#formStart")') 저장
+      .card-body.overflow-auto(style='max-height:300px;')
+        .table-full-width.table-responsive
+          table.table
+            thead.text-primary
+              tr
+                th.text-center #
+                th.text-center 출근시간
+                th.text-center
+            tbody#new_start
+              each r, i in start_time
+                tr
+                  td.text-center #{i + 1}
+                  td.text-center
+                    .form-group.my-0
+                      input.form-control(type='text', value=r.start_time)
+                  td.td-actions.text-right
+                    button.btn.btn-info.btn-round.btn-icon.btn-icon-mini.btn-neutral(type='button', onclick='fnUpdate("' + r._id + '", this, "start_time")')
+                      i.now-ui-icons.ui-2_settings-90
+                    button.btn.btn-danger.btn-round.btn-icon.btn-icon-mini.btn-neutral(type='button', onclick='fnDelete("' + r._id + '", this, "start_time")')
+                      i.now-ui-icons.ui-1_simple-remove
+              tr
+                td.text-center
+                td.text-center
+                  .form-group.my-0
+                    input.form-control(type='text', name='start_time')
+                td.text-center
+                  a.btn.btn-info.btn-sm.px-2(onclick='fnNewRow("#new_start", "start_time")')
+                    i.now-ui-icons.ui-1_simple-add.text-white(style='font-size:9px;')

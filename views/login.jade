@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  .wrapper
+    .container(style='padding-top:7rem;')
+      .row.content-middle.mx-0.px-0
+        .col-md-4.ml-auto.mr-auto.pt-5
+          form.form(method='POST', action='/login')
+            .card.card-signup
+              .card-body
+                h4.card-title.text-center 로그인
+                //a(href='/auth/kakao')
+                //  img(src='../assets/img/kakao-login.png', alt='' width='200px')
+                //h5.card-description 또는
+                .input-group
+                  .input-group-prepend
+                    span.input-group-text
+                      i.now-ui-icons.users_circle-08
+                  input.form-control(type='text', placeholder='ID', name='user_id')
+                .input-group
+                  .input-group-prepend
+                    span.input-group-text
+                      i.now-ui-icons.text_caps-small
+                  input.form-control(type='password', placeholder='PASSWORD', name='user_pw')
+              .card-footer.text-center.mt-1.py-1
+                button.btn.btn-primary.btn-round.btn-lg(type='submit') 접속하기
+              .pull-left
+                h6
+                  a.text-primary.pl-3(href='/users/join') 회원가입
+                //.pull-right
+                //  h6
+                //    a.link(href='/users/find') 아이디/비밀번호 찾기

@@ -1,0 +1,43 @@
+extends layout
+
+block content
+  .wrapper
+    .container(style='padding-top:7rem;')
+      .row.content-middle.mx-0.px-0
+        .col-12
+          .card.card-signup
+            .card-body
+              h4.card-title.text-center 회원가입
+              form.form(id='joinForm')
+                .input-group
+                  .input-group-prepend
+                    span.input-group-text
+                      i.now-ui-icons.users_circle-08
+                  input#user_id.form-control(type='text', placeholder='아이디' name='user_id')
+                .input-group
+                  .input-group-prepend
+                    span.input-group-text
+                      i.now-ui-icons.users_single-02
+                  input#user_name.form-control(type='text', placeholder='이름' name='user_name')
+                .input-group
+                  .input-group-prepend
+                    span.input-group-text
+                      i.now-ui-icons.ui-1_email-85
+                  input#user_email.form-control(type='text', placeholder='이메일' name='user_email')
+                .input-group
+                  .input-group-prepend
+                    span.input-group-text
+                      i.now-ui-icons.objects_key-25
+                  input#user_pw.form-control(type='password', placeholder='비밀번호' name='user_pw')
+                .input-group
+                  .input-group-prepend
+                    span.input-group-text
+                      i.now-ui-icons.objects_key-25
+                  input#pw_chk.form-control(type='password', placeholder='비밀번호 확인' name='pw_chk')
+                .card-footer.text-center.mt-1.py-1
+                  button.btn.btn-primary.btn-round.btn-lg(type='button' onclick='fnCheckSubmit()') 가입하기
+                .pull-left
+                  h6
+                    a.text-primary(href='/login') 로그인
+block append_js
+  script(src='/assets/js/custom/join.js', type='text/javascript')

@@ -1,0 +1,137 @@
+extends layout
+
+block content
+  .wrapper
+    .page-header.page-header-small
+      .page-header-image(data-parallax='true', style="background-image: url('/ui-kit/img/bg6.jpg');")
+      .content-center
+        .container
+          h1.title This is our great company.
+          .text-center
+            a.btn.btn-primary.btn-icon.btn-round(href='#pablo')
+              i.fa.fa-facebook-square
+            a.btn.btn-primary.btn-icon.btn-round(href='#pablo')
+              i.fa.fa-twitter
+            a.btn.btn-primary.btn-icon.btn-round(href='#pablo')
+              i.fa.fa-google-plus
+    .section.section-about-us
+      .container
+        .row
+          .col-md-8.ml-auto.mr-auto.text-center
+            h2.title Who we are?
+            h5.description
+              | According to the National Oceanic and Atmospheric Administration, Ted, Scambos, NSIDClead scentist, puts the potentially record low maximum sea ice extent tihs year down to low ice extent in the Pacific and a late drop in ice extent in the Barents Sea.
+        .separator.separator-primary
+        .section-story-overview
+          .row
+            .col-md-6
+              .image-container.image-left(style="background-image: url('/ui-kit/img/login.jpg')")
+                // First image on the left side
+                p.blockquote.blockquote-primary
+                  | "Over the span of the satellite record, Arctic sea ice has been declining significantly, while sea ice in the Antarctichas increased very slightly"
+                  br
+                  br
+                  small -NOAA
+              // Second image on the left side of the article
+              .image-container(style="background-image: url('/ui-kit/img/bg3.jpg')")
+            .col-md-5
+              // First image on the right side, above the article
+              .image-container.image-right(style="background-image: url('/ui-kit/img/bg1.jpg')")
+              h3 So what does the new record for the lowest level of winter ice actually mean
+              p
+                | The Arctic Ocean freezes every winter and much of the sea-ice then thaws every summer, and that process will continue whatever happens with climate change. Even if the Arctic continues to be one of the fastest-warming regions of the world, it will always be plunged into bitterly cold polar dark every winter. And year-by-year, for all kinds of natural reasons, there’s huge variety of the state of the ice.
+              p
+                | For a start, it does not automatically follow that a record amount of ice will melt this summer. More important for determining the size of the annual thaw is the state of the weather as the midnight sun approaches and temperatures rise. But over the more than 30 years of satellite records, scientists have observed a clear pattern of decline, decade-by-decade.
+              p
+                | The Arctic Ocean freezes every winter and much of the sea-ice then thaws every summer, and that process will continue whatever happens with climate change. Even if the Arctic continues to be one of the fastest-warming regions of the world, it will always be plunged into bitterly cold polar dark every winter. And year-by-year, for all kinds of natural reasons, there’s huge variety of the state of the ice.
+    .section.section-team.text-center
+      .container
+        h2.title Here is our team
+        .team
+          .row
+            .col-md-4
+              .team-player
+                img.rounded-circle.img-fluid.img-raised(src='/ui-kit/img/avatar.jpg', alt='Thumbnail Image')
+                h4.title Romina Hadid
+                p.category.text-primary Model
+                p.description
+                  | You can write here details about one of your team members. You can give more details about what they do. Feel free to add some
+                  a(href='#') links
+                  |  for people to be able to follow them outside the site.
+                a.btn.btn-primary.btn-icon.btn-round(href='#pablo')
+                  i.fa.fa-twitter
+                a.btn.btn-primary.btn-icon.btn-round(href='#pablo')
+                  i.fa.fa-instagram
+                a.btn.btn-primary.btn-icon.btn-round(href='#pablo')
+                  i.fa.fa-facebook-square
+            .col-md-4
+              .team-player
+                img.rounded-circle.img-fluid.img-raised(src='/ui-kit/img/ryan.jpg', alt='Thumbnail Image')
+                h4.title Ryan Tompson
+                p.category.text-primary Designer
+                p.description
+                  | You can write here details about one of your team members. You can give more details about what they do. Feel free to add some
+                  a(href='#') links
+                  |  for people to be able to follow them outside the site.
+                a.btn.btn-primary.btn-icon.btn-round(href='#pablo')
+                  i.fa.fa-twitter
+                a.btn.btn-primary.btn-icon.btn-round(href='#pablo')
+                  i.fa.fa-linkedin
+            .col-md-4
+              .team-player
+                img.rounded-circle.img-fluid.img-raised(src='/ui-kit/img/eva.jpg', alt='Thumbnail Image')
+                h4.title Eva Jenner
+                p.category.text-primary Fashion
+                p.description
+                  | You can write here details about one of your team members. You can give more details about what they do. Feel free to add some
+                  a(href='#') links
+                  |  for people to be able to follow them outside the site.
+                a.btn.btn-primary.btn-icon.btn-round(href='#pablo')
+                  i.fa.fa-google-plus
+                a.btn.btn-primary.btn-icon.btn-round(href='#pablo')
+                  i.fa.fa-youtube-play
+                a.btn.btn-primary.btn-icon.btn-round(href='#pablo')
+                  i.fa.fa-twitter
+    .section.section-contact-us.text-center
+      .container
+        h2.title Want to work with us?
+        p.description Your project is very important to us.
+        .row
+          .col-lg-6.text-center.col-md-8.ml-auto.mr-auto
+            .input-group.input-lg
+              span.input-group-addon
+                i.now-ui-icons.users_circle-08
+              input.form-control(type='text', placeholder='First Name...')
+            .input-group.input-lg
+              span.input-group-addon
+                i.now-ui-icons.ui-1_email-85
+              input.form-control(type='text', placeholder='Email...')
+            .textarea-container
+              textarea.form-control(name='name', rows='4', cols='80', placeholder='Type a message...')
+            .send-button
+              a.btn.btn-primary.btn-round.btn-block.btn-lg(href='#pablo') Send Message
+    footer.footer.footer-default
+      .container
+        nav
+          ul
+            li
+              a(href='https://www.creative-tim.com')
+                | Creative Tim
+            li
+              a(href='http://presentation.creative-tim.com')
+                | About Us
+            li
+              a(href='http://blog.creative-tim.com')
+                | Blog
+            li
+              a(href='https://github.com/creativetimofficial/now-ui-kit/blob/master/LICENSE.md')
+                | MIT License
+        .copyright
+          | ©
+          script.
+              document.write(new Date().getFullYear())
+          | , Designed by
+          a(href='http://www.invisionapp.com', target='_blank') Invision
+          | . Coded by
+          a(href='https://www.creative-tim.com', target='_blank') Creative Tim
+          | .

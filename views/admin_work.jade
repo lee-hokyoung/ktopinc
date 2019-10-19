@@ -1,0 +1,15 @@
+extends admin_layout
+
+block content
+  .panel-header.panel-header-sm
+  .content
+    .row
+      include admin/region
+      include admin/work_title
+      include admin/remark
+    //.row
+    //  include admin/start_time
+    //  include admin/end_time
+
+block append_js
+  script(src='/assets/js/custom/admin_work.js', type='text/javascript')

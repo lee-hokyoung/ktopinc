@@ -1,0 +1,24 @@
+.btn-member-status{
+    font-size: 0.7rem;
+    padding: .5rem;
+    width: 50px !important;
+}
+#memeber-status .bootstrap-select .dropdown-menu.inner li a{
+    padding-top: .2rem;
+    padding-bottom: .2rem;
+    margin-top: 0PX;
+}
+.btn-member-status[title='정상'], button[title='일반']{background-color:#007bff;}
+.btn-member-status[title='휴직'], .btn-member-status[title='신규'], button[title='관리자']{background-color:#fd7e14;}
+.btn-member-status[title='퇴사']{background-color:#6c757d;}
+.btn-member-status[title='확정'], button[title='개발자']{background-color:#28a745;}
+
+.memeber-status .dropdown.bootstrap-select{width:80px !important;}
+
+table.dataTable tr th.select-checkbox.selected::after {
+    content: "✔";
+    margin-top: -11px;
+    margin-left: -4px;
+    text-align: center;
+    text-shadow: rgb(176, 190, 217) 1px 1px, rgb(176, 190, 217) -1px -1px, rgb(176, 190, 217) 1px -1px, rgb(176, 190, 217) -1px 1px;
+}

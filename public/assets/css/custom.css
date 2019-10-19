@@ -1,0 +1,27 @@
+.or-wrapper{width: 100%; max-width:325px; position:relative; display: block; margin: 0 auto;}
+.or-divider{display:-webkit-box; display:flex; display: -ms-flex; -ms-flex-pack:distribute; justify-content:space-around;
+    vertical-align: middle; text-transform: uppercase; color: #9e9e9e;}
+.or-divider:after, .or-divider:before {content: " ";display: inline-block;border-top: 1px solid #ccc;width: 45%;vertical-align: middle;margin-top: 9px;}
+.or-divider:before{float:left;}
+.or-divider:after{float:right;}
+.w80px{width:80px; !important;}
+.w100px{width:100px !important;}
+.w220px{width:220px !important;}
+.wrapper{height:calc(100vh - 76px);
+    background-image: url(/assets/img/bg7.jpg);
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+.wrapper.filter:before{background-color:rgba(0,0,0,0.2)}
+.content-middle{position: absolute; top: 45%; left: 50%; z-index: 2; transform: translate(-50%,-50%); text-align: center; padding: 0 15px; width: 100%; max-width: 880px;}
+.admin-view .content-middle{max-width:100vw;height: 75vh;top: 50%;}
+
+/*  select box 에서 직접입력을 선택할 경우, input <-> select box 간 변환 */
+.addon-switch-selectbox {white-space: nowrap; font-size:.75rem; line-height:37px; margin-left:.5rem;}
+/*pc 버전에만 해당*/
+@media (min-width: 768px) {
+    .bd-links {
+        display: block !important;
+    }
+    .admin-view .content-middle{max-width:80vw;}
+}

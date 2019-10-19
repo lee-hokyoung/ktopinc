@@ -1,0 +1,515 @@
+extends admin_layout
+
+block content
+  .panel-header.panel-header-sm
+  .content
+    .row
+      .col-12
+        .card
+          .card-header
+            //.d-flex.justify-content-start
+            h4.card-title 근태관리
+            //.my-auto
+            //  select#select_member.selectpicker(data-type='select-with-transition btn-round btn-primary')
+            //    option(selected, disabled) 직원선택
+            //    each m in member
+            //      option(value=m._id, selected=m._id.toString()===member_id)
+            //        a(href='/admin/attendance/' + m.user_id) #{m.user_nick}
+            - var entries = (page_info.length > 0 ? page_info[0].limit : 30);
+            form(name='formSearch', method='POST', action='/admin/attendance', onsubmit='fnSearchAttendance()').d-inline-block
+              label 조회기간
+              .form-group.d-inline-block(style='width:150px')
+                input.form-control.text-center.border-bottom.border-top-0.border-left-0.border-right-0.rounded-0#timepicker_attendance_start(type='text')
+              label.px-2 ~
+              .form-group.d-inline-block(style='width:150px')
+                input.form-control.text-center.border-bottom.border-top-0.border-left-0.border-right-0.rounded-0#timepicker_attendance_end(type='text')
+              select.selectpicker.mx-3(data-style="select-with-transition btn-primary btn-round", data-width="fit", title="Entries", data-size="7", name='entries')
+                option(value="10", selected=entries===10) 10
+                option(value="20", selected=entries===20) 20
+                option(value="30", selected=entries===30) 30
+                option(value="50", selected=entries===50) 50
+                option(value="100", selected=entries===100) 100
+              label 이름
+              .form-group.d-inline-block(style='width:150px')
+                input.form-control.text-center.border-bottom.border-top-0.border-left-0.border-right-0.rounded-0#user_nick(type='text', name='user_nick', value=user_nick)
+              label 지역
+              .form-group.d-inline-block(style='width:150px')
+                input.form-control.text-center.border-bottom.border-top-0.border-left-0.border-right-0.rounded-0#user_team(type='text', name='region', value=region)
+              .form-check.d-inline-block.pr-2
+                label.form-check-label
+                  input.form-check-input(type="checkbox", checked=isDataOnly==='1', onclick='fnToggleIsDataOnly(this)')
+                  | 입력된 작업만 보기
+                  span.form-check-sign
+                    span.check
+              input(type='hidden', name='isDataOnly', value=isDataOnly)
+              input(type='hidden', name='attendance_start')
+              input(type='hidden', name='attendance_end')
+              input(type='hidden', name='page')
+              button.btn.btn-primary(type='submit') 조회
+            .form-group
+              label 체크항목
+              select#select_confirm_all.selectpicker.mx-2(data-style='select-with-transition btn-neutral border btn-round', data-width='fit')
+                option(value=2 selected) 신규
+                option(value=1) 확정
+              button.btn.btn-primary.btn-round(onclick='fnUpdateAll()') 일괄수정
+          .card-body.overflow-auto(style='max-height:800px;')
+            .table-full-width.table-responsive.table-striped
+              table.table#attendance-table
+                thead
+                  tr
+                    th.text-center
+                      .form-check.form-check-inline
+                        label.form-check-label
+                          input.form-check-input(type="checkbox", onclick='fnSelectAll(this)')
+                          span.form-check-sign
+                            span.check
+                    th.text-center #
+                    th.text-center(style='min-width:70px') 날짜
+                    th.text-center(style='min-width:70px') 요일
+                    th.text-center(style='min-width:100px') 이름
+                    th.text-center(style='min-width:70px') 지역
+                    th.text-center(style='min-width:100px') 출근시간
+                    th.text-center(style='min-width:100px') 퇴근시간
+                    th.text-center(style='min-width:150px') 작업내용
+                    th.text-center(style='min-width:150px') 비고
+                    th(style='max-width:50px;')
+                    th.text-nowrap 작성일시
+                    th
+                    th.d-none 한비자 아이디
+                tbody
+                  - var days = ['일','월','화','수','목','금','토'];
+                  if(work_list.length === 0)
+                    tr
+                      td.text-center(colspan=12) 데이터가 없습니다.
+                  else
+                    each item, idx in work_list
+                      - var w_date = new Date(item.work_date);
+                      // - w_date.setHours(w_date.getHours() - 9);  // 한국 시간을 위해 +15 해줌.
+                      - var confirm = 2;
+                      - if(item.works){if(item.works.work_confirm === 1){confirm = 1;}}
+                      - var month = '00' + (w_date.getMonth() + 1);
+                      - var day = '00' + (w_date.getDate());
+                      - var date = item.work_date.getFullYear() + '-' + month.substr(month.length -2, 2) + '-' + day.substr(day.length - 2, 2)
+                      - var d = days[w_date.getDay()];
+                      - var created_date = '';
+                      - var work_id = '';
+                      if(item.works)
+                        - work_id = item.works._id;
+                        - var _c_month = '00' + (item.works.date.getMonth() + 1);
+                        - var _c_day = '00' + (item.works.date.getDate());
+                        - created_date = item.works.date.getFullYear() + '-' + _c_month.substr(_c_month.length -2, 2) + '-' + _c_day.substr(_c_day.length -2, 2) + ' ' + item.works.date.toLocaleTimeString();
+                      tr(data-id=work_id.toString())
+                        td.text-center
+                          .form-check.form-check-inline
+                            label.form-check-label
+                              input.form-check-input(type="checkbox", value=(item.works?item.works._id.toString():''), disabled=(!item.works))
+                              span.form-check-sign
+                                span.check
+                        td.text-center #{idx + 1}
+                        td.text-center.text-nowrap #{date}
+                        td.text-center.text-nowrap #{d}
+                        td.text-center #{(item.users.user_nick || '')}
+                        if(item.works)
+                          td.text-center.text-nowrap #{item.works.region}
+                          td.text-center.text-nowrap #{item.works.start_time}
+                          td.text-center.text-nowrap #{item.works.end_time}
+                          td.text-center.text-nowrap #{(item.works.work_title === '직접입력'?item.works.work_title_etc:item.works.work_title)}
+                          td.text-center.text-nowrap #{(item.works.remarks === '직접입력'?item.works.remarks_etc:item.works.remarks)}
+                          td
+                            .d-flex.justify-content-center
+                              select.selectpicker.select_work_confirm(data-style="btn btn-primary btn-round btn-member-status", name='work_confirm', data-value=item.works._id.toString())
+                                option(value=1 selected=confirm===1) 확정
+                                option(value=2 selected=confirm===2) 신규
+                              button.btn.btn-success.btn-round.px-3.py-2(onclick='fnOpenSetTimeModal("' + item.works._id.toString() + '")')
+                                i.now-ui-icons.ui-2_time-alarm
+                          td.text-nowrap #{created_date}
+                          td.text-center
+                            button.btn.btn-danger.btn-round.btn-icon.btn-icon-mini.btn-neutral(type='button', onclick='fnDelete("' + item.works._id + '", this)')
+                              i.now-ui-icons.ui-1_simple-remove
+                        else
+                          td
+                          td
+                          td
+                          td
+                          td
+                          td
+                          td
+                          td
+                        td.d-none #{item.users.han_id}
+
+          .card-footer
+            - var total = (page_info.length > 0 ? Math.ceil(page_info[0].total / page_info[0].limit):0);
+            - var c_page = (page_info.length > 0 ? parseInt(page_info[0].page) : 1);
+            - var page_len = 10;
+            - var page_group_size = Math.ceil(total / page_len);
+            - var current_page_group = Math.ceil(c_page / page_len);
+            - var start_page = (current_page_group - 1) * page_len + 1;
+            - var end_page = (current_page_group * page_len < total ? current_page_group * page_len:total);
+            nav(aria-label='Page navigation example')
+              ul.pagination.justify-content-center
+                if(current_page_group > 1)
+                  li.page-item
+                    a.page-link(href='#' onclick='fnSearchAttendance(' + (parseInt(current_page_group - 1) * page_len) + ')') <<
+                else
+                  li.page-item.disabled
+                    a.page-link(href='#') <<
+                if(c_page > 1)
+                  li.page-item
+                    a.page-link(href='#', onclick='fnSearchAttendance(' + (parseInt(c_page) - 1) + ')') Previous
+                else
+                  li.page-item.disabled
+                    a.page-link(href='#') Previous
+                - var n = start_page - 1;
+                //while n < total
+                //  li.page-item(class=c_page === ++n?'active':'')
+                //    a.page-link(href='#', onclick='fnSearchAttendance(' + n + ')') #{n}
+                //if(c_page === total || total === 0)
+                //  li.page-item.disabled
+                //    a.page-link(href='#') Next
+                //else
+                //  li.page-item
+                //    a.page-link(href='#', onclick='fnSearchAttendance(' + (parseInt(c_page) + 1) + ')') Next
+                while n < end_page
+                  li.page-item(class=c_page === ++n ? 'active' : '')
+                    a.page-link(href='#', onclick='fnSearchAttendance(' + n + ')') #{n}
+                if(c_page === total || total === 0)
+                  li.page-item.disabled
+                    a.page-link(href='#') Next
+                else
+                  li.page-item
+                    a.page-link(href='#', onclick='fnSearchAttendance(' + (parseInt(c_page) + 1) + ')') Next
+                if(current_page_group < page_group_size)
+                  li.page-item
+                    a.page-link(href='#' onclick='fnSearchAttendance(' + (parseInt(current_page_group) * page_len + 1) + ')') >>
+                else
+                  li.page-item.disabled
+                    a.page-link(href='#') >>
+            .form-group
+              button.btn.btn-success(onclick='fnExcelDownload()') 엑셀다운로드
+  #setTimeModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="userWorkInfoLabel", aria-hidden="true")
+    .modal-dialog(role="document")
+      .modal-content
+        .modal-header
+          h5#userWorkInfoLabel.modal-title 근무정보 수정
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true')
+        .modal-body
+          form#formWorkInfo
+            .row
+              .col-md-6
+                .form-group
+                  label 이름
+                  input.form-control#modal_nick(type='text', disabled, name='user_nick')
+              //.col-md-6
+              //  .form-group
+              //    label 지역
+              //    input.form-control#modal_region(type='text', name='region')
+            .row
+              .col-md-6
+                .form-group
+                  label 출근시간
+                  input.form-control.w220px#timepicker_start(type='text', name='start_time')
+              .col-md-6
+                .form-group
+                  label 퇴근시간
+                  input.form-control.w220px#timepicker_end(type='text', name='end_time')
+
+        .modal-footer.justify-content-center
+          button.btn.btn-danger.mr-3(type="button" data-dismiss="modal") 닫기
+          button.btn.btn-info(type="button", onclick='fnUpdateTime()') 수정
+block append_js
+  script.
+    let current_work_id = '';
+    // 근무시간 수정
+    function fnUpdateTime(){
+      console.log('work id : ', current_work_id);
+      let tds = document.querySelectorAll('tr[data-id="' + current_work_id + '"] td');
+      let start_time = document.querySelector('#timepicker_start');
+      let end_time = document.querySelector('#timepicker_end');
+      tds[6].innerText = start_time.value;
+      tds[7].innerText = end_time.value;
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", '/admin/attendance/time/' + current_work_id, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          let res = JSON.parse(this.response);
+          $.notify({
+            message: res.message
+          }, {
+            type: res.ok === 1 ? 'success' : 'danger',
+            placement: {from: "top", align: "right"},
+            template: now_ui_template,
+            delay: 2000
+          });
+        }
+      };
+      xhr.send(JSON.stringify({start_time:start_time.value, end_time:end_time.value}));
+      $('#setTimeModal').modal('hide');
+    }
+    // 근무시간 모달창 띄우기
+    function fnOpenSetTimeModal(work_id){
+      current_work_id = work_id;
+      let xhr = new XMLHttpRequest();
+      xhr.open("GET", '/admin/attendance/work/read/' + work_id, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          let res = JSON.parse(this.response);
+          document.querySelector('#modal_nick').value = res.user_id.user_nick;
+          document.querySelector('#timepicker_start').value = res.start_time || '';
+          document.querySelector('#timepicker_end').value = res.end_time || '';
+          // 모달창 띄우기
+          $('#timepicker_start').datetimepicker({
+            format: 'HH:mm',
+            stepping: 15,
+            icons: {
+              up: 'fa fa-chevron-up',
+              down: 'fa fa-chevron-down'
+            },
+          });
+          $('#timepicker_end').datetimepicker({
+            format: 'HH:mm',
+            stepping: 15,
+            icons: {
+              up: 'fa fa-chevron-up',
+              down: 'fa fa-chevron-down'
+            }
+          });
+          $('#setTimeModal').modal('show');
+        }
+      };
+      xhr.send();
+    }
+    // excel 다운로드
+    function fnExcelDownload(){
+      let data = {};
+      let start_date = document.querySelector('#timepicker_attendance_start').value;
+      let end_date = document.querySelector('#timepicker_attendance_end').value;
+      let user_nick = document.querySelector('#user_nick').value;
+      let region = document.querySelector('#user_team').value;
+      let isDataOnly = document.querySelector('input[name="isDataOnly"]').value;
+
+      if(user_nick !== '') data['user_nick'] = user_nick;
+      if(region !== '') data['region'] = region;
+      data['isDataOnly'] = isDataOnly;
+      data['attendance_start'] = start_date;
+      data['attendance_end'] = end_date;
+      let weeks = ['일', '월', '화', '수', '목', '금', '토'];
+      let xhr = new XMLHttpRequest();
+      // PATCH 를 사용한 이유 : 중복 코딩을 피하기 위함. /attendance (all 방식임. 현재 GET -> 첫 페이지 로딩시, POST -> 조건설정 후 조회시 각각 사용 중)
+      xhr.open("PATCH", '/admin/attendance', true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          let data = JSON.parse(this.response)[0].data;
+          let list = data.map(function(v){
+            let obj = {};
+            let date = new Date(v.work_date);
+            obj['부서명'] = v.works ? v.works.region: '';
+            obj['날짜']  = date.toLocaleDateString();
+            obj['요일'] = '(' + weeks[date.getDay()] + ')';
+            obj['성명'] = v.users.user_nick;
+            obj['출근시간'] = v.works ? v.works.start_time ? v.works.start_time : '' : '';
+            obj['퇴근시간'] = v.works ? v.works.end_time ? v.works.end_time : '' : '';
+            obj['비고'] = v.works ? v.works.remarks : '';
+            obj['한비자ID'] = v.users.han_id || '';
+            return obj;
+          });
+          if(list.length > 0) {
+            let header = ['부서명', '날짜', '요일', '성명', '출근시간', '퇴근시간', '비고', '한비자ID'];
+            fnJsonToExcel(list, header);
+          }
+        }
+      };
+      xhr.send(JSON.stringify(data));
+    }
+    // json to excel function
+    function fnJsonToExcel(list, header){
+      let CSV = '';
+      CSV += header.join(',') + '\r\n';
+      list.forEach(function(row){
+        for (let key in row) {
+          CSV += row[key] + ','
+        }
+        CSV += '\r\n';
+      });
+      let fileName = 'work_list';
+      let blob = new Blob(["\ufeff"+CSV], {type: 'text/csv;charset=utf-8;'});
+      let url = URL.createObjectURL(blob);
+      // let uri = 'data:text/csv;charset=utf-8,' + CSV;
+      let link = document.createElement('a');
+      link.href = url;
+      link.style = 'visibility:hidden';
+      link.download = fileName + '.csv';
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    // 헤더에 checkbox 클릭 => 전체선택/해제
+    function fnSelectAll(obj){
+      let allCheckBox = document.querySelectorAll('td input[type="checkbox"]:not([disabled])');
+      let list = Array.prototype.slice.call(allCheckBox);
+      if(obj.checked) list.forEach(function(v){v.checked = true});
+      else list.forEach(function(v){v.checked = false});
+    }
+    // 체크항목 일괄 수정
+    function fnUpdateAll(){
+      let checked_obj = document.querySelectorAll('td input[type="checkbox"]:checked');
+      let list = Array.prototype.slice.call(checked_obj);
+      let data = list.map(function(v){return v.value});
+      let title = $('button[data-id="select_confirm_all"]').text().trim();
+      let xhr = new XMLHttpRequest();
+      xhr.open("PUT", '/admin/attendance/confirm', true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          let res = JSON.parse(this.response);
+          $.notify({
+            message: res.nModified + '개의 데이터가 수정되었습니다.'
+          }, {
+            type: res.ok === 1 ? 'success' : 'danger',
+            placement: {from: "top", align: "right"},
+            template: now_ui_template,
+            delay: 2000
+          });
+          list.forEach(function(v){
+            let obj = document.querySelector('select[data-value="' + v.value + '"]').parentNode.querySelector('button');
+            obj.title = title;
+            obj.innerText = title;
+          });
+        }
+      };
+      xhr.send(JSON.stringify({data:data, confirm_state:document.querySelector('#select_confirm_all').value}));
+    }
+    //  table sort 기능 추가
+    $(document).ready(function(){
+      $('#attendance-table').dataTable({
+        paging:false,
+        scrollY:500,
+        scrollX:true,
+        searching:false,
+        info:false,
+        columnDefs: [{
+          targets: [0, 3, 10, 12],
+          orderable: false
+        }],
+        responsive:true,
+        initComplete:function(settings, json){
+          settings.nTHead.querySelectorAll('th')[1].click();
+        }
+      });
+    });
+    //  기간 조회 + pagination
+    function fnSearchAttendance(page){
+      let start = document.querySelector('#timepicker_attendance_start');
+      let end = document.querySelector('#timepicker_attendance_end');
+      document.querySelector('input[name="attendance_start"]').value = start.value;
+      document.querySelector('input[name="attendance_end"]').value = end.value;
+      document.querySelector('input[name="page"]').value = page || 1;
+      document.formSearch.submit();
+    }
+    let date = new Date();
+    let start_period = "!{new Intl.DateTimeFormat('en').format(start_period)}";
+    let end_period = "!{new Intl.DateTimeFormat('en').format(end_period)}";
+    $('#timepicker_attendance_start').datetimepicker({
+      format: 'YYYY년 MM월 DD일',
+      locale: 'ko',
+      icons: {
+          time: "fa fa-clock-o",
+          date: "fa fa-calendar",
+          up: "fa fa-chevron-up",
+          down: "fa fa-chevron-down",
+          previous: 'fa fa-chevron-left',
+          next: 'fa fa-chevron-right',
+          today: 'fa fa-screenshot',
+          clear: 'fa fa-trash',
+          close: 'fa fa-remove'
+      },
+      defaultDate: start_period
+    });
+    $('#timepicker_attendance_end').datetimepicker({
+      format: 'YYYY년 MM월 DD일',
+      locale:'ko',
+      icons: {
+          time: "fa fa-clock-o",
+          date: "fa fa-calendar",
+          up: "fa fa-chevron-up",
+          down: "fa fa-chevron-down",
+          previous: 'fa fa-chevron-left',
+          next: 'fa fa-chevron-right',
+          today: 'fa fa-screenshot',
+          clear: 'fa fa-trash',
+          close: 'fa fa-remove'
+      },
+      defaultDate:end_period,
+      minDate:start_period
+    });
+    $('#timepicker_attendance_start').on('dp.change', function(e){
+      $('#timepicker_attendance_end').data('DateTimePicker').minDate(e.date);
+    });
+    $('#timepicker_attendance_end').on('dp.change', function (e) {
+      $('#timepicker_attendance_start').data('DateTimePicker').maxDate(e.date);
+    });
+    $('#select_member').on('changed.bs.select', function(e){
+        location.href = '/admin/attendance/' + e.target.value + '/1';
+    });
+    $('.select_work_confirm').on('change.bs.select', function(e){
+        let _id = e.target.dataset.value;
+        let confirm = e.target.value;
+        let xhr = new XMLHttpRequest();
+        xhr.open("PUT", '/admin/attendance/' + _id + '/' + confirm, true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                let res = JSON.parse(this.response);
+                $.notify({
+                    message: res.message
+                }, {
+                    type: res.result===1?'success':'danger',
+                    placement: {from: "top", align: "right"},
+                    template: now_ui_template,
+                    delay: 2000
+                });
+            }
+        };
+        xhr.send();
+    });
+    /*  입력된 데이터만 보기 체크/언체크 */
+    function fnToggleIsDataOnly(chk){
+      let isDataOnly = document.querySelector('input[name="isDataOnly"]');
+      if(chk.checked) isDataOnly.value = '1';
+      else isDataOnly.value = '0';
+    }
+    fnDelete = function(_id, obj){
+      if(!confirm('삭제하시면 복구가 불가능합니다. 계속하시겠습니까?')) return false;
+      let tr = obj.parentElement.parentElement;
+      let xhr = new XMLHttpRequest();
+      xhr.open('DELETE', '/admin/work/' + _id);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          let res = JSON.parse(this.response);
+          if (res.ok === 1) {
+            $.notify({
+              message: '정상적으로 삭제되었습니다'
+            }, {
+              type: 'success',
+              placement: {from: "top", align: "right"},
+              template: now_ui_template,
+              delay: 2000
+            });
+            tr.childNodes.forEach(function (v, i){if (i > 3) v.innerText = ""});
+          } else if (this.readyState === XMLHttpRequest.DONE && this.status === 301) {
+            $.notify('삭제실패! 관리자에게 문의해 주세요.', {
+              type: 'danger',
+              placement: {from: "top", align: "right"},
+              template: now_ui_template,
+              delay: 2000
+            });
+          }
+        }
+      };
+      xhr.send();
+    };

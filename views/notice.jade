@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  .wrapper
+    .container.d-flex.align-self-center(style='padding-top:10vh; max-height:80vh')
+      .card
+        .card-header
+          h3.m-3 공지사항
+        .card-body
+          .table-responsive.overflow-auto(style='height:50vh')
+            table.table.table-bordered.table-striped
+              thead
+                tr
+                  th.text-center #
+                  th.text-center 제목
+                  th.text-center 작성일시
+                  th.text-center 조회수
+              tbody
+                if(list.length > 0)
+                  each item, idx in list
+                    tr
+                      td #{idx + 1}
+                      td #{item.title}
+                      td #{item.created}
+                      td #{item.read_count}
+        .card-footer
+  block append_js
+    script.
+      console.log(!{list})

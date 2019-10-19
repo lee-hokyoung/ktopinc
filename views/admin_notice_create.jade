@@ -1,0 +1,57 @@
+extends admin_layout
+
+block content
+  .panel-header.panel-header-sm
+  .content
+    form(method='post', action='/admin/notice/' + (data?'update':'create'), name='form_notice', )
+      if(data)
+        input(type='hidden', name='_id', value=data._id)
+      .card
+        .card-header
+          h3.m-3 공지사항 등록
+        .card-body
+          .row
+            .col-8
+              .form-group
+                label 제목
+                input.input-group.input-group-text.text-left(name='title', value=data?data.title:'')
+            .col-4
+              .form-group
+                label 작성자
+                input.input-group.input-group-text.text-left(name='writer', value=data?data.writer:'')
+          .form-group
+            label 내용
+            textarea#notice_textarea.border-0(name='content', style='resize:none; visibility:hidden;') #{data?data.content:''}
+          input(type='file')
+        .card-footer
+          .d-flex.justify-content-center
+            button.btn.btn-success(type='submit') #{data?'수정':'등록'}
+            if(data)
+              button.btn.btn-danger.ml-2(type='button', onclick='fnDeleteNotice("' + data._id + '")') 삭제
+            a.text-white.btn.btn-info.ml-2(href='/admin/notice/list') 목록으로
+block append_js
+  script(src='https://cdn.tiny.cloud/1/7ho7rfii78tg9lue8ua9r812eefbuhp3l8gev2ky08pn017q/tinymce/5/tinymce.min.js')
+  script.
+    tinymce.init({
+      selector:'#notice_textarea',
+      height:500,
+      resize:false,
+      branding:false
+    });
+    function fnDeleteNotice(id){
+      if(confirm('삭제하시면 복구가 불가능 합니다. 계속 진행하시겠습니까?')){
+        let xhr = new XMLHttpRequest();
+        xhr.open('DELETE', '/admin/notice/delete/' + id, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function () {
+          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            let res = JSON.parse(this.response);
+            if (res.ok === 1) {
+              alert('정상적으로 삭제되었습니다.');
+              location.href = '/admin/notice/list';
+            }
+          }
+        }
+        xhr.send();
+      }
+    }

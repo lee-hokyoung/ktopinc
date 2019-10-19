@@ -1,0 +1,189 @@
+extends layout
+block content
+  .wrapper
+    .container
+      .row.content-middle.mx-0.px-0
+        .col-12
+          .card.text-center.mt-3
+            .card-header.mt-3
+              h4.text-dark 근무일지 수정
+            .card-body.text-dark
+              form#workForm(name='workForm')
+                .row
+                  .col-lg-6.col-md-8.col-sm-6.my-1
+                    .form-group
+                      label.w80px 근무일
+                      .d-inline-block.w220px
+                        input#work_date.form-control.datetimepicker(type='text' name='work_date')
+                  .col-md-6
+                    .form-group
+                      label.w80px 팀
+                      .d-inline-block.w220px
+                        input#user_team.form-control(type='text', name='work_team', value=data.work_team, disabled)
+                .row
+                  .col-md-6
+                    .form-group
+                      label.w80px 지역
+                      select#region.selectpicker(data-style="select-with-transition btn-neutral border text-dark btn-round w220px" name='region')
+                        each item in region
+                          option(value=item.region_name selected=data.region===item.region_name) #{item.region_name}
+                  .col-md-6
+                    .form-group
+                      label.w80px 현장명
+                      .form-group.d-inline-block
+                        input.form-control.w220px(type='text', name='work_place', value=data.work_place)
+                .row
+                  .col-lg-6.col-md-8.col-sm-6.my-1
+                    label.w80px 출근시간
+                    .form-group.d-inline-block
+                      input.form-control.w220px#timepicker_start(type='text', name='start_time', value=data.start_time)
+                  .col-lg-6.col-md-8.col-sm-6.my-1
+                    label.w80px 퇴근시간
+                    .form-group.d-inline-block
+                      input.form-control.w220px#timepicker_end(type='text', name='end_time', value=data.end_time)
+                  .col-lg-6.col-md-8.col-sm-6.my-1
+                    label.w80px 작업사항
+                    .form-group.d-none(title='work_title', class=data.work_title==='직접입력'?'d-inline-block':'d-none')
+                      .d-flex.w220px
+                        input.form-control(type='text', name='work_title_etc' value=data.work_title_etc)
+                        a.addon-switch-selectbox(href='#', onclick='fnChangeSelect("work_title")') 작업선택
+                    select#work_title.selectpicker(class=data.work_title==='직접입력'?'d-none':'' ,data-style="select-with-transition btn-neutral border text-dark btn-round w220px" data-live-search="true" name='work_title')
+                      each item in work_title
+                        option(value=item.work_title selected=data.work_title===item.work_title) #{item.work_title}
+                      option(value='직접입력' onselect='fnChangeSelect("work_title")') 직접입력
+                  .col-lg-6.col-md-8.col-sm-6.my-1
+                    label.w80px 비고란
+                    .form-group(title='remarks', class=data.remarks==='직접입력'?'d-inline-block':'d-none')
+                      .d-flex.w220px
+                        input.form-control(type='text', name='remarks_etc', value=data.remarks_etc)
+                        a.addon-switch-selectbox(href='#', onclick='fnChangeSelect("remarks")') 비고선택
+                    select#remarks.selectpicker(class=data.remarks==='직접입력'?'d-none':'', data-style="select-with-transition btn-neutral border text-dark btn-round w220px", name='remarks')
+                      each item in remark
+                        option(value=item.remark, selected=data.remarks===item.remark) #{item.remark}
+                      option(value='직접입력' onselect='fnChangeSelect("remarks")') 직접입력
+                .row.justify-content-center
+                  button.btn.btn-success(type='button' onclick='fnCheckSubmit("' + data._id + '")') 수정하기 
+                    i.now-ui-icons.ui-1_check
+                input(type='hidden', name='temp_start_time', value=data.start_time)
+                input(type='hidden', name='temp_end_time', value=data.end_time)
+
+block append_js
+  script.
+    let isClosed = false;
+    let inpStart = document.querySelector('input[name="start_time"]');
+    let inpEnd = document.querySelector('input[name="end_time"]');
+    $('.datetimepicker').datetimepicker({
+      icons: {
+        time: "fa fa-clock-o",
+        date: "fa fa-calendar",
+        up: "fa fa-chevron-up",
+        down: "fa fa-chevron-down",
+        previous: 'fa fa-chevron-left',
+        next: 'fa fa-chevron-right',
+        today: 'fa fa-screenshot',
+        clear: 'fa fa-trash',
+        close: 'fa fa-remove'
+      },
+      locale:'ko',
+      format:'L'
+    });
+    $('#timepicker_start').datetimepicker({
+      format: 'HH:mm',
+      stepping: 15,
+      icons: {
+        up: 'fa fa-chevron-up',
+        down: 'fa fa-chevron-down'
+      }
+    });$('#timepicker_end').datetimepicker({
+      format: 'HH:mm',
+      stepping: 15,
+      icons: {
+        up: 'fa fa-chevron-up',
+        down: 'fa fa-chevron-down'
+      }
+    });
+    $('.datetimepicker').data('DateTimePicker').date(new Date("!{data.work_date}"));
+    /*  select box <-> input switch 부분  */
+    ['work_title', 'remarks'].forEach(function (o) {
+      $('#' + o).on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+        if (o === 'remarks') {
+          if (e.target.value === '휴무') {
+            console.log('휴무선택함.');
+            isClosed = true;
+            inpStart.value = "";
+            inpStart.disabled = true;
+            inpEnd.value = "";
+            inpEnd.disabled = true;
+          } else {
+            if (isClosed) {
+              inpStart.value = document.querySelector('input[name="temp_start_time"]').value;
+              inpStart.disabled = false;
+              inpEnd.value = document.querySelector('input[name="temp_end_time"]').value;
+              inpEnd.disabled = false;
+            }
+          }
+        }
+        if (e.target.value === '직접입력') {
+          e.target.parentNode.classList.add('d-none');
+          document.querySelector('div[title="' + o + '"]').classList.remove('d-none');
+          document.querySelector('div[title="' + o + '"]').classList.add('d-inline-block');
+        }
+      });
+    })
+    function fnChangeSelect(obj) {
+      let div = document.querySelector('div[title="' + obj + '"]');
+      let select = document.querySelector('#' + obj);
+      div.classList.remove('d-inline-block');
+      div.classList.add('d-none');
+      select.parentNode.classList.remove('d-none');
+      $('#' + obj).selectpicker('val', $('#' + obj)[0][0].innerText);
+    }
+    function fnCheckSubmit(_id){
+      // 근무일 입력 여부 확인
+      let work_date = document.querySelector('#work_date');
+      if (work_date.value === "") {
+        alert('근무일을 입력해주세요.');
+        work_date.focus();
+        return false;
+      }
+      // 유효성 검증 및 작업, 비고 항목에 직접 입력시 처리
+      let isDirectWork = document.querySelector('div[title="work_title"]').className.indexOf('d-none') > -1;
+      let work_field = document.querySelector('input[name="work_title_etc"]');
+      if (!isDirectWork) {
+        if (work_field.value === "") {
+          alert('작업내역을 입력해주세요.');
+          work_field.focus();
+          return false;
+        }
+      }
+
+      let isDirectRemark = document.querySelector('div[title="remarks"]').className.indexOf('d-none') > -1;
+      let remark_field = document.querySelector('input[name="remarks_etc"]');
+      if (!isDirectRemark) {
+        if (remark_field.value === "") {
+          alert('비고사항을 입력해주세요');
+          remark_field.focus();
+          return false;
+        }
+      }
+      // 데이터 전송
+      let formData = $('#workForm').serialize();
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", '/work/update/' + _id, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          let res = JSON.parse(this.response);
+          console.log(res);
+          if(res.result === 1){
+            alert('정상적으로 수정되었습니다');
+            location.href = '/work/list';
+          }else if(res.result === 0){
+            alert('수정 에러, 관리자에게 문의해주세요');
+          }else if(res.result === 2){
+            alert('동일한 날짜에 근무 기록이 있습니다');
+          }
+        }
+      };
+      xhr.send(formData);
+    }

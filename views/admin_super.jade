@@ -1,0 +1,103 @@
+extends admin_layout
+
+block content
+  .panel-header.panel-header-sm
+  .content
+    .row
+      .col-12
+        .card
+          .card-header
+            h4.card-title 직원관리
+            #member_search
+          .card-body.overflow-auto(style='max-height:800px;')
+            .table-full-width.table-responsive
+              table.table#memberTable
+                thead
+                  tr
+                    th #
+                    th 아이디
+                    th 이름
+                    th 이메일
+                    th 비밀번호
+                    th 레벨
+                    th 삭제
+                tbody
+                  each m, i in users
+                    tr(id=m._id.toString())
+                      th #{i + 1}
+                      td #{m.user_id}
+                      td(style='min-width:80px;') #{m.user_nick}
+                      td #{m.user_email}
+                      td #{m.user_pw}
+                      td.memeber-status
+                        select.selectpicker(data-style="select-with-transition btn-round w-auto px-3", data-width='fit', data-value=m._id.toString())
+                          option(value='1' selected=m.lv===1) 일반
+                          option(value='2' selected=m.lv===2) 관리자
+                      td
+                        button.btn.btn-danger.btn-round.btn-icon.btn-icon-mini.btn-neutral(type='button', onclick='fnUserDelete("' + m._id.toString() + '")')
+                          i.now-ui-icons.ui-1_simple-remove
+block append_js
+  script.
+    $(document).ready(function () {
+      $('#memberTable').dataTable({
+        paging: false,
+        info: false,
+        initComplete: function () {
+          $("#memberTable_filter").detach().appendTo('#member_search');
+        }
+      })
+    });
+    function fnUserDelete(_id){
+      if(confirm('삭제하시면 복원이 불가능 합니다. 계속진행하시겠습니까?')){
+        let xhr = new XMLHttpRequest();
+        xhr.open("DELETE", "/admin/superAdmin/" + _id, true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            let res = JSON.parse(this.response);
+            if(res.ok === 1){
+              $('#' + _id).remove();
+              $.notify({
+                message: '정상적으로 삭제되었습니다.'
+              }, {
+                type: 'success',
+                placement: {from: "top", align: "right"},
+                template: now_ui_template,
+                delay: 2000
+              });
+            }
+          }
+        };
+        xhr.send();
+      }
+    }
+    $('.memeber-status select').on('changed.bs.select', function (e) {
+      let _id = e.target.dataset.value;
+      let val = e.target.value;
+      let xhr = new XMLHttpRequest();
+      xhr.open("PUT", "/admin/superAdmin/" + _id + "/" + val, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function () {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          let res = JSON.parse(this.response);
+          if (res.ok === 1) {
+            $.notify({
+              message:'정상적으로 수정되었습니다'
+            },{
+              type:'success',
+              placement: {from: "top", align: "right"},
+              template:now_ui_template,
+              delay:2000
+            });
+          } else{
+            $.notify('수정실패! 관리자에게 문의해 주세요.', {
+              type: 'danger',
+              placement: {from: "top", align: "right"},
+              template: now_ui_template,
+              delay: 2000
+            });
+          }
+        }
+      };
+      xhr.send();
+    });
