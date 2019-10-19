@@ -4,4 +4,4 @@ uploads/
 .env
 K-Top.tar
 .idea/
-public/
+public/*
