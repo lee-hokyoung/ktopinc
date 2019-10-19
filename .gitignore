@@ -1,7 +1,7 @@
-node_modules/
-test/
-uploads/
+./public/assets/css/
+./node_modules/
+./test/
+./uploads/
+.idea/
 .env
 K-Top.tar
-.idea/
-public/*
