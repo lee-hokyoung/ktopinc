@@ -4,9 +4,4 @@ uploads/
 .env
 K-Top.tar
 .idea/
-public/assets/demo/
-public/assets/fonts/
-public/assets/img/
-public/assets/scss/
-public/assets/svg/
-public/stylesheets/
+public/
