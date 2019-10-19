@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="51f4eccc-b5d2-4373-811e-2202d7f1e01a" name="ktop" url="http://ktopinc.xyz">
-        <fileTransfer host="ktopinc.xyz" port="22" privateKey="D:\문서\OneDrive\key_pair\k-top\ktop-seoul.pem" rootFolder="/home/ubuntu" accessType="SFTP" keyPair="true">
+        <fileTransfer host="ktopinc.xyz" port="22" privateKey="D:\OneDrive\key_pair\k-top\ktop-seoul.pem" rootFolder="/home/ubuntu" accessType="SFTP" keyPair="true">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
