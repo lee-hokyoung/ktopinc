@@ -77,15 +77,15 @@ block content
 										td #{row.works ? row.works.work_title : ''}
 										td #{work_day > 0 ? work_day.toFixed(2) + ' H' : ''}
 										td #{parseFloat(work_day) >= 8 ? 1 : ''}
-										td #{(parseFloat(work_day) < 8 && work_day !== 0)? work_day.toFixed(2) + ' H' : ''}
-										td #{parseFloat(work_day) > 10 ? (parseFloat(work_day) - 10).toFixed(2) + ' H': ''}
+										td #{(parseFloat(work_day) < 8 && work_day !== 0)? work_day.toFixed(1) : ''}
+										td #{parseFloat(work_day) > 10 ? (parseFloat(work_day) - 10).toFixed(1) : ''}
 										td
 								tr
 									td(colspan='5') 合計
 									td #{total_time.toFixed(2)} H
 									td #{total_work_day}
-									td #{total_work_under.toFixed(2)} H
-									td #{total_work_over.toFixed(2)} H
+									td #{total_work_under.toFixed(1)}
+									td #{total_work_over.toFixed(1)}
 									td 0
 								tr
 									td(colspan='10')
