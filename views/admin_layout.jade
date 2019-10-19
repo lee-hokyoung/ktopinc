@@ -33,6 +33,10 @@ html(lang='en')
               a(href='/admin/attendance')
                 i.now-ui-icons.education_atom
                 p.h5 근태관리
+            //li(class=side_active === 'operate_report' ? 'active' : '')
+            //  a(href='/admin/operate/report')
+            //    i.now-ui-icons.education_atom
+            //    p.h5 가동보고서 관리
             li(class=side_active==='work'?'active':'')
               a(href='/admin/work')
                 i.now-ui-icons.tech_tablet
@@ -85,6 +89,7 @@ html(lang='en')
                     .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
                       a.dropdown-item(href='/admin') 직원관리
                       a.dropdown-item(href='/admin/attendance') 근태관리
+                      //a.dropdown-item(href='/admin/operate/report') 가동보고서 관리
                       a.dropdown-item(href='/admin/work') 작업관리
                       a.dropdown-item(href='/admin/superAdmin') 전체회원관리
         // End Navbar
