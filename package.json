@@ -22,6 +22,8 @@
     "passport-kakao": "0.0.5",
     "passport-local": "^1.0.0",
     "pbkdf2": "^3.0.17",
-    "pbkdf2-password": "^1.2.1"
+    "pbkdf2-password": "^1.2.1",
+    "tableexport": "^5.2.0",
+    "xlsx": "^0.15.1"
   }
 }

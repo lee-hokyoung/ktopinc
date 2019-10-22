@@ -32,6 +32,7 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/docs', express.static(path.join(__dirname, 'docs')));
 // app.use('/ui-kit', express.static(path.join(__dirname, 'node_modules/now-ui-kit/assets')));
 // app.use('/ui-kit', express.static(path.join(__dirname, 'public/assets')));
 app.use(session({
