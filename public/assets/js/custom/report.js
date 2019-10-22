@@ -30,6 +30,12 @@ function fnSearchMonth() {
 // excel 다운로드
 function exportExcel() {
     let list = [];
+    // 년, 월 입력
+    let ym = document.querySelector('h5[about="ym_search"]').innerText;
+    let user_name = document.querySelector('td[about="user_name"]').innerText;
+    let doc_name = [ym.split(' ')[0], ym.split(' ')[1], '가동보고서', user_name].join('_');
+    list.push({A1:ym.split(' ')[0]});
+    list.push({C1:ym.split(' ')[1]});
     document.querySelectorAll('td[data-cell]').forEach(function (v) {
         let obj = {};
         obj[v.dataset.cell] = v.innerHTML;
@@ -51,5 +57,5 @@ function exportExcel() {
             document.body.removeChild(a);
         }
     };
-    xhr.send(JSON.stringify({excel_data:list}));
+    xhr.send(JSON.stringify({excel_data:list, doc_name:doc_name}));
 }

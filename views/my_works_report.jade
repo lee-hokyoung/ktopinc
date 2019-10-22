@@ -18,7 +18,7 @@ block content
 						label.mr-3 &nbsp; 월 가동보고서
 						button.btn.btn-primary(type='button', onclick='fnSearchMonth()') 조회
 					.row.text-center
-						h5.m-0.col-md-3 #{search_year}年 #{search_month}月分
+						h5(about='ym_search').m-0.col-md-3 #{search_year}年 #{search_month}月分
 						h3(data-cell='D1').m-0.col-md-6 稼 動 報 告 書
 						h5(data-cell='F1').m-0.col-md-3 KTOP Inc.
 				.card-body
@@ -27,13 +27,13 @@ block content
 							thead
 								tr
 									td(colspan='3', data-cell='A2') ﾌﾘｶﾞﾅ
-									td(colspan='2', data-cell='D2') LEE HO KYOUNG
+									td(colspan='2', data-cell='D2', class=user_info.user_en_name?'':'text-danger') #{user_info.user_en_name || '영문명을 입력해주세요'}
 									td(rowspan='2')
 										.rounded-circle.mx-auto.p-2.text-danger.font-weight-bold(style='width:45px; border:2px solid #FF3636; white-space:normal;') #{user_info.user_nick}
 									td(colspan='4', rowspan='2')
 								tr
 									td(colspan='3', data-cell='A3') 氏　名
-									td(colspan='2', data-cell='D3') #{user_info.user_nick}
+									td(colspan='2', data-cell='D3', about='user_name') #{user_info.user_nick}
 								tr
 									td(colspan='3', data-cell='A4') 対応現場先
 									td(colspan='3', data-cell='D4') M14-PJT PH-2-B-1
@@ -53,9 +53,10 @@ block content
 							- var total_work_day = 0;
 							- var total_work_under = 0;
 							- var total_work_over = 0;
+							- var cell_idx = 0;
 							tbody
 								each row, idx in report_list
-									- var cell_idx = 6 + idx;
+									- cell_idx = 6 + idx;
 									- var date = new Date(row.work_date);
 									- var start = row.works ? row.works.start_time ? row.works.start_time.split(':') : '' : '';
 									- var end = row.works ? row.works.end_time ? row.works.end_time.split(':') : '' : '';
@@ -82,12 +83,12 @@ block content
 										td(data-cell='J' + cell_idx) #{parseFloat(work_day) > 10 ? (parseFloat(work_day) - 10).toFixed(1) : ''}
 										td
 								tr
-									td(colspan='5', data-cell='A36') 合計
-									td(data-cell='G36') #{total_time.toFixed(2)} H
-									td(data-cell='H36') #{total_work_day}
-									td(data-cell='I36') #{total_work_under.toFixed(1)}
-									td(data-cell='J36') #{total_work_over.toFixed(1)}
-									td(data-cell='K36') 0
+									td(colspan='5', data-cell='A37') 合計
+									td(data-cell='G37') #{total_time.toFixed(2)} H
+									td(data-cell='H37') #{total_work_day}
+									td(data-cell='I37') #{total_work_under.toFixed(1)}
+									td(data-cell='J37') #{total_work_over.toFixed(1)}
+									td(data-cell='K37') 0
 								tr
 									td(colspan='10')
 										.d-flex.justify-content-between
