@@ -19,6 +19,10 @@ block content
                       .form-group
                         label ID (수정불가)
                         input.form-control(type='text', disabled='', value=user.user_id)
+                    .col-md-6
+                      .form-group
+                        label 영문명
+                        input.form-control(type='text', value=user.user_en_name, name='user_en_name')
                   .row
                     .col-md-6
                       .form-group

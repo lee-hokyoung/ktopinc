@@ -12,6 +12,8 @@ const middle = require('../routes/middlewares');
 const moment = require('moment');
 const mongoose = require('mongoose');
 const func = require('../controller/functions');
+const Excel = require('exceljs');
+const fs = require('fs');
 
 // 작업일지 화면(등록화면)
 router.get('/', middle.isLoggedIn, async (req, res, next) => {
@@ -201,8 +203,7 @@ router.get('/report/:month?', middle.isLoggedIn, async (req, res) => {
 // 가동보고서 엑셀 다운로드
 router.post('/report/excel', middle.isLoggedIn, async (req, res) => {
   let excel_data = req.body.excel_data || [];
-  const Excel = require('exceljs');
-  const fs = require('fs');
+  let doc_name = req.body.doc_name || '가동보고서';
   const workbook = new Excel.Workbook();
   let dir = './docs/' + req.session.passport.user._id;
   workbook.xlsx.readFile('./docs/operate_report.xlsx')//Change file name here or give file path
@@ -214,8 +215,9 @@ router.post('/report/excel', middle.isLoggedIn, async (req, res) => {
       if(!fs.existsSync(dir)){
         fs.mkdirSync(dir);
       }
-      workbook.xlsx.writeFile(dir + '/가동보고서.xlsx');
-      res.json({download_path:'docs/' + req.session.passport.user._id + '/가동보고서.xlsx'});
+      workbook.xlsx.writeFile(dir + '/' + doc_name + '.xlsx').then(function(){
+        res.json({download_path:'docs/' + req.session.passport.user._id + '/' + doc_name + '.xlsx'});
+      });
     });
 });
 
