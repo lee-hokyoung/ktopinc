@@ -128,7 +128,6 @@ router.get('/report/:month?', middle.isLoggedIn, async (req, res) => {
       month_end = moment(today).add(1, 'month').date(start_date - 1).format('YYYY-MM-DD');
     }
   }
-  console.log('start : ', month_start, ', end : ', month_end);
   // 시작일 종료일 기준으로 임시 데이터를 TempReport Collection 에 저장한다.
   let arrPeriod = func.getDatesInPeriod(month_start, month_end);
   let period_query = [], obj = {};
@@ -143,7 +142,7 @@ router.get('/report/:month?', middle.isLoggedIn, async (req, res) => {
 
   let report_list = await TempReport.aggregate([
     {
-      $match:{user_id:mongoose.Types.ObjectId(user_id)}
+      $match: {user_id: mongoose.Types.ObjectId(user_id)}
     },
     {
       $lookup: {
@@ -164,13 +163,13 @@ router.get('/report/:month?', middle.isLoggedIn, async (req, res) => {
             }
           }
         ],
-        as:'works'
+        as: 'works'
       }
     },
     {
-      $unwind:{
-        path:'$works',
-        preserveNullAndEmptyArrays:true
+      $unwind: {
+        path: '$works',
+        preserveNullAndEmptyArrays: true
       }
     }
   ]);
@@ -199,4 +198,25 @@ router.get('/report/:month?', middle.isLoggedIn, async (req, res) => {
     search_year: search_year
   })
 });
+// 가동보고서 엑셀 다운로드
+router.post('/report/excel', middle.isLoggedIn, async (req, res) => {
+  let excel_data = req.body.excel_data || [];
+  const Excel = require('exceljs');
+  const fs = require('fs');
+  const workbook = new Excel.Workbook();
+  let dir = './docs/' + req.session.passport.user._id;
+  workbook.xlsx.readFile('./docs/operate_report.xlsx')//Change file name here or give file path
+    .then(function() {
+      let worksheet = workbook.getWorksheet('sheet1');
+      excel_data.forEach((v)=>{
+        worksheet.getCell(Object.keys(v)).value = v[Object.keys(v)];
+      });
+      if(!fs.existsSync(dir)){
+        fs.mkdirSync(dir);
+      }
+      workbook.xlsx.writeFile(dir + '/가동보고서.xlsx');
+      res.json({download_path:'docs/' + req.session.passport.user._id + '/가동보고서.xlsx'});
+    });
+});
+
 module.exports = router;

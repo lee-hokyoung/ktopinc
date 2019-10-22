@@ -23,8 +23,6 @@ if (true) {
   month_end = moment(today).month(parseInt(month) - 1).date(start_date - 1).format('YYYY-MM-DD');
 }
 let arrPeriod = func.getDatesInPeriod(month_start, month_end);
-console.log('period : ', arrPeriod);
-console.log('month_start : ', month_start, ', month_end : ', month_end);
 
 const Work = require('../model/works');
 const TempReport = require('../model/tempReport');

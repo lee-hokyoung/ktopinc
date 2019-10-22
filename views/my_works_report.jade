@@ -19,42 +19,43 @@ block content
 						button.btn.btn-primary(type='button', onclick='fnSearchMonth()') 조회
 					.row.text-center
 						h5.m-0.col-md-3 #{search_year}年 #{search_month}月分
-						h3.m-0.col-md-6 稼 動 報 告 書
-						h5.m-0.col-md-3 KTOP Inc.
+						h3(data-cell='D1').m-0.col-md-6 稼 動 報 告 書
+						h5(data-cell='F1').m-0.col-md-3 KTOP Inc.
 				.card-body
 					.table.overflow-auto.p-3#table_report
-						table.table.table-bordered.text-center
+						table.table.table-bordered.text-center#table_export
 							thead
 								tr
-									td(colspan='3') ﾌﾘｶﾞﾅ
-									td(colspan='2') LEE HO KYOUNG
+									td(colspan='3', data-cell='A2') ﾌﾘｶﾞﾅ
+									td(colspan='2', data-cell='D2') LEE HO KYOUNG
 									td(rowspan='2')
 										.rounded-circle.mx-auto.p-2.text-danger.font-weight-bold(style='width:45px; border:2px solid #FF3636; white-space:normal;') #{user_info.user_nick}
 									td(colspan='4', rowspan='2')
 								tr
-									td(colspan='3') 氏　名
-									td(colspan='2') #{user_info.user_nick}
+									td(colspan='3', data-cell='A3') 氏　名
+									td(colspan='2', data-cell='D3') #{user_info.user_nick}
 								tr
-									td(colspan='3') 対応現場先
-									td(colspan='3') M14-PJT PH-2-B-1
-									td(rowspan='2', style='width:60px;') 日額
-									td(rowspan='2', style='width:60px;') 定時
-									td(rowspan='2', style='width:60px;') 殘業
-									td(rowspan='2', style='width:60px;') 夜間
+									td(colspan='3', data-cell='A4') 対応現場先
+									td(colspan='3', data-cell='D4') M14-PJT PH-2-B-1
+									td(rowspan='2', data-cell='H4', style='width:60px;') 日額
+									td(rowspan='2', data-cell='I4', style='width:60px;') 定時
+									td(rowspan='2', data-cell='J4', style='width:60px;') 殘業
+									td(rowspan='2', data-cell='K4', style='width:60px;') 夜間
 								tr
-									td(style='width:60px;') 日
-									td(style='width:80px;') 曜日
-									td(style='width:150px;') 開始時刻
-									td(style='width:150px;') 終了時刻
-									td 内　容
-									td(style='width:150px;') 対応時間
+									td(style='width:60px;', data-cell='A5') 日
+									td(style='width:80px;', data-cell='B5') 曜日
+									td(style='width:150px;', data-cell='C5') 開始時刻
+									td(style='width:150px;', data-cell='D5') 終了時刻
+									td(data-cell='E5') 内　容
+									td(style='width:150px;', data-cell='G5') 対応時間
 							- var day = ['日', '月', '火', '水', '木', '金', '土'];
 							- var total_time = 0;
 							- var total_work_day = 0;
 							- var total_work_under = 0;
 							- var total_work_over = 0;
 							tbody
-								each row in report_list
+								each row, idx in report_list
+									- var cell_idx = 6 + idx;
 									- var date = new Date(row.work_date);
 									- var start = row.works ? row.works.start_time ? row.works.start_time.split(':') : '' : '';
 									- var end = row.works ? row.works.end_time ? row.works.end_time.split(':') : '' : '';
@@ -70,23 +71,23 @@ block content
 									- total_work_under += work_under;
 									- total_work_over += work_over;
 									tr
-										td #{date.getDate()}
-										td #{day[date.getDay()]}
-										td #{row.works ? row.works.start_time : ''}
-										td #{row.works ? row.works.end_time : ''}
-										td #{row.works ? row.works.work_title : ''}
-										td #{work_day > 0 ? work_day.toFixed(2) + ' H' : ''}
-										td #{parseFloat(work_day) >= 8 ? 1 : ''}
-										td #{(parseFloat(work_day) < 8 && work_day !== 0)? work_day.toFixed(1) : ''}
-										td #{parseFloat(work_day) > 10 ? (parseFloat(work_day) - 10).toFixed(1) : ''}
+										td(data-cell='A' + cell_idx) #{date.getDate()}
+										td(data-cell='B' + cell_idx) #{day[date.getDay()]}
+										td(data-cell='C' + cell_idx) #{row.works ? row.works.start_time : ''}
+										td(data-cell='D' + cell_idx) #{row.works ? row.works.end_time : ''}
+										td(data-cell='E' + cell_idx) #{row.works ? row.works.work_title : ''}
+										td(data-cell='G' + cell_idx) #{work_day > 0 ? work_day.toFixed(2) + ' H' : ''}
+										td(data-cell='H' + cell_idx) #{parseFloat(work_day) >= 8 ? 1 : ''}
+										td(data-cell='I' + cell_idx) #{(parseFloat(work_day) < 8 && work_day !== 0)? work_day.toFixed(1) : ''}
+										td(data-cell='J' + cell_idx) #{parseFloat(work_day) > 10 ? (parseFloat(work_day) - 10).toFixed(1) : ''}
 										td
 								tr
-									td(colspan='5') 合計
-									td #{total_time.toFixed(2)} H
-									td #{total_work_day}
-									td #{total_work_under.toFixed(1)}
-									td #{total_work_over.toFixed(1)}
-									td 0
+									td(colspan='5', data-cell='A36') 合計
+									td(data-cell='G36') #{total_time.toFixed(2)} H
+									td(data-cell='H36') #{total_work_day}
+									td(data-cell='I36') #{total_work_under.toFixed(1)}
+									td(data-cell='J36') #{total_work_over.toFixed(1)}
+									td(data-cell='K36') 0
 								tr
 									td(colspan='10')
 										.d-flex.justify-content-between
@@ -95,6 +96,7 @@ block content
 												.mt-2(style='text-decoration:underline') 現場責任者様承認印
 					.form-group
 						button.btn.btn-success(type='button', onclick='fnDownPDF()') PDF 다운로드
+						button.btn.btn-info.ml-3(type='button', onclick='exportExcel()') 엑셀 다운로드
 	style.
 		#htmlToCanvas canvas{width:100% !important; height:auto !important;}
 		#pdfModal .modal-lg{max-width:90% !important;}
@@ -113,7 +115,11 @@ block content
 block append_js
 	script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js")
 	script(type="text/javascript" src="/assets/js/plugins/html2canvas.min.js")
+	//script(type="text/javascript" src="/assets/js/plugins/xlsx.core.min.js")
+	//script(type="text/javascript" src="/assets/js/plugins/fileSaver.js")
+	//script(type="text/javascript" src="/assets/js/plugins/tableexport.min.js")
 	script(type='text/javascript', src='/assets/js/custom/report.js')
 	script.
 		console.log('work list : ', !{JSON.stringify(report_list)});
 		console.log(!{JSON.stringify(user_info)});
+
