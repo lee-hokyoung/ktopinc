@@ -8,7 +8,7 @@ block content
         input(type='hidden', name='_id', value=data._id)
       .card
         .card-header
-          h3.m-3 공지사항 등록
+          h3.m-3 #{title}
         .card-body
           .row
             .col-8
@@ -29,6 +29,30 @@ block content
             if(data)
               button.btn.btn-danger.ml-2(type='button', onclick='fnDeleteNotice("' + data._id + '")') 삭제
             a.text-white.btn.btn-info.ml-2(href='/admin/notice/list') 목록으로
+    if(title==='공지사항 수정')
+      .card
+        .card-header
+          h5.card-title 공지사항 확인한 직원
+        .card-body
+          .table
+            table.table.table-bordered.text-center
+              thead
+                tr.bg-secondary.text-white
+                  td #
+                  td 이름
+                  td 팀
+                  td 지역
+              tbody
+                if(!user_list)
+                  tr
+                    td(colspan=4) 데이터가 없습니다.
+                else
+                  each user, idx in user_list
+                    tr
+                      td #{(idx + 1)}
+                      td #{user.user_nick}
+                      td #{user.user_team}
+                      td #{user.user_region}
 block append_js
   script(src='https://cdn.tiny.cloud/1/7ho7rfii78tg9lue8ua9r812eefbuhp3l8gev2ky08pn017q/tinymce/5/tinymce.min.js')
   script.
