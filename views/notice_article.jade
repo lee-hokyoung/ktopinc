@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  .wrapper
+    .container.d-flex.align-self-center(style='padding-top:10vh; max-height:80vh')
+      .card
+        .card-header
+          h3.m-3 공지사항
+        .card-body
+          .row
+            .col-8
+              .form-group
+                label 제목
+                h5.border-bottom.p-3 #{article.title}
+            .col-4
+              .form-group
+                label 작성자
+                h5.border-bottom.p-3 #{article.writer}
+          .row
+            .col-12
+              .form-group
+                label 내용
+                .border.p-3#notice_content
+        .card-footer
+          .d-flex.justify-content-center
+            a.btn.btn-info(href='/notice') 목록으로
+block append_js
+  script.
+    let notice_content = `!{article.content.replace(/\r\n/g, '')}`;
+    document.querySelector('#notice_content').innerHTML = notice_content;

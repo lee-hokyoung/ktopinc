@@ -7,23 +7,26 @@ block content
         .card-header
           h3.m-3 공지사항
         .card-body
-          .table-responsive.overflow-auto(style='height:50vh')
-            table.table.table-bordered.table-striped
+          div(style='height:50vh')
+            table.table.table-bordered.table-striped.text-center
               thead
                 tr
-                  th.text-center #
-                  th.text-center 제목
-                  th.text-center 작성일시
-                  th.text-center 조회수
+                  th #
+                  th 제목
+                  th 작성일
+                  th 조회수
               tbody
                 if(list.length > 0)
                   each item, idx in list
+                    - var isNew = item.read_user.toString().split(',').indexOf(user_id);
                     tr
                       td #{idx + 1}
-                      td #{item.title}
-                      td #{item.created}
+                      td
+                        - if(isNew === -1)
+                          img(src='/assets/svg/new_2.svg', width='20').mr-2
+                        a(href='/notice/read/' + item._id) #{item.title}
+                      td #{new Date(item.created).toLocaleDateString('ko')}
                       td #{item.read_count}
         .card-footer
   block append_js
     script.
-      console.log(!{list})

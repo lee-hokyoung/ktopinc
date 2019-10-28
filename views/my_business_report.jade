@@ -1,0 +1,352 @@
+extends layout
+
+block content
+  style.
+    .report input{
+      border:none;
+      border-bottom:1px solid #ccc;
+      width:100px;
+      text-align:center;
+      outline:none !important;
+    }
+    .report table th, .report table td{border-color:transparent !important;}
+    .accident table th{width:200px; text-align:center;}
+    .accident input {outline:none !important; width:100%; border:none;}
+    .accident .form-check span:before, .accident .form-check span:after{top:0 !important; left:0 !important;}
+    .accident .form-check{width:auto;}
+    ul input {max-width:100px; border:none; outline:none !important; text-align: center;}
+  .container-fluid
+    form
+      .card(style='margin-top:5rem;')
+        .card-header
+        .card-body
+          .table.report.text-nowrap.overflow-auto
+            table
+              thead
+                tr.h5.font-weight-bold
+                  th
+                    input(type='number', name='year')
+                    span 년
+                  th
+                    input(type='number', name='month')
+                    span 월
+                  th 월간업무보고서
+                  th
+              tbody
+                tr.h6
+                  td 현장명 :
+                  td
+                    input(type='text', name='field', value=user_info.user_region)
+                    span 현장,
+                  td
+                    input(type='text', name='line')
+                    span 라인
+                  td
+                tr.h6
+                  td 직급, 성명 :
+                  td
+                    span 직급/
+                    input(type='text', name='rank')
+                  td
+                    span , 성명
+                    input(type='text', name='user_name', value=user_info.user_nick)
+                  td
+                    span , 조정그룹/
+                    input(type='text', name='align_group')
+          br
+          h5.font-weight-bold 1. 현장업무 보고
+          .table.text-nowrap.overflow-auto
+            table.table.table-bordered
+              tbody(style='border:2px solid #555;')
+                tr
+                  td
+                    h6 (* 구체적으로 기술)
+                    h6 ① 본인 업무 및 역할?
+                tr
+                  td
+                    textarea.form-control(rows=5, name='field_role')
+                tr
+                  td
+                    h6 ② 팀원, 팀장, 현장 SV는?(협력사명 및 이름)
+                tr
+                  td
+                    textarea.form-control(rows=5, name='field_name')
+                tr
+                  td
+                    h6 ③ 업무 중 문제점 or 개선점은?
+                tr
+                  td
+                    textarea.form-control(rows=5, name='field_problem')
+          br
+          h5.font-weight-bold 2. 앗차사고 및 현장사고사례
+          .table.accident.text-nowrap.overflow-auto
+            table.table.table-bordered
+              tbody(style='border:2px solid #555;')
+                tr
+                  th 일 시
+                  td
+                    input(type='text', name='accident_date')
+                tr
+                  th 장 소
+                  td
+                    input(type='text', name='accident_location')
+                tr
+                  th 위 험 유 형
+                  td
+                    .form-check.form-check-inline.mr-3
+                      label.form-check-label
+                        input#danger_1.form-check-input(type="checkbox" value="넘어짐(전도)", name='accident_type')
+                        | 넘어짐(전도)
+                        span.form-check-sign
+                          span.check
+                    .form-check.form-check-inline.mr-3
+                      label.form-check-label
+                        input#danger_2.form-check-input(type="checkbox" value="떨어짐(추락)", name='accident_type')
+                        | 떨어짐(추락)
+                        span.form-check-sign
+                          span.check
+                    .form-check.form-check-inline.mr-3
+                      label.form-check-label
+                        input#danger_3.form-check-input(type="checkbox" value="부딪힘(충돌)", name='accident_type')
+                        | 부딪힘(충돌)
+                        span.form-check-sign
+                          span.check
+                    .form-check.form-check-inline.mr-3
+                      label.form-check-label
+                        input#danger_4.form-check-input(type="checkbox" value="끼임(협착)", name='accident_type')
+                        | 끼임(협착)
+                        span.form-check-sign
+                          span.check
+                    .form-check.form-check-inline.mr-3
+                      label.form-check-label
+                        input#danger_5.form-check-input(type="checkbox" value="물체에 맞음(낙하, 비례)", name='accident_type')
+                        | 물체에 맞음(낙하, 비례)
+                        span.form-check-sign
+                          span.check
+                    .form-check.form-check-inline.mr-3
+                      label.form-check-label
+                        input#danger_6.form-check-input(type="checkbox" value="방전스파크(감전)", name='accident_type')
+                        | 방전스파크(감전)
+                        span.form-check-sign
+                          span.check
+                    .form-check.form-check-inline.mr-3
+                      label.form-check-label
+                        input#danger_7.form-check-input(type="checkbox" value="기타(사고내용기술)", name='accident_type')
+                        | 기타(사고내용기술)
+                        span.form-check-sign
+                          span.check
+                tr
+                  th 내 용
+                  td
+                    input(name='accident_content')
+                tr
+                  th 문 제 점
+                  td
+                    input(name='accident_problem')
+                tr
+                  th 사고대처방안
+                  td
+                    input(name='accident_manual')
+                tr
+                  th
+                    span 현장사고사례
+                    h6 (*사고발생 時 작성)
+                  td
+                    input(placeholder='(* 사고내용, 협력사명 등 기술)', name='accident_example')
+          br
+          h5.font-weight-bold 3. 현장 업무 Skill 및 일본어 능력 자기 평가
+          ul.list-group(style='border:2px solid #555;')
+            li.list-group-item
+              span ① Rail : 경력 (
+              input(type='number', name='rail_year')
+              span ) 년 / (
+              input(type='number', name='rail_month')
+              span ) 개월
+              .d-flex.justify-content-start
+                each item in [{id:'rail_1', name:'S'}, {id:'rail_2', name:'A'}, {id:'rail_3', name:'B'}, {id:'rail_4', name:'C'}]
+                  .form-check.form-check-radio.form-check-inline.mr-3
+                    label.form-check-label
+                      input.form-check-input(type="radio", value=item.name, id=item.id, name='skill_rail_type')
+                      | #{item.name}
+                      span.form-check-sign
+                        span.check
+            li.list-group-item
+              span ② ZCU : 경력 (
+                input(type='number', name='zcu_year')
+                span ) 년 / (
+                input(type='number', name='zcu_month')
+                span ) 개월
+                .d-flex.justify-content-start
+                  each item in [{id:'zcu_1', name:'S'}, {id:'zcu_2', name:'A'}, {id:'zcu_3', name:'B'}, {id:'zcu_4', name:'C'}]
+                    .form-check.form-check-radio.form-check-inline.mr-3
+                      label.form-check-label
+                        input.form-check-input(type="radio", value=item.name, id=item.id, name='skill_zcu_type')
+                        | #{item.name}
+                        span.form-check-sign
+                          span.check
+            li.list-group-item
+              span ③ Teaching : 경력 (
+                input(type='number', name='teaching_year')
+                span ) 년 / (
+                input(type='number', name='teaching_month')
+                span ) 개월
+                .d-flex.justify-content-start
+                  each item in [{id:'teaching_1', name:'S'}, {id:'teaching_2', name:'A'}, {id:'teaching_3', name:'B'}, {id:'teaching_4', name:'C'}]
+                    .form-check.form-check-radio.form-check-inline.mr-3
+                      label.form-check-label
+                        input.form-check-input(type="radio", value=item.name, id=item.id, name='skill_teaching_type')
+                        | #{item.name}
+                        span.form-check-sign
+                          span.check
+            li.list-group-item
+              span ④ STB : 경력 (
+                input(type='number', name='stb_year')
+                span ) 년 / (
+                input(type='number', name='stb_month')
+                span ) 개월
+                .d-flex.justify-content-start
+                  each item in [{id:'stb_1', name:'S'}, {id:'stb_2', name:'A'}, {id:'stb_3', name:'B'}, {id:'stb_4', name:'C'}]
+                    .form-check.form-check-radio.form-check-inline.mr-3
+                      label.form-check-label
+                        input.form-check-input(type="radio", value=item.name, id=item.id, name='skill_stb_type')
+                        | #{item.name}
+                        span.form-check-sign
+                          span.check
+            li.list-group-item
+              span ⑤ AZFS : 경력 (
+                input(type='number', name='azfs_year')
+                span ) 년 / (
+                input(type='number', name='azfs_month')
+                span ) 개월
+                .d-flex.justify-content-start
+                  each item in [{id:'azfs_1', name:'S'}, {id:'azfs_2', name:'A'}, {id:'azfs_3', name:'B'}, {id:'azfs_4', name:'C'}]
+                    .form-check.form-check-radio.form-check-inline.mr-3
+                      label.form-check-label
+                        input.form-check-input(type="radio", value=item.name, id=item.id, name='skill_azfs_type')
+                        | #{item.name}
+                        span.form-check-sign
+                          span.check
+            li.list-group-item
+              span ⑥ VHL : 경력 (
+                input(type='number', name='vhl_year')
+                span ) 년 / (
+                input(type='number', name='vhl_month')
+                span ) 개월
+                .d-flex.justify-content-start
+                  each item in [{id:'vhl_1', name:'S'}, {id:'vhl_2', name:'A'}, {id:'vhl_3', name:'B'}, {id:'vhl_4', name:'C'}]
+                    .form-check.form-check-radio.form-check-inline.mr-3
+                      label.form-check-label
+                        input.form-check-input(type="radio", value=item.name, id=item.id, name='skill_vhl_type')
+                        | #{item.name}
+                        span.form-check-sign
+                          span.check
+            li.list-group-item
+              span ⑦ HID : 경력 (
+                input(type='number', name='hid_year')
+                span ) 년 / (
+                input(type='number', name='hid_month')
+                span ) 개월
+                .d-flex.justify-content-start
+                  each item in [{id:'hid_1', name:'S'}, {id:'hid_2', name:'A'}, {id:'hid_3', name:'B'}, {id:'hid_4', name:'C'}]
+                    .form-check.form-check-radio.form-check-inline.mr-3
+                      label.form-check-label
+                        input.form-check-input(type="radio", value=item.name, id=item.id, name='skill_hid_type')
+                        | #{item.name}
+                        span.form-check-sign
+                          span.check
+            li.list-group-item
+              span ⑧ CLS : 경력 (
+                input(type='number', name='cls_year')
+                span ) 년 / (
+                input(type='number', name='cls_month')
+                span ) 개월
+                .d-flex.justify-content-start
+                  each item in [{id:'cls_1', name:'S'}, {id:'cls_2', name:'A'}, {id:'cls_3', name:'B'}, {id:'cls_4', name:'C'}]
+                    .form-check.form-check-radio.form-check-inline.mr-3
+                      label.form-check-label
+                        input.form-check-input(type="radio", value=item.name, id=item.id, name='skill_cls_type')
+                        | #{item.name}
+                        span.form-check-sign
+                          span.check
+            li.list-group-item
+              span ⑨ ZT : 경력 (
+                input(type='number', name='zt_year')
+                span ) 년 / (
+                input(type='number', name='zt_month')
+                span ) 개월
+                .d-flex.justify-content-start
+                  each item in [{id:'zt_1', name:'S'}, {id:'zt_2', name:'A'}, {id:'zt_3', name:'B'}, {id:'zt_4', name:'C'}]
+                    .form-check.form-check-radio.form-check-inline.mr-3
+                      label.form-check-label
+                        input.form-check-input(type="radio", value=item.name, id=item.id, name='skill_zt_type')
+                        | #{item.name}
+                        span.form-check-sign
+                          span.check
+            li.list-group-item
+              span ⑩ 일본어 : 경력 (
+                input(type='number', name='jp_year')
+                span ) 년 / (
+                input(type='number', name='jp_month')
+                span ) 개월
+                .d-flex.justify-content-start
+                  each item in [{id:'jp_1', name:'상'}, {id:'jp_2', name:'중'}, {id:'jp_3', name:'하'}]
+                    .form-check.form-check-radio.form-check-inline.mr-3
+                      label.form-check-label
+                        input.form-check-input(type="radio", value=item.name, id=item.id, name='skill_jp_type')
+                        | #{item.name}
+                        span.form-check-sign
+                          span.check
+          br
+          .row
+            .col
+              h6.text-info ※ 해당 레벨별 설명, 하나를 선택해서 ☑ 표 해주세요!
+              h6.text-danger - S : Trouble 대응도 가능, 타인원에게 교육가능
+              h6.text-danger - A : 1인으로 작업이 가능
+              h6.text-danger - B : S or A의 지원이 있으면 작업이 가능
+              h6.text-danger - C : 신입 or 거의 신입 수준
+              hr
+              h6.text-danger - 일본어 상 : 읽기, 쓰기, 대화 문제 없는 수준
+              h6.text-danger - 일본어 중 : 읽기, 쓰기는 가능 대화에 어려움
+              h6.text-danger - 일본어 하 : 완전 초보 수준
+          br
+          h5.font-weight-bold 4. 기숙사 점검 내용
+            small (※ 아파트, 오피스텔 사용자만 작성)
+          .table.accident.text-nowrap.overflow-auto
+            table.table.table-bordered
+              tbody
+                tr
+                  th(rowspan=2) 점검내용 기술
+                  td (*바닥 및 기타 파손 및 훼손여부 기술 - 촬영사진파일 첨부 제출)
+                tr
+                  td
+                    input(type='text', placeholder='(숙소 점검 내용)', name='dormitory')
+          br
+          h5.font-weight-bold 5. 기타 사항
+          .table.accident.text-nowrap.overflow-auto
+            table.table.table-bordered
+              tbody
+                tr
+                  th 하고싶은 말씀
+                  td
+                    textarea.form-control(placeholder='(* 자유롭게 기술하세요)', row=10, name='etc')
+        .card-footer
+          .d-flex.justify-content-center
+            button.btn.btn-primary(type='button', onclick='fnSubmit()') 저장하기
+block append_js
+  script.
+    function fnSubmit(){
+      let form = $('form');
+      let data = form.serialize();
+      let xhr = new XMLHttpRequest();
+      xhr.open('POST', '/work/business', true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onreadystatechange = function(){
+        if(this.readyState === XMLHttpRequest.DONE && this.status === 200){
+          let res = JSON.parse(this.response);
+          if(res.result === 1){
+            console.log('res : ', res);
+          }
+        }
+      }
+      xhr.send(data);
+    }

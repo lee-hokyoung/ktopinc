@@ -7,6 +7,7 @@ const WorkTitle = require('../model/work_titles');
 const StartTime = require('../model/start_times');
 const EndTime = require('../model/end_time');
 const Remark = require('../model/remark');
+const Business = require('../model/business');
 const TempReport = require('../model/tempReport');
 const middle = require('../routes/middlewares');
 const moment = require('moment');
@@ -207,18 +208,41 @@ router.post('/report/excel', middle.isLoggedIn, async (req, res) => {
   const workbook = new Excel.Workbook();
   let dir = './docs/' + req.session.passport.user._id;
   workbook.xlsx.readFile('./docs/operate_report.xlsx')//Change file name here or give file path
-    .then(function() {
+    .then(function () {
       let worksheet = workbook.getWorksheet('sheet1');
-      excel_data.forEach((v)=>{
+      excel_data.forEach((v) => {
         worksheet.getCell(Object.keys(v)).value = v[Object.keys(v)];
       });
-      if(!fs.existsSync(dir)){
+      if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir);
       }
-      workbook.xlsx.writeFile(dir + '/' + doc_name + '.xlsx').then(function(){
-        res.json({download_path:'docs/' + req.session.passport.user._id + '/' + doc_name + '.xlsx'});
+      workbook.xlsx.writeFile(dir + '/' + doc_name + '.xlsx').then(function () {
+        res.json({download_path: 'docs/' + req.session.passport.user._id + '/' + doc_name + '.xlsx'});
       });
     });
 });
 
+// 월간업무보고서
+router.get('/business', middle.isLoggedIn, async (req, res) => {
+  let user_id = req.session.passport.user._id;
+  const user_info = await User.findOne({_id: user_id});
+  res.render('my_business_report', {
+    user_info: user_info
+  });
+});
+router.get('/business/:id/:year/:month', middle.isLoggedIn, async (req, res) => {
+  let data = await Business
+    .findOne({user_id:req.params.id, year:req.params.year, month:req.params.month})
+    .populate('user_id');
+  console.log('data : ', data);
+  res.render('my_business_report_read', {
+    data:data
+  });
+});
+router.post('/business', middle.isLoggedIn, async (req, res) => {
+  let data = req.body;
+  data['user_id'] = req.session.passport.user._id;
+  let result = await Business.create(data);
+  res.json(result);
+});
 module.exports = router;
