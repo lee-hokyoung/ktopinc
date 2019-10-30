@@ -331,7 +331,8 @@ block content
                     textarea.form-control(placeholder='(* 자유롭게 기술하세요)', row=10, name='etc')
         .card-footer
           .d-flex.justify-content-center
-            button.btn.btn-primary(type='button', onclick='fnSubmit()') 저장하기
+            button.btn.btn-success(type='button', onclick='fnSubmit()') 저장하기
+            a.btn.btn-danger(href='/work/business/list') 목록으로
 block append_js
   script.
     function fnSubmit(){
@@ -343,9 +344,8 @@ block append_js
       xhr.onreadystatechange = function(){
         if(this.readyState === XMLHttpRequest.DONE && this.status === 200){
           let res = JSON.parse(this.response);
-          if(res.result === 1){
-            console.log('res : ', res);
-          }
+          alert('정상적으로 등록되었습니다.');
+          location.href = '/work/business/list';
         }
       }
       xhr.send(data);

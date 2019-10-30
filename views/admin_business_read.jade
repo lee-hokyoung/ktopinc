@@ -25,10 +25,10 @@ block content
               thead
                 tr.h5.font-weight-bold
                   th
-                    input(type='number', name='year', value=data.year)
+                    input(type='number', name='year', value=doc.year, readonly)
                     span 년
                   th
-                    input(type='number', name='month', value=data.month)
+                    input(type='number', name='month', value=doc.month, readonly)
                     span 월
                   th 월간업무보고서
                   th
@@ -36,23 +36,23 @@ block content
                 tr.h6
                   td 현장명 :
                   td
-                    input(name='field', value=data.field)
+                    input(name='field', value=doc.field, readonly)
                     span 현장,
                   td
-                    input(name='line', value=data.line)
+                    input(name='line', value=doc.line, readonly)
                     span 라인
                   td
                 tr.h6
                   td 직급, 성명 :
                   td
                     span 직급/
-                    input(name='rank', value=data.rank)
+                    input(name='rank', value=doc.rank, readonly)
                   td
                     span , 성명
-                    input(name='user_name', value=data.user_id.user_nick)
+                    input(name='user_name', value=doc.user_id.user_nick, readonly)
                   td
                     span , 조정그룹/
-                    input(name='align_group', value=data.align_group)
+                    input(name='align_group', value=doc.align_group, readonly)
           br
           h5.font-weight-bold 1. 현장업무 보고
           .table.text-nowrap.overflow-auto
@@ -64,19 +64,19 @@ block content
                     h6 ① 본인 업무 및 역할?
                 tr
                   td
-                    textarea.form-control(rows=5, name='field_role') #{data.field_role}
+                    textarea.form-control(rows=5, name='field_role') #{doc.field_role}
                 tr
                   td
                     h6 ② 팀원, 팀장, 현장 SV는?(협력사명 및 이름)
                 tr
                   td
-                    textarea.form-control(rows=5, name='field_name') #{data.field_name}
+                    textarea.form-control(rows=5, name='field_name') #{doc.field_name}
                 tr
                   td
                     h6 ③ 업무 중 문제점 or 개선점은?
                 tr
                   td
-                    textarea.form-control(rows=5, name='field_problem') #{data.field_problem}
+                    textarea.form-control(rows=5, name='field_problem') #{doc.field_problem}
           br
           h5.font-weight-bold 2. 앗차사고 및 현장사고사례
           .table.accident.text-nowrap.overflow-auto
@@ -85,214 +85,214 @@ block content
                 tr
                   th 일 시
                   td
-                    input(type='text', name='accident_date', value=data.accident_date)
+                    input(type='text', name='accident_date', value=doc.accident_date)
                 tr
                   th 장 소
                   td
-                    input(type='text', name='accident_location', value=data.accident_location)
+                    input(type='text', name='accident_location', value=doc.accident_location)
                 tr
                   th 위 험 유 형
                   td
                     .form-check.form-check-inline.mr-3
                       label.form-check-label
-                        input#danger_1.form-check-input(type="checkbox" value="넘어짐(전도)", name='accident_type', checked=data.accident_type.indexOf('넘어짐(전도)') > -1)
+                        input#danger_1.form-check-input(type="checkbox" value="넘어짐(전도)", name='accident_type', checked=doc.accident_type.indexOf('넘어짐(전도)') > -1)
                         | 넘어짐(전도)
                         span.form-check-sign
                           span.check
                     .form-check.form-check-inline.mr-3
                       label.form-check-label
-                        input#danger_2.form-check-input(type="checkbox" value="떨어짐(추락)", name='accident_type', checked=data.accident_type.indexOf('떨어짐(추락)') > -1)
+                        input#danger_2.form-check-input(type="checkbox" value="떨어짐(추락)", name='accident_type', checked=doc.accident_type.indexOf('떨어짐(추락)') > -1)
                         | 떨어짐(추락)
                         span.form-check-sign
                           span.check
                     .form-check.form-check-inline.mr-3
                       label.form-check-label
-                        input#danger_3.form-check-input(type="checkbox" value="부딪힘(충돌)", name='accident_type', checked=data.accident_type.indexOf('부딪힘(충돌)') > -1)
+                        input#danger_3.form-check-input(type="checkbox" value="부딪힘(충돌)", name='accident_type', checked=doc.accident_type.indexOf('부딪힘(충돌)') > -1)
                         | 부딪힘(충돌)
                         span.form-check-sign
                           span.check
                     .form-check.form-check-inline.mr-3
                       label.form-check-label
-                        input#danger_4.form-check-input(type="checkbox" value="끼임(협착)", name='accident_type', checked=data.accident_type.indexOf('끼임(충돌)') > -1)
+                        input#danger_4.form-check-input(type="checkbox" value="끼임(협착)", name='accident_type', checked=doc.accident_type.indexOf('끼임(충돌)') > -1)
                         | 끼임(협착)
                         span.form-check-sign
                           span.check
                     .form-check.form-check-inline.mr-3
                       label.form-check-label
-                        input#danger_5.form-check-input(type="checkbox" value="물체에 맞음(낙하, 비례)", name='accident_type', checked=data.accident_type.indexOf('물체에 맞음(낙하, 비례)') > -1)
+                        input#danger_5.form-check-input(type="checkbox" value="물체에 맞음(낙하, 비례)", name='accident_type', checked=doc.accident_type.indexOf('물체에 맞음(낙하, 비례)') > -1)
                         | 물체에 맞음(낙하, 비례)
                         span.form-check-sign
                           span.check
                     .form-check.form-check-inline.mr-3
                       label.form-check-label
-                        input#danger_6.form-check-input(type="checkbox" value="방전스파크(감전)", name='accident_type', checked=data.accident_type.indexOf('방전스파크(감전)') > -1)
+                        input#danger_6.form-check-input(type="checkbox" value="방전스파크(감전)", name='accident_type', checked=doc.accident_type.indexOf('방전스파크(감전)') > -1)
                         | 방전스파크(감전)
                         span.form-check-sign
                           span.check
                     .form-check.form-check-inline.mr-3
                       label.form-check-label
-                        input#danger_7.form-check-input(type="checkbox" value="기타(사고내용기술)", name='accident_type', checked=data.accident_type.indexOf('기타(사고내용기술)') > -1)
+                        input#danger_7.form-check-input(type="checkbox" value="기타(사고내용기술)", name='accident_type', checked=doc.accident_type.indexOf('기타(사고내용기술)') > -1)
                         | 기타(사고내용기술)
                         span.form-check-sign
                           span.check
                 tr
                   th 내 용
                   td
-                    input(type='text' name='accident_content', value=data.accident_content)
+                    input(type='text' name='accident_content', value=doc.accident_content)
                 tr
                   th 문 제 점
                   td
-                    input(type='text', name='accident_problem', value=data.accident_problem)
+                    input(type='text', name='accident_problem', value=doc.accident_problem)
                 tr
                   th 사고대처방안
                   td
-                    input(type='text', name='accident_manual', value=data.accident_manual)
+                    input(type='text', name='accident_manual', value=doc.accident_manual)
                 tr
                   th
                     span 현장사고사례
                     h6 (*사고발생 時 작성)
                   td
-                    input(type='text', placeholder='(* 사고내용, 협력사명 등 기술)', name='accident_example', value=data.accident_example)
+                    input(type='text', placeholder='(* 사고내용, 협력사명 등 기술)', name='accident_example', value=doc.accident_example)
           br
           h5.font-weight-bold 3. 현장 업무 Skill 및 일본어 능력 자기 평가
           ul.list-group(style='border:2px solid #555;')
             li.list-group-item
               span ① Rail : 경력 (
-              input(type='number', name='rail_year', value=data.rail_year)
+              input(type='number', name='rail_year', value=doc.rail_year)
               span ) 년 / (
-              input(type='number', name='rail_month', value=data.rail_month)
+              input(type='number', name='rail_month', value=doc.rail_month)
               span ) 개월
               .d-flex.justify-content-start
                 each item in ['S', 'A', 'B', 'C']
                   .form-check.form-check-radio.form-check-inline.mr-3
                     label.form-check-label
-                      input.form-check-input(type="radio", value=item, name='skill_rail_type', checked=item===data.skill_rail_type)
+                      input.form-check-input(type="radio", value=item, name='skill_rail_type', checked=item===doc.skill_rail_type)
                       | #{item}
                       span.form-check-sign
                         span.check
             li.list-group-item
               span ② ZCU : 경력 (
-                input(type='number', name='zcu_year', value=data.zcu_year)
+                input(type='number', name='zcu_year', value=doc.zcu_year)
                 span ) 년 / (
-                input(type='number', name='zcu_month', value=data.zcu_month)
+                input(type='number', name='zcu_month', value=doc.zcu_month)
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
                     .form-check.form-check-radio.form-check-inline.mr-3
                       label.form-check-label
-                        input.form-check-input(type="radio", value=item, name='skill_zcu_type', checked=item===data.skill_zcu_type)
+                        input.form-check-input(type="radio", value=item, name='skill_zcu_type', checked=item===doc.skill_zcu_type)
                         | #{item}
                         span.form-check-sign
                           span.check
             li.list-group-item
               span ③ Teaching : 경력 (
-                input(type='number', name='teaching_year', value=data.teaching_year)
+                input(type='number', name='teaching_year', value=doc.teaching_year)
                 span ) 년 / (
-                input(type='number', name='teaching_month', value=data.teaching_month)
+                input(type='number', name='teaching_month', value=doc.teaching_month)
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
                     .form-check.form-check-radio.form-check-inline.mr-3
                       label.form-check-label
-                        input.form-check-input(type="radio", value=item, name='skill_teaching_type', checked=item === data.skill_teaching_type)
+                        input.form-check-input(type="radio", value=item, name='skill_teaching_type', checked=item === doc.skill_teaching_type)
                         | #{item}
                         span.form-check-sign
                           span.check
             li.list-group-item
               span ④ STB : 경력 (
-                input(type='number', name='stb_year', value=data.stb_year)
+                input(type='number', name='stb_year', value=doc.stb_year)
                 span ) 년 / (
-                input(type='number', name='stb_month', value=data.stb_month)
+                input(type='number', name='stb_month', value=doc.stb_month)
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
                     .form-check.form-check-radio.form-check-inline.mr-3
                       label.form-check-label
-                        input.form-check-input(type="radio", value=item, name='skill_stb_type', checked=item === data.skill_stb_type)
+                        input.form-check-input(type="radio", value=item, name='skill_stb_type', checked=item === doc.skill_stb_type)
                         | #{item}
                         span.form-check-sign
                           span.check
             li.list-group-item
               span ⑤ AZFS : 경력 (
-                input(type='number', name='azfs_year', value=data.azfs_year)
+                input(type='number', name='azfs_year', value=doc.azfs_year)
                 span ) 년 / (
-                input(type='number', name='azfs_month', value=data.azfs_month)
+                input(type='number', name='azfs_month', value=doc.azfs_month)
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
                     .form-check.form-check-radio.form-check-inline.mr-3
                       label.form-check-label
-                        input.form-check-input(type="radio", value=item, name='skill_azfs_type', checked=item === data.skill_azfs_type)
+                        input.form-check-input(type="radio", value=item, name='skill_azfs_type', checked=item === doc.skill_azfs_type)
                         | #{item}
                         span.form-check-sign
                           span.check
             li.list-group-item
               span ⑥ VHL : 경력 (
-                input(type='number', name='vhl_year', value=data.vhl_year)
+                input(type='number', name='vhl_year', value=doc.vhl_year)
                 span ) 년 / (
-                input(type='number', name='vhl_month', value=data.vhl_month)
+                input(type='number', name='vhl_month', value=doc.vhl_month)
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
                     .form-check.form-check-radio.form-check-inline.mr-3
                       label.form-check-label
-                        input.form-check-input(type="radio", value=item, name='skill_vhl_type', checked=item === data.skill_vhl_type)
+                        input.form-check-input(type="radio", value=item, name='skill_vhl_type', checked=item === doc.skill_vhl_type)
                         | #{item}
                         span.form-check-sign
                           span.check
             li.list-group-item
               span ⑦ HID : 경력 (
-                input(type='number', name='hid_year', value=data.hid_year)
+                input(type='number', name='hid_year', value=doc.hid_year)
                 span ) 년 / (
-                input(type='number', name='hid_month', value=data.hid_month)
+                input(type='number', name='hid_month', value=doc.hid_month)
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
                     .form-check.form-check-radio.form-check-inline.mr-3
                       label.form-check-label
-                        input.form-check-input(type="radio", value=item, name='skill_hid_type', checked=item === data.skill_hid_type)
+                        input.form-check-input(type="radio", value=item, name='skill_hid_type', checked=item === doc.skill_hid_type)
                         | #{item}
                         span.form-check-sign
                           span.check
             li.list-group-item
               span ⑧ CLS : 경력 (
-                input(type='number', name='cls_year', value=data.cls_year)
+                input(type='number', name='cls_year', value=doc.cls_year)
                 span ) 년 / (
-                input(type='number', name='cls_month', value=data.cls_month)
+                input(type='number', name='cls_month', value=doc.cls_month)
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
                     .form-check.form-check-radio.form-check-inline.mr-3
                       label.form-check-label
-                        input.form-check-input(type="radio", value=item, name='skill_cls_type', checked=item === data.skill_cls_type)
+                        input.form-check-input(type="radio", value=item, name='skill_cls_type', checked=item === doc.skill_cls_type)
                         | #{item}
                         span.form-check-sign
                           span.check
             li.list-group-item
               span ⑨ ZT : 경력 (
-                input(type='number', name='zt_year', value=data.zt_year)
+                input(type='number', name='zt_year', value=doc.zt_year)
                 span ) 년 / (
-                input(type='number', name='zt_month', value=data.zt_month)
+                input(type='number', name='zt_month', value=doc.zt_month)
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
                     .form-check.form-check-radio.form-check-inline.mr-3
                       label.form-check-label
-                        input.form-check-input(type="radio", value=item, name='skill_zt_type', checked=item === data.skill_zt_type)
+                        input.form-check-input(type="radio", value=item, name='skill_zt_type', checked=item === doc.skill_zt_type)
                         | #{item}
                         span.form-check-sign
                           span.check
             li.list-group-item
               span ⑩ 일본어 : 경력 (
-                input(type='number', name='jp_year', value=data.jp_year)
+                input(type='number', name='jp_year', value=doc.jp_year)
                 span ) 년 / (
-                input(type='number', name='jp_month', value=data.jp_month)
+                input(type='number', name='jp_month', value=doc.jp_month)
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['상', '중', '하']
                     .form-check.form-check-radio.form-check-inline.mr-3
                       label.form-check-label
-                        input.form-check-input(type="radio", value=item, name='skill_jp_type', checked=item === data.skill_jp_type)
+                        input.form-check-input(type="radio", value=item, name='skill_jp_type', checked=item === doc.skill_jp_type)
                         | #{item}
                         span.form-check-sign
                           span.check
@@ -319,7 +319,7 @@ block content
                   td (*바닥 및 기타 파손 및 훼손여부 기술 - 촬영사진파일 첨부 제출)
                 tr
                   td
-                    input(type='text', placeholder='(숙소 점검 내용)', name='dormitory', value=data.dormitory)
+                    input(type='text', placeholder='(숙소 점검 내용)', name='dormitory', value=doc.dormitory)
           br
           h5.font-weight-bold 5. 기타 사항
           .table.accident.text-nowrap.overflow-auto
@@ -328,29 +328,11 @@ block content
                 tr
                   th 하고싶은 말씀
                   td
-                    textarea.form-control(placeholder='(* 자유롭게 기술하세요)', row=10, name='etc') #{data.etc}
+                    textarea.form-control(placeholder='(* 자유롭게 기술하세요)', row=10, name='etc') #{doc.etc}
         .card-footer
           .d-flex.justify-content-center
-            button.btn.btn-success(type='button', onclick='fnSubmit()') 수정하기
-            a.btn.btn-danger(href='/work/business/list') 목록으로
-            input(type='hidden', name='_id', value=data._id.toString())
+            a.btn.btn-danger(href='/admin/business/list/' + doc.year + '/' + doc.month) 목록으로
+            input(type='hidden', name='_id', value=doc._id.toString())
 block append_js
   script.
-    function fnSubmit(){
-      let form = $('form');
-      let data = form.serialize();
-      let _id = document.querySelector('input[name="_id"]').value;
-      let xhr = new XMLHttpRequest();
-      xhr.open('PUT', '/work/business/' + _id, true);
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      xhr.onreadystatechange = function(){
-        if(this.readyState === XMLHttpRequest.DONE && this.status === 200){
-          let res = JSON.parse(this.response);
-          if(res.ok === 1){
-            alert('정상적으로 수정되었습니다.');
-            location.href = '/work/business/list';
-          }
-        }
-      }
-      xhr.send(data);
-    }
+    console.log(!{JSON.stringify(doc)});

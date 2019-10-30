@@ -1,0 +1,59 @@
+extends admin_layout
+
+block content
+  .panel-header.panel-header-sm
+  .content
+    .row
+      .col-12
+        .card
+          .card-header
+            h4.card-title 월간업무보고서 관리
+          .card-body.overflow-auto(style='max-height:800px; min-height:75vh;')
+            .form-group.row
+              .col-1(style='min-width:130px;')
+                select.selectpicker.d-block.w-100(data-style="select-with-transition btn-primary" name='year')
+                  option(value='2019') 2019
+              label.col-form-label 년
+              .col-1(style='min-width:110px;')
+                select.selectpicker.d-block.w-100(data-style="select-with-transition btn-primary" name='month')
+                  - var val = 0;
+                  while val < 12
+                    option(value=++val, selected=val==month) #{val}
+              label.col-form-label.h5 월
+              .col-1(style='min-width:100px;')
+                button.btn.btn-success.m-0(onclick='fnSearchBusiness()') 조회
+            .table.text-center
+              table.table#tableBusiness
+                thead
+                  tr
+                    th #
+                    th 팀
+                    th 지역
+                    th 이름
+                    th 작성여부
+                tbody
+                  each row, idx in list
+                    tr(about=row._id)
+                      td #{idx + 1}
+                      td #{row.user_team}
+                      td #{row.user_region}
+                      td #{row.user_nick}
+                      if(row.business.length === 0)
+                        td 미제출
+                      else
+                        td
+                          a(href='/admin/business/read/' + row.business[0]._id) 제출
+          .card-footer
+block append_js
+  script(src='/assets/js/custom/admin_business.js', type='text/javascript')
+  script.
+    $(document).ready(function(){
+      // dataTable
+      $('#tableBusiness').dataTable({
+        paging:false,
+        info:false,
+        columnDefs:[
+          {width:'3%', targets:0}
+        ]
+      });
+    });
