@@ -6,13 +6,54 @@ block content
       .row.content-middle.mx-0.px-0
         .col-md-7.mx-auto
           h1.title K-TOP
-          h4.description
+          h4.description.text-dark.font-weight-bold
             | 출결관리시스템
-          br
-          .buttons
-            if(!user_lv)
-              a.btn.btn-info.btn-lg.m-0(href='/login')
-                | log in
-            else
-              a.btn.btn-danger.btn-lg.m-0(href='/logout')
-                | log out
+          if(!user_lv)
+            a.btn.btn-info.btn-lg.m-0(href='/login')
+              | log in
+          else
+            .card(style='background-color:#f7f7f9;')
+              .card-body
+                .card-title.h5.font-weight-bold 공지사항
+                .table
+                  table.table.table-sm.table-hover#table_notice
+                    thead
+                      tr
+                        th #
+                        th 제목
+                        th 작성자
+                        th 조회수
+                        th 작성일
+                    tbody
+                      each row, idx in list
+                        - date = new Date(row.created)
+                        tr
+                          td #{(idx + 1)}
+                          td
+                            a(href='/notice/read/' + row._id) #{row.title}
+                          td #{row.writer}
+                          td #{row.read_count}
+                          td #{date.toLocaleDateString('ko')}
+                .d-flex.justify-content-end
+                  a(href='/notice').btn.btn-primary 더보기
+            a.btn.btn-danger.btn-lg.m-0(href='/logout')
+              | log out
+block append_js
+  script.
+    $(document).ready(function () {
+      $('#table_notice').dataTable({
+        paging: false,
+        scrollY: 500,
+        scrollX: true,
+        searching: false,
+        info: false,
+        columnDefs: [{
+          targets: [0, 3, 10, 12],
+          orderable: false
+        }],
+        responsive: true,
+        initComplete: function (settings, json) {
+          settings.nTHead.querySelectorAll('th')[1].click();
+        }
+      });
+    });

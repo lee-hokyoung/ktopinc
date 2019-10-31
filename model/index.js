@@ -1,6 +1,7 @@
 // 몽고디비 연결
+require('dotenv').config();
 const mongoose = require('mongoose');
-
+console.log('env : ', process.env.MONGO_URI);
 module.exports = () => {
   const connect = () => {
     mongoose.connect(process.env.MONGO_URI, {useNewUrlParser:true}, (error)=>{
@@ -14,7 +15,7 @@ module.exports = () => {
   });
   mongoose.connection.on('disconnected', ()=>{
     console.error('몽고디비 연결이 끊겼습니다. 연결을 재시도 합니다.');
-    connect();
+    // connect();
   });
   require('./users');
 };

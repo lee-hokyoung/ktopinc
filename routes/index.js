@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const middle = require('./middlewares');
+const noticeModel = require('../model/notice');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -48,6 +49,11 @@ router.get('/logout', function(req, res, next) {
     title: '케이탑아이앤씨 출결시스템'
   });
 });
-router.get('/')
+router.get('/index_test', middle.isLoggedIn, async(req, res)=>{
+  let list = await noticeModel.find({});
+  res.render('index_',{
+    list:list
+  });
+});
 
 module.exports = router;
