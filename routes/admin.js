@@ -10,7 +10,9 @@ const EndTime = require('../model/end_time');
 const TempWork = require('../model/tempWork');
 const Remark = require('../model/remark');
 const Notice = require('../model/notice');
+const Business = require('../model/business');
 
+const moment = require('moment');
 const middle = require('../routes/middlewares');
 const func = require('../controller/functions');
 
@@ -419,22 +421,20 @@ router.get('/notice/create', middle.isAdmin, async (req, res) => {
 router.get('/notice/read/:id', middle.isAdmin, async (req, res) => {
   let data = await Notice.findOne({_id: req.params.id});
   let query = data.read_user.map((v) => {
-    return {_id:mongoose.Types.ObjectId(v)};
+    return {_id: mongoose.Types.ObjectId(v)};
   });
   let user_list;
-  if(query.length > 0){
+  if (query.length > 0) {
     user_list = await User.aggregate([
-      {$match:{$or:query}}
+      {$match: {$or: query}}
     ]);
-  }else{
+  } else {
     user_list = null;
   }
-
-  console.log('query : ', query);
   res.render('admin_notice_create', {
     title: '공지사항 수정',
     data: data,
-    user_list:user_list
+    user_list: user_list
   })
 });
 // 공지사항 글 등록
@@ -469,4 +469,53 @@ router.get('/operate/report', middle.isAdmin, async (req, res) => {
   })
 });
 
+// 월간업무보고서
+router.get('/business/list/:year?/:month?', middle.isAdmin, async (req, res) => {
+  let year = req.params.year || moment().format('YYYY');
+  let month = req.params.month || moment().format('MM');
+  let list = await User.aggregate([
+    {
+      $match: {$and: [{status: 1}, {lv:1}]}
+    },
+    {
+      $sort:{user_nick:1}
+    },
+    {
+      $lookup: {
+        from: 'businesses',
+        let: {
+          ref_id: '$_id'
+        },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  {$eq: ['$user_id', '$$ref_id']},
+                  {$eq: ['$month', parseInt(month)]},
+                  {$eq: ['$year', parseInt(year)]}
+                ]
+              }
+            }
+          }
+        ],
+        as: 'business'
+      }
+    }
+  ]);
+  res.render('admin_business_list', {
+    list: list,
+    side_active: 'business',
+    year: year,
+    month: month
+  });
+});
+// 월간업무 보고서 읽기
+router.get('/business/read/:id', middle.isAdmin, async(req, res) => {
+  let doc = await Business.findOne({_id:req.params.id}).populate('user_id');
+  res.render('admin_business_read', {
+    doc:doc,
+    side_active:'business'
+  });
+});
 module.exports = router;

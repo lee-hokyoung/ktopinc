@@ -48,5 +48,6 @@ router.get('/logout', function(req, res, next) {
     title: '케이탑아이앤씨 출결시스템'
   });
 });
+router.get('/')
 
 module.exports = router;

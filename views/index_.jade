@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .wrapper
+    .container(style='padding-top:7rem;')
+      .row.content-middle.mx-0.px-0
+        .col-md-7.mx-auto
+          h1.title K-TOP
+          h4.description
+            | 출결관리시스템
+          br
+          .buttons
+            if(!user_lv)
+              a.btn.btn-info.btn-lg.m-0(href='/login')
+                | log in
+            else
+              a.btn.btn-danger.btn-lg.m-0(href='/logout')
+                | log out

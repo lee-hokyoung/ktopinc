@@ -12,3 +12,5 @@ let period = moment.range(start, end);
 console.log(start, end);
 console.log(period);
 console.log(period.start.format('YYYY-MM-DD'));
+console.log('year : ', moment().format('YYYY'));
+console.log('month : ', moment().format('MM'));

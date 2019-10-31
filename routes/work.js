@@ -227,7 +227,15 @@ router.get('/business', middle.isLoggedIn, async (req, res) => {
   let user_id = req.session.passport.user._id;
   const user_info = await User.findOne({_id: user_id});
   res.render('my_business_report', {
-    user_info: user_info
+    user_info: user_info,
+    title:'월간업무보고서'
+  });
+});
+router.get('/business/list', middle.isLoggedIn, async (req, res) => {
+  let list = await Business.find({user_id:req.session.passport.user._id}).sort({year:-1, month:-1});
+  res.render('my_business_report_list', {
+    list:list,
+    title:'월간업무보고서'
   });
 });
 router.get('/business/:id/:year/:month', middle.isLoggedIn, async (req, res) => {
@@ -236,13 +244,18 @@ router.get('/business/:id/:year/:month', middle.isLoggedIn, async (req, res) => 
     .populate('user_id');
   console.log('data : ', data);
   res.render('my_business_report_read', {
-    data:data
+    data:data,
+    title:'월간업무보고서'
   });
 });
 router.post('/business', middle.isLoggedIn, async (req, res) => {
   let data = req.body;
   data['user_id'] = req.session.passport.user._id;
   let result = await Business.create(data);
+  res.json(result);
+});
+router.put('/business/:_id', middle.isLoggedIn, async(req, res) => {
+  let result = await Business.updateMany({_id:req.params._id}, req.body);
   res.json(result);
 });
 module.exports = router;
