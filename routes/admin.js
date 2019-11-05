@@ -12,6 +12,22 @@ const Remark = require('../model/remark');
 const Notice = require('../model/notice');
 const Business = require('../model/business');
 
+// 파일 업로드 관련 모듈
+const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, './uploads');
+    },
+    filename(req, file, cb) {
+      const ext = path.extname(file.originalname);
+      cb(null, path.basename(file.originalname, ext) + new Date().valueOf() + ext);
+    }
+  })
+});
+
 const moment = require('moment');
 const middle = require('../routes/middlewares');
 const func = require('../controller/functions');
@@ -33,6 +49,7 @@ router.put('/member/:id/:status', middle.isAdmin, async (req, res, next) => {
   const result = await User.update({_id: req.params.id}, {$set: {status: req.params.status}});
   res.json(result);
 });
+// 직원 프로필
 router.get('/memberProfile/:id', middle.isAdmin, async (req, res) => {
   const user = await User.findOne({_id: req.params.id});
   res.json(user.toObject());
@@ -399,6 +416,7 @@ router.put('/superAdmin/:id/:lv', middle.isAdmin, async (req, res, next) => {
   const result = await User.update({_id: req.params.id}, {$set: {lv: req.params.lv}});
   res.json(result);
 });
+// 회원 영구 삭제
 router.delete('/superAdmin/:id', async (req, res) => {
   const result = await User.remove({_id: req.params.id});
   res.json(result);
@@ -460,6 +478,11 @@ router.delete('/notice/delete/:id', middle.isAdmin, async (req, res) => {
   let result = await Notice.remove({_id: req.params.id});
   res.json(result);
 });
+// 공지시항 파일 업로드
+router.post('/notice/file_upload',middle.isAdmin, async(req, res) => {
+  let file = await req.file;
+  res.json(file);
+});
 
 // 가동보고서 화면
 router.get('/operate/report', middle.isAdmin, async (req, res) => {
@@ -475,10 +498,10 @@ router.get('/business/list/:year?/:month?', middle.isAdmin, async (req, res) => 
   let month = req.params.month || moment().format('MM');
   let list = await User.aggregate([
     {
-      $match: {$and: [{status: 1}, {lv:1}]}
+      $match: {$and: [{status: 1}, {lv: 1}]}
     },
     {
-      $sort:{user_nick:1}
+      $sort: {user_nick: 1}
     },
     {
       $lookup: {
@@ -511,11 +534,11 @@ router.get('/business/list/:year?/:month?', middle.isAdmin, async (req, res) => 
   });
 });
 // 월간업무 보고서 읽기
-router.get('/business/read/:id', middle.isAdmin, async(req, res) => {
-  let doc = await Business.findOne({_id:req.params.id}).populate('user_id');
+router.get('/business/read/:id', middle.isAdmin, async (req, res) => {
+  let doc = await Business.findOne({_id: req.params.id}).populate('user_id');
   res.render('admin_business_read', {
-    doc:doc,
-    side_active:'business'
+    doc: doc,
+    side_active: 'business'
   });
 });
 module.exports = router;
