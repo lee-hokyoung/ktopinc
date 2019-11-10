@@ -50,9 +50,10 @@ router.get('/logout', function(req, res, next) {
   });
 });
 router.get('/index_test', middle.isLoggedIn, async(req, res)=>{
-  let list = await noticeModel.find({});
+  let list = await noticeModel.find({}).sort({created:-1});
   res.render('index_',{
-    list:list
+    list:list,
+    user_id:req.session.passport.user._id
   });
 });
 

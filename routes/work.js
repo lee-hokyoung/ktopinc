@@ -8,6 +8,7 @@ const StartTime = require('../model/start_times');
 const EndTime = require('../model/end_time');
 const Remark = require('../model/remark');
 const Business = require('../model/business');
+const Closed = require('../model/closed');
 const TempReport = require('../model/tempReport');
 const middle = require('../routes/middlewares');
 const moment = require('moment');
@@ -231,6 +232,7 @@ router.get('/business', middle.isLoggedIn, async (req, res) => {
     title:'월간업무보고서'
   });
 });
+// 월간업무보고서 리스트
 router.get('/business/list', middle.isLoggedIn, async (req, res) => {
   let list = await Business.find({user_id:req.session.passport.user._id}).sort({year:-1, month:-1});
   res.render('my_business_report_list', {
@@ -238,24 +240,43 @@ router.get('/business/list', middle.isLoggedIn, async (req, res) => {
     title:'월간업무보고서'
   });
 });
+// 월간업무보고서 읽기
 router.get('/business/:id/:year/:month', middle.isLoggedIn, async (req, res) => {
   let data = await Business
     .findOne({user_id:req.params.id, year:req.params.year, month:req.params.month})
     .populate('user_id');
-  console.log('data : ', data);
   res.render('my_business_report_read', {
     data:data,
     title:'월간업무보고서'
   });
 });
+// 월간업무보고서 작성
 router.post('/business', middle.isLoggedIn, async (req, res) => {
   let data = req.body;
   data['user_id'] = req.session.passport.user._id;
   let result = await Business.create(data);
   res.json(result);
 });
+// 월간업무보고서 수정
 router.put('/business/:_id', middle.isLoggedIn, async(req, res) => {
   let result = await Business.updateMany({_id:req.params._id}, req.body);
   res.json(result);
+});
+
+// 휴무계 작성
+router.post('/closed/write', middle.isLoggedIn, async(req, res) => {
+  let data = req.body;
+  let user_id = req.session.passport.user._id;
+  data['user_id'] = user_id;
+  let result = await Closed.create(data);
+  res.json(result);
+});
+// 휴무계 리스트
+router.get('/closed/list', middle.isLoggedIn, async(req, res) => {
+  let user_id = req.session.passport.user._id;
+  let list = await Closed.find({user_id:user_id});
+  res.render('my_closed_list', {
+    list:list
+  })
 });
 module.exports = router;

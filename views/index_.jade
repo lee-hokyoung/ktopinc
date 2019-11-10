@@ -4,7 +4,7 @@ block content
   .wrapper
     .container(style='padding-top:7rem;')
       .row.content-middle.mx-0.px-0
-        .col-md-7.mx-auto
+        .col.mx-auto
           h1.title K-TOP
           h4.description.text-dark.font-weight-bold
             | 출결관리시스템
@@ -14,7 +14,7 @@ block content
           else
             .card(style='background-color:#f7f7f9;')
               .card-body
-                .card-title.h5.font-weight-bold 공지사항
+                .card-title.h4.font-weight-bold 공지사항
                 .table
                   table.table.table-sm.table-hover#table_notice
                     thead
@@ -25,15 +25,22 @@ block content
                         th 조회수
                         th 작성일
                     tbody
-                      each row, idx in list
-                        - date = new Date(row.created)
+                      if(list.length === 0)
                         tr
-                          td #{(idx + 1)}
-                          td
-                            a(href='/notice/read/' + row._id) #{row.title}
-                          td #{row.writer}
-                          td #{row.read_count}
-                          td #{date.toLocaleDateString('ko')}
+                          td(colspan='5') 등록된 글이 없습니다.
+                      else
+                        each row, idx in list
+                          - date = new Date(row.created)
+                          - isNew = row.read_user.toString().split(',').indexOf(user_id)
+                          tr
+                            td #{(idx + 1)}
+                            td
+                              if(isNew === -1)
+                                img(src='/assets/svg/new_2.svg', width='20').mr-2
+                              a(href='/notice/read/' + row._id) #{row.title}
+                            td #{row.writer}
+                            td #{row.read_count}
+                            td #{date.toLocaleDateString('ko')}
                 .d-flex.justify-content-end
                   a(href='/notice').btn.btn-primary 더보기
             a.btn.btn-danger.btn-lg.m-0(href='/logout')
