@@ -16,18 +16,6 @@ const Business = require('../model/business');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, cb) {
-      cb(null, './uploads');
-    },
-    filename(req, file, cb) {
-      const ext = path.extname(file.originalname);
-      cb(null, path.basename(file.originalname, ext) + new Date().valueOf() + ext);
-    }
-  })
-});
-
 const moment = require('moment');
 const middle = require('../routes/middlewares');
 const func = require('../controller/functions');
@@ -413,7 +401,7 @@ router.get('/superAdmin', middle.isAdmin, async (req, res, next) => {
 });
 // 전체회원관리 레벨 수정
 router.put('/superAdmin/:id/:lv', middle.isAdmin, async (req, res, next) => {
-  const result = await User.update({_id: req.params.id}, {$set: {lv: req.params.lv}});
+  const result = await User.updateOne({_id: req.params.id}, {$set: {lv: req.params.lv}});
   res.json(result);
 });
 // 회원 영구 삭제
@@ -457,6 +445,11 @@ router.get('/notice/read/:id', middle.isAdmin, async (req, res) => {
 });
 // 공지사항 글 등록
 router.post('/notice/create', middle.isAdmin, async (req, res) => {
+  // 업로드한 파일이 있다면, temp 폴더에서 uploads 폴더로 복사
+  if(req.body.path){
+    fs.createReadStream('./' + req.body.path)
+      .pipe(fs.createWriteStream('./docs' + req.body.path.replace('temps','')));
+  }
   await Notice.create(req.body);
   res.redirect('/admin/notice/list');
 });
@@ -479,7 +472,31 @@ router.delete('/notice/delete/:id', middle.isAdmin, async (req, res) => {
   res.json(result);
 });
 // 공지시항 파일 업로드
-router.post('/notice/file_upload',middle.isAdmin, async(req, res) => {
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, './temps');
+    },
+    filename(req, file, cb) {
+      const ext = path.extname(file.originalname);
+      cb(null, path.basename(file.originalname, ext) + new Date().valueOf() + ext);
+    }
+  }),
+  limits:{fileSize:2*1024*1024}
+});
+router.post('/notice/file_upload',middle.isAdmin, upload.single('notice_file'), async(req, res) => {
+  // temp 폴더 내에 모든 파일을 삭제
+  let directory = './temps';
+  fs.readdir(directory, (err, files) => {
+    if(!err){
+      for(let file of files){
+        if(file !== req.file.filename)
+          fs.unlink(path.join(directory, file), err => {
+            if(err) throw err;
+          });
+      }
+    }
+  });
   let file = await req.file;
   res.json(file);
 });

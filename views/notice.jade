@@ -27,6 +27,9 @@ block content
                         a(href='/notice/read/' + item._id) #{item.title}
                       td #{new Date(item.created).toLocaleDateString('ko')}
                       td #{item.read_count}
+                else
+                  tr
+                    td(colspan='4') 등록된 글이 없습니다.
         .card-footer
   block append_js
     script.
