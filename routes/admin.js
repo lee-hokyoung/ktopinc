@@ -11,6 +11,7 @@ const TempWork = require('../model/tempWork');
 const Remark = require('../model/remark');
 const Notice = require('../model/notice');
 const Business = require('../model/business');
+const Closed = require('../model/closed');
 
 // 파일 업로드 관련 모듈
 const fs = require('fs');
@@ -556,6 +557,19 @@ router.get('/business/read/:id', middle.isAdmin, async (req, res) => {
   res.render('admin_business_read', {
     doc: doc,
     side_active: 'business'
+  });
+});
+
+// 휴무계 리스트
+router.get('/closed/list/:year?/:month?', middle.isAdmin, async(req, res) => {
+  let now = new Date();
+  let month = req.params.month || now.getMonth() + 1;
+  let year = req.params.year || now.getFullYear();
+  let list = await Closed.find({closed_month: month, closed_year: year}).populate('user_id');
+  res.render('admin_closed_list', {
+    side_active:'closed',
+    list:list,
+    month:month
   });
 });
 module.exports = router;
