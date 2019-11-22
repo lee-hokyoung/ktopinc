@@ -229,25 +229,25 @@ router.get('/business', middle.isLoggedIn, async (req, res) => {
   const user_info = await User.findOne({_id: user_id});
   res.render('my_business_report', {
     user_info: user_info,
-    title:'월간업무보고서'
+    title: '월간업무보고서'
   });
 });
 // 월간업무보고서 리스트
 router.get('/business/list', middle.isLoggedIn, async (req, res) => {
-  let list = await Business.find({user_id:req.session.passport.user._id}).sort({year:-1, month:-1});
+  let list = await Business.find({user_id: req.session.passport.user._id}).sort({year: -1, month: -1});
   res.render('my_business_report_list', {
-    list:list,
-    title:'월간업무보고서'
+    list: list,
+    title: '월간업무보고서'
   });
 });
 // 월간업무보고서 읽기
 router.get('/business/:id/:year/:month', middle.isLoggedIn, async (req, res) => {
   let data = await Business
-    .findOne({user_id:req.params.id, year:req.params.year, month:req.params.month})
+    .findOne({user_id: req.params.id, year: req.params.year, month: req.params.month})
     .populate('user_id');
   res.render('my_business_report_read', {
-    data:data,
-    title:'월간업무보고서'
+    data: data,
+    title: '월간업무보고서'
   });
 });
 // 월간업무보고서 작성
@@ -258,13 +258,13 @@ router.post('/business', middle.isLoggedIn, async (req, res) => {
   res.json(result);
 });
 // 월간업무보고서 수정
-router.put('/business/:_id', middle.isLoggedIn, async(req, res) => {
-  let result = await Business.updateMany({_id:req.params._id}, req.body);
+router.put('/business/:_id', middle.isLoggedIn, async (req, res) => {
+  let result = await Business.updateMany({_id: req.params._id}, req.body);
   res.json(result);
 });
 
 // 휴무계 작성
-router.post('/closed/write', middle.isLoggedIn, async(req, res) => {
+router.post('/closed/write', middle.isLoggedIn, async (req, res) => {
   let data = req.body;
   let user_id = req.session.passport.user._id;
   data['user_id'] = user_id;
@@ -272,11 +272,21 @@ router.post('/closed/write', middle.isLoggedIn, async(req, res) => {
   res.json(result);
 });
 // 휴무계 리스트
-router.get('/closed/list', middle.isLoggedIn, async(req, res) => {
+router.get('/closed/list', middle.isLoggedIn, async (req, res) => {
   let user_id = req.session.passport.user._id;
-  let list = await Closed.find({user_id:user_id});
+  let list = await Closed.find({user_id: user_id});
   res.render('my_closed_list', {
-    list:list
+    list: list
   })
+});
+// 휴무계 읽기
+router.get('/closed/:id', middle.isLoggedIn, async (req, res) => {
+  let doc = await Closed.findOne({_id:mongoose.Types.ObjectId(req.params.id)}).populate('user_id');
+  res.json(doc);
+});
+// 휴무계 삭제
+router.delete('/closed/:id', middle.isLoggedIn, async(req, res) => {
+  let result = await Closed.deleteOne({_id:mongoose.Types.ObjectId(req.params.id)});
+  res.json(result);
 });
 module.exports = router;

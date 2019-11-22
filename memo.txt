@@ -8,3 +8,6 @@ sudo sh -c "echo 3 > /proc/sys/vm/drop_caches"
 
 locale 변경
 sudo ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+
+mongodb dump
+sudo mongodump --out /var/lib/mongodb/mongo_backup --host 127.0.0.1 --port 27017 -u '아이디' -p '비번' --db 'ktop'
