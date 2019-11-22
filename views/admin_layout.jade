@@ -17,6 +17,7 @@ html(lang='en')
     link(rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css")
 
     link(href='/assets/css/custom_admin.css', rel='stylesheet')
+    link(href='/stylesheets/svg_setting.css', rel='stylesheet')
   body
     .wrapper
       .sidebar(data-color='orange')
@@ -41,6 +42,10 @@ html(lang='en')
               a(href='/admin/work')
                 i.now-ui-icons.tech_tablet
                 p.h5 작업관리
+            li(class=side_active === 'notice' ? 'active' : '')
+              a(href='/admin/notice/list')
+                i.lhk-icon.lhk-icon-notice
+                p.h5 공지사항
             //if(user_lv === 9)
             li(class=side_active === 'superAdmin' ? 'active' : '')
               a(rel='tooltip', title='전체회원관리', data-placement='bottom', href='/admin/superAdmin')

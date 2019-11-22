@@ -415,7 +415,8 @@ router.delete('/superAdmin/:id', async (req, res) => {
 router.get('/notice/list', middle.isAdmin, async (req, res) => {
   const list = await Notice.find({});
   res.render('admin_notice', {
-    list: list
+    list: list,
+    side_active:'notice'
   });
 });
 // 공지사항 글 쓰기 화면
