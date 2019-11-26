@@ -77,7 +77,6 @@ block append_js
       let title = document.querySelector('input[name="title"]');
       let writer = document.querySelector('input[name="writer"]')
       let child =$('.notice_content')[0];
-      console.log('child : ', child);
       child.classList.remove('border');
       child.classList.remove('p-3');
       child.classList.remove('notice_content');
@@ -94,10 +93,7 @@ block append_js
       if(content_type === 'edit'){
         let xmlString = document.querySelector('textarea[name="text_content"]').value;
         document.querySelector('.notice_content').innerHTML = xmlString;
-        console.log('str : ', xmlString);
         let doc = new DOMParser().parseFromString(xmlString, 'text/xml');
-        console.log('doc : ', doc.firstChild);
-        // console.log('content : ', content.value);
         $('#notice_textarea').summernote('pasteHTML', xmlString);
       }else if(content_type === 'create'){
         $('#notice_textarea').summernote({
