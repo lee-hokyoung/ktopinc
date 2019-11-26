@@ -41,6 +41,10 @@ html(lang='en')
               a(href='/admin/work')
                 i.now-ui-icons.tech_tablet
                 p.h5 작업관리
+            li(class=side_active === 'notice' ? 'active' : '')
+              a(href='/admin/notice/list')
+                i.now-ui-icons.files_paper
+                p.h5 공지사항
             //if(user_lv === 9)
             li(class=side_active === 'superAdmin' ? 'active' : '')
               a(rel='tooltip', title='전체회원관리', data-placement='bottom', href='/admin/superAdmin')
@@ -108,8 +112,8 @@ html(lang='en')
     // Notifications Plugin
     script(src='/assets/js/plugins/bootstrap-notify.js')
     // Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc
+    script(src='/assets/js/plugins/perfect-scrollbar.jquery.min.js')
     script(src='/assets/js/now-ui-dashboard.min.js?v=1.4.1', type='text/javascript')
-    //script(src='/assets/js/plugins/perfect-scrollbar.jquery.min.js')
     script.
       let now_ui_template = '<div data-notify="container" class="col-9 col-sm-3 alert alert-{0} alert-with-icon" role="alert" data-notify-position="top-right">' +
       '<button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 50%; margin-top: -13px; z-index: 1062;">' +

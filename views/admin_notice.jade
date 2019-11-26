@@ -5,32 +5,32 @@ block content
   .content
     .card
       .card-header
-        h3.m-3 공지사항
+        .d-flex.justify-content-between
+          h3.m-3 공지사항
+          a.text-white.btn.btn-primary(href='/admin/notice/create', style='height:3em;') 글쓰기
       .card-body.overflow-auto
-        .table(style='height:50vh')
-          table.table.table-bordered.table-striped
-            thead
-              tr
-                th.text-center(style='width:5%') #
-                th.text-center(style='width:50%') 제목
-                th.text-center(style='width:20%') 작성일시
-                th.text-center(style='width:10%') 조회수
-            tbody
-              if(list.length > 0)
-                each item, idx in list
-                  - var created_time = new Date(item.created);
-                  tr
-                    td.text-center #{idx + 1}
-                    td.text-center
-                      a(href='/admin/notice/read/' + item._id) #{item.title}
-                    td.text-center #{created_time.toLocaleString('ko')}
-                    td.text-center #{item.read_count}
-              else
-                tr
-                  td.text-center(colspan='4') 작성된 글이 없습니다.
+        ul.list-group.list-group-flush.text-center
+          li.list-group-item.list-group-item-dark.font-weight-bold
+            .row
+              .d-none.d-md-block.col-md-1 #
+              .col-9.col-md-6 제목
+              .d-none.d-md-block.col-md-3 작성일시
+              .col-3.col-md-2 조회수
+          if(list.length > 0)
+            each item, idx in list
+              - var created_time = new Date(item.created);
+              li.list-group-item(class=idx%2===1?'list-group-item-secondary':'')
+                .row
+                  .d-none.d-md-block.col-md-1 #{idx + 1}
+                  .col-9.col-md-6
+                    a(href='/admin/notice/read/' + item._id) #{item.title}
+                  .d-none.d-md-block.col-md-3 #{created_time.toLocaleString('ko')}
+                  .col-3.col-md-2 #{item.read_count}
+          else
+            li.list-group-item
+              .col 작성된 글이 없습니다.
       .card-footer
         .form-group
-          a.text-white.btn.btn-primary(href='/admin/notice/create') 글쓰기
 block append_js
   script.
     console.log(!{JSON.stringify(list)})

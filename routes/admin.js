@@ -415,7 +415,8 @@ router.delete('/superAdmin/:id', async (req, res) => {
 router.get('/notice/list', middle.isAdmin, async (req, res) => {
   const list = await Notice.find({});
   res.render('admin_notice', {
-    list: list
+    list: list,
+    side_active:'notice'
   });
 });
 // 공지사항 글 쓰기 화면
@@ -451,12 +452,13 @@ router.post('/notice/create', middle.isAdmin, async (req, res) => {
     fs.createReadStream('./' + req.body.path)
       .pipe(fs.createWriteStream('./docs' + req.body.path.replace('temps','')));
   }
-  await Notice.create(req.body);
-  res.redirect('/admin/notice/list');
+  let result = await Notice.create(req.body);
+  res.json(result);
+  // res.redirect('/admin/notice/list');
 });
 // 공지사항 글 수정
 router.post('/notice/update', middle.isAdmin, async (req, res) => {
-  await Notice.update(
+  let result = await Notice.update(
     {_id: req.body._id},
     {
       $set: {
@@ -465,7 +467,8 @@ router.post('/notice/update', middle.isAdmin, async (req, res) => {
         writer: req.body.writer
       }
     });
-  res.redirect('/admin/notice/list');
+  res.json(result);
+  // res.redirect('/admin/notice/list');
 });
 // 공지사항 글 삭제
 router.delete('/notice/delete/:id', middle.isAdmin, async (req, res) => {

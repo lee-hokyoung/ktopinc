@@ -18,6 +18,16 @@
 
 /*  select box 에서 직접입력을 선택할 경우, input <-> select box 간 변환 */
 .addon-switch-selectbox {white-space: nowrap; font-size:.75rem; line-height:37px; margin-left:.5rem;}
+
+/*  휴무계 관련 css */
+#tableClosed .form-check-sign::before, #tableClosed .form-check-sign::after{top:0px; left:0px;}
+#tableClosed .form-check{width:inherit;}
+#tableClosed input{border:none; width:100%; background-color:transparent; text-align: center;}
+#tableClosed input:focus, input.type_num:focus{outline:none;}
+#tableClosed td.input-td{background-color:lightgoldenrodyellow}
+#tableClosed td{padding:0.3rem;}
+#tableClosed input.type_num, input.type_num{width:50px; background-color:lightgoldenrodyellow; border:none;}
+
 /*pc 버전에만 해당*/
 @media (min-width: 768px) {
     .bd-links {
