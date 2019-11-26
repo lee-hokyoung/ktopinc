@@ -34,7 +34,7 @@ block content
           //    h6.m-0 등록된 파일
           //    .d-block.py-2
           //      a(href=data.path.replace('temps', '/docs'), target='_blank') #{data.originalname}
-          input#notice_file(type='file', name='notice_file')
+          input#notice_file(type='file', name='notice_file[]', multiple)
         .card-footer
           .d-flex.justify-content-center
             button.btn.btn-success(type='submit') #{data?'수정':'등록'}
@@ -44,31 +44,6 @@ block content
             input(type='hidden', name='path')
             input(type='hidden', name='originalname')
 
-    // 공지사항 확인한 직원 리스트
-    //if(title==='공지사항 수정')
-    //  .card
-    //    .card-header
-    //      h5.card-title 공지사항 확인한 직원
-    //    .card-body
-    //      .table
-    //        table.table.table-bordered.text-center
-    //          thead
-    //            tr.bg-secondary.text-white
-    //              td #
-    //              td 이름
-    //              td 팀
-    //              td 지역
-    //          tbody
-    //            if(!user_list)
-    //              tr
-    //                td(colspan=4) 데이터가 없습니다.
-    //            else
-    //              each user, idx in user_list
-    //                tr
-    //                  td #{(idx + 1)}
-    //                  td #{user.user_nick}
-    //                  td #{user.user_team}
-    //                  td #{user.user_region}
   input(type='hidden', name='contentType', value=(data?'edit':'create'))
   textarea.d-none(name='text_content') #{data?data.content:'none'}
 

@@ -449,8 +449,11 @@ router.get('/notice/read/:id', middle.isAdmin, async (req, res) => {
 router.post('/notice/create', middle.isAdmin, async (req, res) => {
   // 업로드한 파일이 있다면, temp 폴더에서 uploads 폴더로 복사
   if(req.body.path){
-    fs.createReadStream('./' + req.body.path)
-      .pipe(fs.createWriteStream('./docs' + req.body.path.replace('temps','')));
+    let paths = req.body.path.split(',');
+    paths.forEach(function(v){
+      fs.createReadStream('./' + v)
+        .pipe(fs.createWriteStream('./docs' + v.replace('temps','')));
+    });
   }
   let result = await Notice.create(req.body);
   res.json(result);
@@ -479,6 +482,7 @@ router.delete('/notice/delete/:id', middle.isAdmin, async (req, res) => {
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, cb) {
+      // console.log('file : ', file);
       cb(null, './temps');
     },
     filename(req, file, cb) {
@@ -488,21 +492,22 @@ const upload = multer({
   }),
   limits:{fileSize:2*1024*1024}
 });
-router.post('/notice/file_upload',middle.isAdmin, upload.single('notice_file'), async(req, res) => {
+router.post('/notice/file_upload',middle.isAdmin, upload.array('notice_file[]', 10), async(req, res) => {
   // temp 폴더 내에 모든 파일을 삭제
   let directory = './temps';
   fs.readdir(directory, (err, files) => {
     if(!err){
+      let uploaded_files = req.files.map((v) => {return v.filename});
       for(let file of files){
-        if(file !== req.file.filename)
+        if(uploaded_files.indexOf(file) === -1)
           fs.unlink(path.join(directory, file), err => {
             if(err) throw err;
           });
       }
     }
   });
-  let file = await req.file;
-  res.json(file);
+  let files = await req.files;
+  res.json(files);
 });
 
 // 가동보고서 화면
