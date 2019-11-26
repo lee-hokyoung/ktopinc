@@ -1,7 +1,8 @@
 public/assets/css/
-node_modules/
+node_modules
 test/
 uploads/
 .idea/
 .env
 K-Top.tar
+memo.txt
