@@ -439,11 +439,11 @@ router.get('/notice/read/:id', middle.isAdmin, async (req, res) => {
   } else {
     user_list = null;
   }
-  res.render('admin_notice_create', {
+  res.render('admin_notice_read', {
     title: '공지사항 수정',
     data: data,
     user_list: user_list
-  })
+  });
 });
 // 공지사항 글 등록
 router.post('/notice/create', middle.isAdmin, async (req, res) => {

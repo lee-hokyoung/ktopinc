@@ -75,7 +75,7 @@ function fnCreate(){
 function fnUpdate(){
   let title = document.querySelector('input[name="title"]');
   let writer = document.querySelector('input[name="writer"]');
-  let content = $('#notice_textarea').summernote('code');
+  let content = $('#notice_content').summernote('code');
   if(!title.value){
     alert('제목을 입력해주세요.');
     title.focus();
