@@ -25,7 +25,7 @@ block content
                   .col-9.col-md-6
                     a(href='/admin/notice/read/' + item._id) #{item.title}
                   .d-none.d-md-block.col-md-3 #{created_time.toLocaleString('ko')}
-                  .col-3.col-md-2 #{item.read_count}
+                  .col-3.col-md-2 #{item.read_user.length}
           else
             li.list-group-item
               .col 작성된 글이 없습니다.

@@ -6,30 +6,31 @@ block content
       .card
         .card-header
           h3.m-3 공지사항
-        .card-body
-          div(style='height:50vh')
-            table.table.table-bordered.table-striped.text-center
-              thead
-                tr
-                  th #
-                  th 제목
-                  th 작성일
-                  th 조회수
-              tbody
-                if(list.length > 0)
-                  each item, idx in list
-                    - var isNew = item.read_user.toString().split(',').indexOf(user_id);
-                    tr
-                      td #{idx + 1}
-                      td
-                        - if(isNew === -1)
-                          img(src='/assets/svg/new_2.svg', width='20').mr-2
-                        a(href='/notice/read/' + item._id) #{item.title}
-                      td #{new Date(item.created).toLocaleDateString('ko')}
-                      td #{item.read_count}
-                else
-                  tr
-                    td(colspan='4') 등록된 글이 없습니다.
+        .card-body.text-center
+          ul.list-group.list-group-flush
+            li.list-group-item.list-group-item-primary
+              .row
+                .d-none.d-md-block.col-md-1 #
+                .col-9.col-md-5 제목
+                .col-3.col-md-3 작성자
+                .d-none.d-md-block.col-md-3 작성일
+            if(list.length > 0)
+              each row, idx in list
+                - var isNew = row.read_user.toString().split(',').indexOf(user_id);
+                - var date = new Date(row.created);
+                li.list-group-item(class=idx%2===1?'list-group-item-secondary':'')
+                  .row
+                    .d-none.d-md-block.col-md-1 #{idx + 1}
+                    .col-9.col-md-5
+                      if(isNew === -1)
+                        img.mr-2(src='/assets/svg/new_2.svg', width=18)
+                      a(href='/notice/read/' + row._id) #{row.title}
+                    .col-3.col-md-3 #{row.writer}
+                    .d-none.d-md-block.col-md-3 #{date.toLocaleString('ko', {hour12:false, year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'})}
+            else
+              li.list-group-item
+                .row
+                  .col 등록된 글이 없습니다.
         .card-footer
   block append_js
     script.

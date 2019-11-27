@@ -10,6 +10,7 @@ const Remark = require('../model/remark');
 const Business = require('../model/business');
 const Closed = require('../model/closed');
 const TempReport = require('../model/tempReport');
+const Notice = require('../model/notice');
 const middle = require('../routes/middlewares');
 const moment = require('moment');
 const mongoose = require('mongoose');
@@ -24,6 +25,8 @@ router.get('/', middle.isLoggedIn, async (req, res, next) => {
   const remark = await Remark.find({});
   const user = await User.findOne({_id: req.session.passport.user._id});
   let last_work = await Work.findOne({user_id: req.session.passport.user._id}).sort({'date': -1});
+  const notice_list = await Notice.find({}).sort({created:-1}).limit(5);
+
   // 최근에 등록한 작업이 없는 경우 공란으로 넣어준다.
   if (!last_work) last_work = {'region': '', 'start_time': '', 'end_time': ''};
   res.render('work', {
@@ -33,7 +36,8 @@ router.get('/', middle.isLoggedIn, async (req, res, next) => {
     region: region,
     work_title: work_title,
     remark: remark,
-    last_work: last_work
+    last_work: last_work,
+    notice_list:notice_list
   });
 });
 // 작업일지 리스트

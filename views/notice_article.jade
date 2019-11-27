@@ -1,35 +1,36 @@
 extends layout
 
 block content
+  style.
+    #notice_content p{margin:0; font-size:13px;}
+    @media screen and (max-width: 991px){
+      /*.wrapper{height:inherit;}*/
+    }
   .wrapper
-    .container.d-flex.align-self-center(style='padding-top:10vh; max-height:80vh')
+    .container.d-flex.align-self-center(style='padding-top:10vh;')
       .card
         .card-header
           h3.m-3 공지사항
         .card-body
           .row
-            .col-md-8
-              .form-group.h6
-                label 제목
-                .border-bottom.p-3 #{article.title}
-            .col-md-4
-              .form-group.h6
-                label 작성자
-                .border-bottom.p-3 #{article.writer}
+            .col-md-9
+              h5 #{article.title}
+            .col-md-3
+              h6 #{article.writer}
           .row
             .col-12
-              .form-group.h6
-                label 내용
-                .border.p-3#notice_content
+              .border.p-2#notice_content
           if(article.path)
-            .row
-              .col
-                h6 첨부파일
-            .row
-              .col
-                a(href='/docs' + article.path.replace('temps', ''), target='_blank') #{article.originalname}
-        .card-footer
-          .d-flex.justify-content-center
+            .py-3
+              .row
+                .col
+                  h6 첨부파일
+              .row
+                .col
+                  each file, idx in article.originalname.split(',')
+                    .m-0
+                      a(href='/docs' + article.path.split(',')[idx].replace('temps', ''), target='_blank') #{file}
+          .text-center
             a.btn.btn-info(href='/notice') 목록으로
 block append_js
   script.
