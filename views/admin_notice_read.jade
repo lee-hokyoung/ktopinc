@@ -28,8 +28,9 @@ block content
             #notice_content
           if(data.path)
             h6.m-0 등록된 파일
-            .d-block.py-2
-              a(href=data.path.replace('temps', '/docs'), target='_blank') #{data.originalname}
+            each file, idx in data.originalname.split(',')
+              .d-block.py-2
+                a(href=data.path.split(',')[idx].replace('temps', '/docs'), target='_blank') #{file}
           input#notice_file(type='file', name='notice_file')
         .card-footer
           .d-flex.justify-content-center

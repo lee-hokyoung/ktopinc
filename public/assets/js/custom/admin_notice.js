@@ -52,10 +52,12 @@ function fnCreate(){
     writer.focus();
     return false;
   }
-  if(!$(content).text()){static
+  if(!$(content).text()){
     alert('내용을 입력해주세요');
     return false;
   }
+  let path = document.querySelector('input[name="path"]');
+  let originalname = document.querySelector('input[name="originalname"]');
 
   let xhr = new XMLHttpRequest();
   xhr.open('POST', '/admin/notice/create', true);
@@ -67,7 +69,11 @@ function fnCreate(){
     }
   };
   xhr.send(JSON.stringify({
-    title:title.value, writer:writer.value, content:content
+    title:title.value,
+    writer:writer.value,
+    content:content,
+    path:path.value,
+    originalname:originalname.value
   }));
 }
 // 공지사항 수정
