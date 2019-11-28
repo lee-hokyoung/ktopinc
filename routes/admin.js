@@ -580,4 +580,20 @@ router.get('/closed/list/:year?/:month?', middle.isAdmin, async(req, res) => {
     month:month
   });
 });
+// 휴무계 삭제요청 승인
+router.patch('/closed/:id', middle.isAdmin, async(req, res) => {
+  let result = await Closed.updateOne(
+    {_id: mongoose.Types.ObjectId(req.params.id)},
+    {$set: {status: 3}}
+  );
+  res.json(result);
+});
+// 휴무계 직원이름 조회
+router.get('/closed/searchEmployee/:name', middle.isAdmin, async(req, res) => {
+  let user_id = await User.findOne({user_nick:req.params.name});
+  let list = await Closed.find({user_id:mongoose.Types.ObjectId(user_id._id)}).sort({reportDate:-1});
+  res.json(list);
+});
+
+
 module.exports = router;

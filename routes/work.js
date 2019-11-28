@@ -25,7 +25,7 @@ router.get('/', middle.isLoggedIn, async (req, res, next) => {
   const remark = await Remark.find({});
   const user = await User.findOne({_id: req.session.passport.user._id});
   let last_work = await Work.findOne({user_id: req.session.passport.user._id}).sort({'date': -1});
-  const notice_list = await Notice.find({}).sort({created:-1}).limit(5);
+  const notice_list = await Notice.find({}).sort({created: -1}).limit(5);
 
   // 최근에 등록한 작업이 없는 경우 공란으로 넣어준다.
   if (!last_work) last_work = {'region': '', 'start_time': '', 'end_time': ''};
@@ -37,7 +37,7 @@ router.get('/', middle.isLoggedIn, async (req, res, next) => {
     work_title: work_title,
     remark: remark,
     last_work: last_work,
-    notice_list:notice_list
+    notice_list: notice_list
   });
 });
 // 작업일지 리스트
@@ -285,12 +285,15 @@ router.get('/closed/list', middle.isLoggedIn, async (req, res) => {
 });
 // 휴무계 읽기
 router.get('/closed/:id', middle.isLoggedIn, async (req, res) => {
-  let doc = await Closed.findOne({_id:mongoose.Types.ObjectId(req.params.id)}).populate('user_id');
+  let doc = await Closed.findOne({_id: mongoose.Types.ObjectId(req.params.id)}).populate('user_id');
   res.json(doc);
 });
-// 휴무계 삭제
-router.delete('/closed/:id', middle.isLoggedIn, async(req, res) => {
-  let result = await Closed.deleteOne({_id:mongoose.Types.ObjectId(req.params.id)});
+// 휴무계 삭제 -> 삭제요청으로 변경
+router.patch('/closed/:id', middle.isLoggedIn, async (req, res) => {
+  let result = await Closed.updateOne(
+    {_id: mongoose.Types.ObjectId(req.params.id)},
+    {$set: {status: 2}}
+  );
   res.json(result);
 });
 module.exports = router;
