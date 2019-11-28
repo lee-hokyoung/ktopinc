@@ -14,8 +14,8 @@ router.get('/', middle.isLoggedIn, async (req, res) => {
 // 공지사항 읽기
 router.get('/read/:id', middle.isLoggedIn, async (req, res) => {
   let user_id = req.session.passport.user._id;
-  // 조회수 카운트 1
-  await Notice.update({_id:req.params.id}, {$inc:{read_count:1}});
+  // // 조회수 카운트 1
+  // await Notice.update({_id:req.params.id}, {$inc:{read_count:1}});
   // 읽은 글인지 확인
   let already_read = await Notice.findOne({_id:req.params.id, read_user:user_id});
   if(!already_read){

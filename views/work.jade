@@ -64,17 +64,98 @@ block content
                         option(value=item.remark) #{item.remark}
                       option(value='직접입력' onselect='fnChangeSelect("remarks")') 직접입력
                 .row.justify-content-center
-                  button.btn.btn-success(type='button' onclick='fnCheckSubmit()') 등록하기 
+                  button.btn.btn-success(type='button' onclick='fnCheckSubmit()') 등록하기
                     i.now-ui-icons.ui-1_check
                 input(type='hidden', name='temp_start_time', value=last_work.start_time)
                 input(type='hidden', name='temp_end_time', value=last_work.end_time)
+  // 달력선택 모달창
+  style.
+    #selectCalendarModal .bootstrap-datetimepicker-widget table td.day>div,
+    #selectedRangeModal .bootstrap-datetimepicker-widget table td.day>div{z-index:1200;}
+    #selectCalendarModal .glyphicon, #selectedRangeModal .glyphicon{font-family: "Font Awesome 5 Free"; font-weight: 900;}
+    #selectCalendarModal .glyphicon.glyphicon-chevron-left:before,
+    #selectedRangeModal .glyphicon.glyphicon-chevron-left:before {content: "\f053";}
+    #selectCalendarModal .glyphicon.glyphicon-chevron-right:before,
+    #selectedRangeModal .glyphicon.glyphicon-chevron-right:before{content: "\f054";}
+    #selectedRangeModal .bootstrap-datetimepicker-widget table td.selected>div{background-color: #6c757d;color: #fff;box-shadow: 0 1px 10px 0 rgba(0, 0, 0, .2);}
+  #selectCalendarModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby="selectCalendarModalLabel", aria-hidden="true", style='z-index:1100;')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#selectCalendarModalLabel.modal-title 달력선택
+          button.close.text-dark(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') x
+        .modal-body
+          #datepicker-inline
+        .modal-footer.justify-content-center
+          button.btn.btn-primary(type="button" data-dismiss="modal") 선택
+  #selectedRangeModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby="selectedRangeModalLabel", aria-hidden="true", style='z-index:1100;')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header
+          h5#selectedRangeModalLabel.modal-title 달력선택
+          button.close.text-dark(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') x
+        .modal-body
+          .form-group
+            label 기간
+            input.form-control.rounded-0(type='text', name='selectedRange', style='flex:1')
+            input.form-control.rounded-0.ml-3(type='hidden', name='period', style='width:6rem;')
+          .d-flex.justify-content-around
+            .start-wrarp.mr-3
+              //.header.h6 시작
+              #datepickerStart
+            .end-wrap
+              //.header.h6 끝
+              #datepickerEnd
+        .modal-footer.justify-content-center
+          button.btn.btn-primary(type="button" onclick='fnSelectedPeriod()') 선택
+  // 공지사항 모달창
+  #noticeModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='noticeModalLabel', aria-hidden='true')
+    .modal-dialog.modal-lg(role='document')
+      .modal-content
+        .modal-header
+          h5#noticeModalLabel.modal-title 공지사항
+          button.close.text-dark(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') x
+        .modal-body.text-center
+          ul.list-group.list-group-flush
+            li.list-group-item.list-group-item-primary
+              .row
+                .d-none.d-md-block.col-md-1 #
+                .col-9.col-md-5 제목
+                .col-3.col-md-3 작성자
+                .d-none.d-md-block.col-md-3 작성일
+            if(notice_list.length > 0)
+              each row, idx in notice_list
+                - var isNew = row.read_user.toString().indexOf(user._id);
+                - var date = new Date(row.created);
+                li.list-group-item
+                  .row
+                    .d-none.d-md-block.col-md-1 #{idx + 1}
+                    .col-9.col-md-5
+                      if(isNew === -1)
+                        img.mr-2(src='/assets/svg/new_2.svg', width=18)
+                      a(href='/notice/read/' + row._id) #{row.title}
+                    .col-3.col-md-3 #{row.writer}
+                    .d-none.d-md-block.col-md-3 #{date.toLocaleString('ko', {hour12:false, year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'})}
+            else
+              li.list-group-item
+                .row
+                  .col 등록된 글이 없습니다.
+
+        .modal-footer.justify-content-center
+          button.btn.btn-danger.mr-3(type="button" data-dismiss="modal") 닫기
+  // 휴무계 모달창
+  style.
+    #reportDate{position:relative;}
   #closedModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="closedModalLabel", aria-hidden="true")
     .modal-dialog.modal-lg(role="document")
       .modal-content
         .modal-header
           h5#closedModalLabel.modal-title 휴무계 작성
-          button.close(type='button', data-dismiss='modal', aria-label='Close')
-            span(aria-hidden='true')
+          button.close.text-dark(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true') x
         .modal-body
           form#formClosed
             .table.table-responsive
@@ -128,15 +209,15 @@ block content
                     td 성명
                   tr
                     td.input-td
-                      input(type='text', name='department')
+                      input(type='text', name='department', value=user.user_team)
                     td.input-td
                       input(type='text', name='rank')
                     td.input-td
-                      input(type='text', name='user_nick')
+                      input(type='text', name='user_nick', value=user.user_nick)
                   tr
                     th(colspan=2, rowspan=2) 신청기간
                     td.input-td(colspan=3)
-                      input(type='text', name='application_period')
+                      input#application_period(type='text', name='application_period')
                   tr
                     td(colspan=3)
                       | ( &nbsp;
@@ -155,16 +236,17 @@ block content
                     td.input-td
                       input(type='text', name='licenserName')
                     td.input-td
-                      input(type='text', name='reportDate')
+                      input#reportDate(type='text', name='reportDate')
                     td.input-td
                       input(type='text', name='licenserTel')
             p 위와 같이 휴무계를 사용하고자 하오니 허가하여 주시기 바랍니다.
+            - var date = new Date();
             .text-right
-              input.type_num.text-center(type='text', name='closed_year')
+              input.type_num.text-center(type='text', name='closed_year', value=date.getFullYear(), readonly)
               span 년
-              input.type_num.text-center(type='text', name='closed_month')
+              input.type_num.text-center(type='text', name='closed_month', value=date.getMonth() + 1, readonly)
               span 월
-              input.type_num.text-center(type='text', name='closed_day')
+              input.type_num.text-center(type='text', name='closed_day', value=date.getDate(), readonly)
               span 일
             br
             p.text-danger.mb-0 ※ 휴무의 당일 현장보고 및 회사보고 = 무급에 해당함.
@@ -177,7 +259,8 @@ block content
 block append_js
   script(src='/assets/js/custom/work.js', type='text/javascript')
   script.
-    console.log(!{JSON.stringify(user)})
+    console.log(!{JSON.stringify(user)});
+    console.log(!{JSON.stringify(notice_list)})
     let user = !{JSON.stringify(user)};
     if(user.lv === 9) $('#closedModal').modal('show');
     // alert('add');

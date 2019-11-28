@@ -17,7 +17,6 @@ html(lang='en')
     link(rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css")
 
     link(href='/assets/css/custom_admin.css', rel='stylesheet')
-    link(href='/stylesheets/svg_setting.css', rel='stylesheet')
   body
     .wrapper
       .sidebar(data-color='orange')
@@ -44,8 +43,12 @@ html(lang='en')
                 p.h5 작업관리
             li(class=side_active === 'notice' ? 'active' : '')
               a(href='/admin/notice/list')
-                i.lhk-icon.lhk-icon-notice
+                i.now-ui-icons.files_paper
                 p.h5 공지사항
+            li(class=side_active === 'closed' ? 'active':'')
+              a(href='/admin/closed/list')
+                i.now-ui-icons.files_paper
+                p.h5 휴무계 관리
             //if(user_lv === 9)
             li(class=side_active === 'superAdmin' ? 'active' : '')
               a(rel='tooltip', title='전체회원관리', data-placement='bottom', href='/admin/superAdmin')
@@ -113,8 +116,8 @@ html(lang='en')
     // Notifications Plugin
     script(src='/assets/js/plugins/bootstrap-notify.js')
     // Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc
-    script(src='/assets/js/now-ui-dashboard.min.js?v=1.4.1', type='text/javascript')
     //script(src='/assets/js/plugins/perfect-scrollbar.jquery.min.js')
+    script(src='/assets/js/now-ui-dashboard.min.js?v=1.4.1', type='text/javascript')
     script.
       let now_ui_template = '<div data-notify="container" class="col-9 col-sm-3 alert alert-{0} alert-with-icon" role="alert" data-notify-position="top-right">' +
       '<button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 50%; margin-top: -13px; z-index: 1062;">' +

@@ -439,25 +439,29 @@ router.get('/notice/read/:id', middle.isAdmin, async (req, res) => {
   } else {
     user_list = null;
   }
-  res.render('admin_notice_create', {
+  res.render('admin_notice_read', {
     title: '공지사항 수정',
     data: data,
     user_list: user_list
-  })
+  });
 });
 // 공지사항 글 등록
 router.post('/notice/create', middle.isAdmin, async (req, res) => {
   // 업로드한 파일이 있다면, temp 폴더에서 uploads 폴더로 복사
   if(req.body.path){
-    fs.createReadStream('./' + req.body.path)
-      .pipe(fs.createWriteStream('./docs' + req.body.path.replace('temps','')));
+    let paths = req.body.path.split(',');
+    paths.forEach(function(v){
+      fs.createReadStream('./' + v)
+        .pipe(fs.createWriteStream('./docs' + v.replace('temps','')));
+    });
   }
-  await Notice.create(req.body);
-  res.redirect('/admin/notice/list');
+  let result = await Notice.create(req.body);
+  res.json(result);
+  // res.redirect('/admin/notice/list');
 });
 // 공지사항 글 수정
 router.post('/notice/update', middle.isAdmin, async (req, res) => {
-  await Notice.update(
+  let result = await Notice.update(
     {_id: req.body._id},
     {
       $set: {
@@ -466,7 +470,8 @@ router.post('/notice/update', middle.isAdmin, async (req, res) => {
         writer: req.body.writer
       }
     });
-  res.redirect('/admin/notice/list');
+  res.json(result);
+  // res.redirect('/admin/notice/list');
 });
 // 공지사항 글 삭제
 router.delete('/notice/delete/:id', middle.isAdmin, async (req, res) => {
@@ -477,6 +482,7 @@ router.delete('/notice/delete/:id', middle.isAdmin, async (req, res) => {
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, cb) {
+      // console.log('file : ', file);
       cb(null, './temps');
     },
     filename(req, file, cb) {
@@ -486,21 +492,22 @@ const upload = multer({
   }),
   limits:{fileSize:2*1024*1024}
 });
-router.post('/notice/file_upload',middle.isAdmin, upload.single('notice_file'), async(req, res) => {
+router.post('/notice/file_upload',middle.isAdmin, upload.array('notice_file[]', 10), async(req, res) => {
   // temp 폴더 내에 모든 파일을 삭제
   let directory = './temps';
   fs.readdir(directory, (err, files) => {
     if(!err){
+      let uploaded_files = req.files.map((v) => {return v.filename});
       for(let file of files){
-        if(file !== req.file.filename)
+        if(uploaded_files.indexOf(file) === -1)
           fs.unlink(path.join(directory, file), err => {
             if(err) throw err;
           });
       }
     }
   });
-  let file = await req.file;
-  res.json(file);
+  let files = await req.files;
+  res.json(files);
 });
 
 // 가동보고서 화면
@@ -573,4 +580,20 @@ router.get('/closed/list/:year?/:month?', middle.isAdmin, async(req, res) => {
     month:month
   });
 });
+// 휴무계 삭제요청 승인
+router.patch('/closed/:id', middle.isAdmin, async(req, res) => {
+  let result = await Closed.updateOne(
+    {_id: mongoose.Types.ObjectId(req.params.id)},
+    {$set: {status: 3}}
+  );
+  res.json(result);
+});
+// 휴무계 직원이름 조회
+router.get('/closed/searchEmployee/:name', middle.isAdmin, async(req, res) => {
+  let user_id = await User.findOne({user_nick:req.params.name});
+  let list = await Closed.find({user_id:mongoose.Types.ObjectId(user_id._id)}).sort({reportDate:-1});
+  res.json(list);
+});
+
+
 module.exports = router;
