@@ -590,9 +590,14 @@ router.patch('/closed/:id', middle.isAdmin, async(req, res) => {
 });
 // 휴무계 직원이름 조회
 router.get('/closed/searchEmployee/:name', middle.isAdmin, async(req, res) => {
-  let user_id = await User.findOne({user_nick:req.params.name});
-  let list = await Closed.find({user_id:mongoose.Types.ObjectId(user_id._id)}).sort({reportDate:-1});
-  res.json(list);
+  let name = req.params.name;
+  let user_id = await User.findOne({user_nick:name});
+  if(user_id){
+    let list = await Closed.find({user_id:mongoose.Types.ObjectId(user_id._id)}).sort({reportDate:-1});
+    res.json({list:list, name:name, code:1});
+  }else{
+    res.json({code:-1})
+  }
 });
 
 

@@ -45,25 +45,26 @@ block content
             h4.card-title 휴무계 관리
           .card-body.overflow-auto(style='max-height:800px; min-height:75vh;')
             .form-group.row
-              .col-1(style='min-width:130px;')
-                select.selectpicker.d-block.w-100(data-style="select-with-transition btn-primary" name='year')
+              .col-1(style='min-width:100px;')
+                select.selectpicker.d-block.w-100(data-style="select-with-transition btn-primary p-2" name='year')
                   option(value='2019') 2019
               label.col-form-label 년
-              .col-1(style='min-width:110px;')
-                select.selectpicker.d-block.w-100(data-style="select-with-transition btn-primary" name='month')
+              .col-1(style='min-width:90px;')
+                select.selectpicker.d-block.w-100(data-style="select-with-transition btn-primary p-2" name='month')
                   - var val = 0;
                   while val < 12
                     option(value=++val, selected=val==month) #{val}
               label.col-form-label.h5 월
-              .col-1(style='min-width:100px;')
-                button.btn.btn-success.m-0(onclick='fnSearchClosed()') 조회
+              .col-1(style='min-width:70px;')
+                button.btn.btn-success.m-0.p-2(onclick='fnSearchClosed()') 조회
               .col-md-4
-                .input-group
-                  input.form-control(type='text', name='searchEmployee', placeholder='검색할 직원을 입력해주세요.')
-                  .input-group-append
-                    button.btn.btn-primary.input-group-append(onclick='fnSearchClosedEmployee()') 조회
+                form(onsubmit='fnSearchClosedEmployee(); return false;')
+                  .input-group
+                    input.form-control.rounded-0(type='text', name='searchEmployee', placeholder='검색할 직원을 입력해주세요.')
+                    .input-group-append
+                      button.btn.btn-primary.input-group-append(type='submit') 조회
 
-            ul.list-group
+            ul.list-group.list-group-flush
               li.list-group-item.bg-secondary.text-white.font-weight-bold
                 .row
                   .col #
@@ -107,6 +108,14 @@ block content
           button.close(type='button', data-dismiss='modal', aria-label='Close')
             span(aria-hidden='true') x
         .modal-body
+          .d-flex.justify-content-between
+            .py-3.font-weight-bold
+              span 직원명 :
+              span.ml-3#employeeName
+            .py-3
+              span 총 &nbsp;
+                strong#closed_count
+                | 개
           #closedList
   // 휴무계 상세 내용 모달창
   #closedModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="closedModalLabel", aria-hidden="true")
