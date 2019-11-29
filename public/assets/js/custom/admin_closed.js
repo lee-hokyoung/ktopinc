@@ -11,7 +11,7 @@ function fnShowClosedModal(id) {
     v.checked = false;
   });
   document.querySelector('input[value="' + doc.closed_type + '"]').checked = true;
-  document.querySelectorAll('input[type="text"]').forEach(function (v) {
+  document.querySelectorAll('input[type="text"]:not([name="searchEmployee"])').forEach(function (v) {
     if (v.name === 'user_nick') v.value = doc.user_id.user_nick;
     else v.value = doc[v.name];
   });
@@ -54,7 +54,8 @@ function fnSearchClosedEmployee(){
   xhr.onreadystatechange = function(){
     if(this.readyState === XMLHttpRequest.DONE && this.status === 200){
       let res = JSON.parse(this.response);
-      fnGenerateEmployeeList(res);
+      if(res.code === 1) fnGenerateEmployeeList(res);
+      else alert('검색된 내용이 업습니다.');
     }
   };
   xhr.send();
@@ -62,7 +63,7 @@ function fnSearchClosedEmployee(){
 // 휴무계 직원 리스트 생성 함수
 function fnGenerateEmployeeList(res){
   let html = '<ul class="list-group list-group-flush">';
-  html += '<li class="list-group-item list-group-item-primary">' +
+  html += '<li class="list-group-item list-group-item-primary py-2">' +
     '<div class="row">' +
     '<div class="col-md-1">#</div>' +
     '<div class="col-md-3">신청일</div>' +
@@ -71,9 +72,9 @@ function fnGenerateEmployeeList(res){
     '<div class="col-md-2">상태</div>' +
     '</div>' +
     '</li>';
-  res.forEach(function(row, idx){
+  res.list.forEach(function(row, idx){
     let status = row.status === 1 ? '정상':row.status === 2?'삭제요청':'삭제';
-    html += `<li class="list-group-item ${idx%2===1?'list-group-item-secondary':''}">`;
+    html += `<li class="list-group-item py-2 ${idx%2===1?'list-group-item-secondary':''}">`;
     html += '<div class="row">' +
       `<div class="col-md-1">${idx + 1}</div>` +
       `<div class="col-md-3">${row.reportDate}</div>` +
@@ -85,6 +86,9 @@ function fnGenerateEmployeeList(res){
     html += `</li>`;
   });
   html += '</ul>';
+  console.log('res : ', res);
   document.querySelector('#closedList').innerHTML = html;
+  document.querySelector('#employeeName').innerText = res.name;
+  document.querySelector('#closed_count').innerText = res.list.length;
   $('#closedEmployeeList').modal('show');
 }

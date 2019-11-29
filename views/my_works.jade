@@ -2,43 +2,42 @@ extends layout
 
 block content
   .wrapper
-    //.page-header.clear-filter(filter-color='')
-    //  .page-header-image(data-parallax='true' style='background-image:url(/assets/img/bg7.jpg); background-position:50%;')
-    //  .content
-    .container
-      .row.content-middle.mx-0.px-0
-        .col-12.mt-5
-          .card.text-center.mt-3
-            .card-header.mt-3
-              h4.text-dark 근무일지
-            .card-body.text-dark
-              .table-responsive.overflow-auto(style='height:50vh')
-                table.table.table-bordered.table-striped.text-center
-                  thead
-                    tr
-                      th(style='min-width:30px') #
-                      th(style='min-width:80px')
-                      th(style='min-width:80px') 부서명
-                      th(style='min-width:80px') 날짜
-                      th(style='min-width:60px') 출근
-                      th(style='min-width:60px') 퇴근
-                      th(style='min-width:150px') 작업내용
-                      th(style='min-width:150px') 비고
-                      //th(style='min-width:80px') 생성일
-                  tbody
-                    each item, idx in list
-                     - var work_date = new Date(item.work_date);
-                     - var date = new Date(item.date);
+    .content
+      .space-100
+      .container
+        .row
+          .col-12
+            .card.text-center.mt-3
+              .card-header.mt-3
+                h4.text-dark 근무일지
+              .card-body.text-dark
+                .table-responsive.overflow-auto(style='height:50vh')
+                  table.table.table-bordered.table-striped.text-center
+                    thead
                       tr
-                        td #{idx + 1}
-                        td
-                          if item.work_confirm === 1
-                            a.btn.btn-default.btn-sm.disabled(href='#') 수정
-                          else
-                            a.btn.btn-success.btn-sm(href='/work/update/' + item._id) 수정
-                        td #{item.region}
-                        td #{new Intl.DateTimeFormat('ko').format(work_date)}
-                        td #{item.start_time}
-                        td #{item.end_time}
-                        td #{(item.work_title==='직접입력'?item.work_title_etc:item.work_title)}
-                        td #{(item.remarks==='직접입력'?item.remarks_etc:item.remarks)}
+                        th(style='min-width:30px') #
+                        th(style='min-width:80px')
+                        th(style='min-width:80px') 부서명
+                        th(style='min-width:80px') 날짜
+                        th(style='min-width:60px') 출근
+                        th(style='min-width:60px') 퇴근
+                        th(style='min-width:150px') 작업내용
+                        th(style='min-width:150px') 비고
+                        //th(style='min-width:80px') 생성일
+                    tbody
+                      each item, idx in list
+                       - var work_date = new Date(item.work_date);
+                       - var date = new Date(item.date);
+                        tr
+                          td #{idx + 1}
+                          td
+                            if item.work_confirm === 1
+                              a.btn.btn-default.btn-sm.disabled(href='#') 수정
+                            else
+                              a.btn.btn-success.btn-sm(href='/work/update/' + item._id) 수정
+                          td #{item.region}
+                          td.text-nowrap #{new Intl.DateTimeFormat('ko').format(work_date)}
+                          td #{item.start_time}
+                          td #{item.end_time}
+                          td #{(item.work_title==='직접입력'?item.work_title_etc:item.work_title)}
+                          td #{(item.remarks==='직접입력'?item.remarks_etc:item.remarks)}
