@@ -12,6 +12,8 @@ function fnReadDoc(id) {
         if(v.name === 'user_nick') v.value = res.user_id.user_nick;
         else v.value = res[v.name];
       });
+      if(res.path) fnGenerateClosedAttach(res);
+      else document.querySelector('#closedAttachedFile').innerHTML = '';
       document.querySelector('input[name="doc_id"]').value = res._id;
       let btnDelete = document.querySelector('button[name="btnDelete"]');
       if(res.status === 1){
@@ -42,4 +44,13 @@ function fnDeleteDoc(){
     }
   };
   xhr.send();
+}
+// 휴무계 첨부파일 생성 HTML
+function fnGenerateClosedAttach(res){
+  let html = '<div><strong class="">첨부파일</strong>';
+  res.path.split(',').forEach(function(v, idx){
+    html += `<div><a href="${v.replace('temp_closed_attach', '/docs_closed')}" target="_blank">${res.original.split(',')[idx]}</a></div>`;
+  });
+  html += '</div>';
+  document.querySelector('#closedAttachedFile').innerHTML = html;
 }

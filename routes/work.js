@@ -16,7 +16,11 @@ const moment = require('moment');
 const mongoose = require('mongoose');
 const func = require('../controller/functions');
 const Excel = require('exceljs');
+
+// 파일 업로드 관련 모듈
 const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
 
 // 작업일지 화면(등록화면)
 router.get('/', middle.isLoggedIn, async (req, res, next) => {
@@ -270,6 +274,13 @@ router.put('/business/:_id', middle.isLoggedIn, async (req, res) => {
 // 휴무계 작성
 router.post('/closed/write', middle.isLoggedIn, async (req, res) => {
   let data = req.body;
+  if(data.path){
+    let paths = data.path.split(',');
+    paths.forEach(function(v){
+      fs.createReadStream('./' + v)
+        .pipe(fs.createWriteStream('./docs_closed' + v.replace('temp_closed_attach', '')));
+    });
+  }
   let user_id = req.session.passport.user._id;
   data['user_id'] = user_id;
   let result = await Closed.create(data);
@@ -278,7 +289,7 @@ router.post('/closed/write', middle.isLoggedIn, async (req, res) => {
 // 휴무계 리스트
 router.get('/closed/list', middle.isLoggedIn, async (req, res) => {
   let user_id = req.session.passport.user._id;
-  let list = await Closed.find({user_id: user_id});
+  let list = await Closed.find({user_id: user_id}).sort({closed_year:-1, closed_month:-1, closed_day:-1});
   res.render('my_closed_list', {
     list: list
   })
@@ -295,5 +306,34 @@ router.patch('/closed/:id', middle.isLoggedIn, async (req, res) => {
     {$set: {status: 2}}
   );
   res.json(result);
+});
+// 휴무계 파일 업로드
+const uploadClosedAttach = multer({
+  storage:multer.diskStorage({
+    destination(req, file, cb){
+      cb(null, './temp_closed_attach');
+    },
+    filename(req, file, cb){
+      const ext = path.extname(file.originalname);
+      cb(null, path.basename(file.originalname, ext) + new Date().valueOf() + ext);
+    }
+  }),
+  limit:{fileSize: 2*1024*1024}
+});
+router.post('/closed/upload', middle.isAdmin, uploadClosedAttach.array('closedAttach[]', 10), async(req, res) => {
+  let dir = './temp_closed_attach';
+  fs.readdir(dir, (err, files) => {
+    if(!err){
+      let upload_files = req.files.map((v)=>{return v.filename});
+      for(let file of files){
+        if(upload_files.indexOf(file) === -1)
+          fs.unlink(path.join(dir ,file), err => {
+            if(err) throw err;
+          });
+      }
+    }
+  });
+  let files = await req.files;
+  res.json(files);
 });
 module.exports = router;

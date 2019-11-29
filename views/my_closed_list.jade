@@ -9,7 +9,7 @@ block content
             .card-header.mt-3
               h4.text-dark 휴무계 작성 리스트
             .card-body.text-dark.overflow-auto(style='max-height:60vh')
-              ul.list-group.text-left
+              ul.list-group.list-group-flush.text-left
                 li.list-group-item.font-weight-bold.bg-secondary.text-white
                   .row
                     .d-none.d-md-block.col-md-1 순번
@@ -125,6 +125,7 @@ block content
                       input(type='text', name='reportDate', readonly)
                     td.input-td
                       input(type='text', name='licenserTel', readonly)
+              #closedAttachedFile
             p 위와 같이 휴무계를 사용하고자 하오니 허가하여 주시기 바랍니다.
             .text-right
               input.type_num.text-center(type='text', name='closed_year', readonly)

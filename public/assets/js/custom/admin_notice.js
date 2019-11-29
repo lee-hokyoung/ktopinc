@@ -12,7 +12,6 @@ fileInput.addEventListener('change', function(e){
   xhr.onreadystatechange = function(){
     if(this.readyState === XMLHttpRequest.DONE && this.status === 200){
       let res = JSON.parse(this.response);
-      console.log('res : ', res);
       document.querySelector('input[name="path"]').value = res.map(function(v){return v.path});
       document.querySelector('input[name="originalname"]').value = res.map(function(v){return v.originalname});
     }

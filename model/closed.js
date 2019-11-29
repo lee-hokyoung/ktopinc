@@ -16,6 +16,8 @@ const closedSchema = new Schema({
   closed_year:String,
   closed_month:String,
   closed_day:String,
-  status:{type:Number, default:1} // 정상 : 1, 삭제요청 중 :  2, 삭제상태 : 3
+  status:{type:Number, default:1}, // 정상 : 1, 삭제요청 중 :  2, 삭제상태 : 3
+  path:String,
+  original:String
 });
 module.exports = mongoose.model('Closed', closedSchema);

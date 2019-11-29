@@ -129,7 +129,6 @@ function fnSelectedPeriod(){
   $('#selectedRangeModal').modal('hide');
 }
 
-
 /*  form 전송하는 부분  */
 function fnCheckSubmit() {
   // 비고란에 '휴무' 선택시 휴무계 작성란 띄우기
@@ -281,7 +280,11 @@ function fnCompleteWrite() {
     return false;
   }
   formData['closed_day'] = closed_day.value;
-
+  // file upload
+  let original = document.querySelector('input[name="closedAttachOriginalFileName"]');
+  let path = document.querySelector('input[name="closedAttachPath"]');
+  formData['original'] = original.value;
+  formData['path'] = path.value;
   // ajax post 전송
   let xhr = new XMLHttpRequest();
   xhr.open('POST', '/work/closed/write', true);
@@ -296,3 +299,25 @@ function fnCompleteWrite() {
   // console.log(formData);
   xhr.send(JSON.stringify(formData));
 }
+
+/*  휴무계 첨부 파일 업로드 */
+let closedAttachInput = document.querySelector('#closedAttach');
+closedAttachInput.addEventListener('change', function(e){
+  const formData = new FormData();
+  Object.keys(e.target.files).forEach(function(key){
+    formData.append('closedAttach[]', e.target.files[key], e.target.files[key].name);
+  });
+
+  let xhr = new XMLHttpRequest();
+  xhr.open('POST', '/work/closed/upload');
+  xhr.onreadystatechange = function(){
+    if(this.readyState === XMLHttpRequest.DONE && this.status === 200){
+      let res = JSON.parse(this.response);
+      let original = res.map(function(v){return v.originalname});
+      let path = res.map(function(v){return v.path});
+      document.querySelector('input[name="closedAttachOriginalFileName"]').value = original;
+      document.querySelector('input[name="closedAttachPath"]').value = path;
+    }
+  };
+  xhr.send(formData);
+});
