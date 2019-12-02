@@ -1,9 +1,16 @@
 extends layout
 
 block content
+  style.
+    @media screen and (max-width: 991px) {
+      .wrapper {
+        height: calc(100vh - 160px);
+      }
+    }
   .wrapper
-    .container(style='padding-top:7rem;')
-      .row.content-middle.mx-0.px-0
+    .content
+      .space-100
+      .container.text-center
         .col-md-4.ml-auto.mr-auto.pt-5
           form.form(method='POST', action='/login')
             .card.card-signup

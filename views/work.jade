@@ -5,73 +5,72 @@ block content
     .content
       .space-100
       .container
-        .container
-          .row
-            //.content-middle.mx-0.px-0
-            .col-12.p-0
-              .card.text-center.mt-3
-                .card-header.mt-3
-                  h4.text-dark 근무일지 작성
-                .card-body.text-dark
-                  form#workForm(name='workForm')
-                    //, method='post', action='/work/insert', onsubmit='return fnCheckSubmit()')
-                    .row
-                      .col-lg-6.col-md-8.col-sm-6.my-1
-                        .form-group
-                          label.w80px 근무일
-                          .d-inline-block.w220px
-                            input#work_date.form-control.datetimepicker(type='text' name='work_date')
-                      .col-md-6
-                        .form-group
-                          label.w80px 팀
-                          .d-inline-block.w220px
-                            input#user_team.form-control(type='text', name='work_team', value=user.user_team, readonly)
-                    .row
-                      .col-md-6
-                        .form-group
-                          label.w80px 지역
-                          select#region.selectpicker(data-style="select-with-transition btn-neutral border text-dark btn-round w220px" name='region_name')
-                            each item in region
-                              option(value=item.region_name, selected=user.user_region===item.region_name) #{item.region_name}
-                      .col-md-6
-                        .form-group
-                          label.w80px 현장명
-                          .form-group.d-inline-block
-                            input.form-control.w220px(type='text', name='work_place', value=user.work_place)
-                    .row
-                      .col-lg-6.col-md-8.col-sm-6.my-1
-                        label.w80px 출근시간
+        .row
+          //.content-middle.mx-0.px-0
+          .col-12.p-0
+            .card.text-center.mt-3
+              .card-header.mt-3
+                h4.text-dark 근무일지 작성
+              .card-body.text-dark
+                form#workForm(name='workForm')
+                  //, method='post', action='/work/insert', onsubmit='return fnCheckSubmit()')
+                  .row
+                    .col-lg-6.col-md-8.col-sm-6.my-1
+                      .form-group
+                        label.w80px 근무일
+                        .d-inline-block.w220px
+                          input#work_date.form-control.datetimepicker(type='text' name='work_date')
+                    .col-md-6
+                      .form-group
+                        label.w80px 팀
+                        .d-inline-block.w220px
+                          input#user_team.form-control(type='text', name='work_team', value=user.user_team, readonly)
+                  .row
+                    .col-md-6
+                      .form-group
+                        label.w80px 지역
+                        select#region.selectpicker(data-style="select-with-transition btn-neutral border text-dark btn-round w220px" name='region_name')
+                          each item in region
+                            option(value=item.region_name, selected=user.user_region===item.region_name) #{item.region_name}
+                    .col-md-6
+                      .form-group
+                        label.w80px 현장명
                         .form-group.d-inline-block
-                          input.form-control.w220px#timepicker_start(type='text', name='start_time', value=last_work.start_time||'')
-                      .col-lg-6.col-md-8.col-sm-6.my-1
-                        label.w80px 퇴근시간
-                        .form-group.d-inline-block
-                          input.form-control.w220px#timepicker_end(type='text', name='end_time', value=last_work.end_time)
-                      .col-lg-6.col-md-8.col-sm-6.my-1
-                        label.w80px 작업사항
-                        .form-group.d-none(title='work_title')
-                          .d-flex.w220px
-                            input.form-control(type='text', name='work_title_etc')
-                            a.addon-switch-selectbox(href='#', onclick='fnChangeSelect("work_title")') 작업선택
-                        select#work_title.selectpicker(data-style="select-with-transition btn-neutral border text-dark btn-round w220px" data-live-search="true" name='work_title')
-                          each item in work_title
-                            option(value=item.work_title, selected=last_work.work_title===item.work_title) #{item.work_title}
-                          option(value='직접입력' onselect='fnChangeSelect("work_title")') 직접입력
-                      .col-lg-6.col-md-8.col-sm-6.my-1
-                        label.w80px 비고
-                        .form-group.d-none(title='remarks')
-                          .d-flex.w220px
-                            input.form-control(type='text', name='remarks_etc')
-                            a.addon-switch-selectbox(href='#', onclick='fnChangeSelect("remarks")') 비고선택
-                        select#remarks.selectpicker(data-style="select-with-transition btn-neutral border text-dark btn-round w220px" name='remarks')
-                          each item in remark
-                            option(value=item.remark) #{item.remark}
-                          option(value='직접입력' onselect='fnChangeSelect("remarks")') 직접입력
-                    .row.justify-content-center
-                      button.btn.btn-success(type='button' onclick='fnCheckSubmit()') 등록하기
-                        i.now-ui-icons.ui-1_check
-                    input(type='hidden', name='temp_start_time', value=last_work.start_time)
-                    input(type='hidden', name='temp_end_time', value=last_work.end_time)
+                          input.form-control.w220px(type='text', name='work_place', value=user.work_place)
+                  .row
+                    .col-lg-6.col-md-8.col-sm-6.my-1
+                      label.w80px 출근시간
+                      .form-group.d-inline-block
+                        input.form-control.w220px#timepicker_start(type='text', name='start_time', value=last_work.start_time||'')
+                    .col-lg-6.col-md-8.col-sm-6.my-1
+                      label.w80px 퇴근시간
+                      .form-group.d-inline-block
+                        input.form-control.w220px#timepicker_end(type='text', name='end_time', value=last_work.end_time)
+                    .col-lg-6.col-md-8.col-sm-6.my-1
+                      label.w80px 작업사항
+                      .form-group.d-none(title='work_title')
+                        .d-flex.w220px
+                          input.form-control(type='text', name='work_title_etc')
+                          a.addon-switch-selectbox(href='#', onclick='fnChangeSelect("work_title")') 작업선택
+                      select#work_title.selectpicker(data-style="select-with-transition btn-neutral border text-dark btn-round w220px" data-live-search="true" name='work_title')
+                        each item in work_title
+                          option(value=item.work_title, selected=last_work.work_title===item.work_title) #{item.work_title}
+                        option(value='직접입력' onselect='fnChangeSelect("work_title")') 직접입력
+                    .col-lg-6.col-md-8.col-sm-6.my-1
+                      label.w80px 비고
+                      .form-group.d-none(title='remarks')
+                        .d-flex.w220px
+                          input.form-control(type='text', name='remarks_etc')
+                          a.addon-switch-selectbox(href='#', onclick='fnChangeSelect("remarks")') 비고선택
+                      select#remarks.selectpicker(data-style="select-with-transition btn-neutral border text-dark btn-round w220px" name='remarks')
+                        each item in remark
+                          option(value=item.remark) #{item.remark}
+                        option(value='직접입력' onselect='fnChangeSelect("remarks")') 직접입력
+                  .row.justify-content-center
+                    button.btn.btn-success(type='button' onclick='fnCheckSubmit()') 등록하기
+                      i.now-ui-icons.ui-1_check
+                  input(type='hidden', name='temp_start_time', value=last_work.start_time)
+                  input(type='hidden', name='temp_end_time', value=last_work.end_time)
   // 달력선택 모달창
   style.
     #selectCalendarModal .bootstrap-datetimepicker-widget table td.day>div,
