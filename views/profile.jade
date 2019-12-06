@@ -21,17 +21,21 @@ block content
                         input.form-control(type='text', disabled='', value=user.user_id)
                     .col-md-6
                       .form-group
-                        label 영문명
-                        input.form-control(type='text', value=user.user_en_name, name='user_en_name')
+                        label Email
+                        input.form-control(type='email', placeholder='Email' value=user.user_email, name='user_email')
                   .row
-                    .col-md-6
+                    .col-md-4
                       .form-group
                         label 이름
                         input.form-control(type='text', placeholder='이름', value=user.user_nick, name='user_nick')
-                    .col-md-6
+                    .col-md-4
                       .form-group
-                        label Email
-                        input.form-control(type='email', placeholder='Email' value=user.user_email, name='user_email')
+                        label 영문명
+                        input.form-control(type='text', value=user.user_en_name, name='user_en_name')
+                    .col-md-4
+                      .form-group
+                        label 한문명
+                        input.form-control(type='text', value=user.user_cn_name, name='user_cn_name')
                   .row
                     .col-md-4
                       .form-group

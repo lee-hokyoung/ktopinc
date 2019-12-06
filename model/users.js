@@ -7,6 +7,7 @@ const userSchema = new Schema({
     user_nick:{type:String, required:true},
     user_email:{type:String, unique:true},
     user_en_name:{type:String},
+    user_cn_name:String,
     profile_image:String,
     user_team:{type:String, default:'사업팀'},
     user_region:String,
