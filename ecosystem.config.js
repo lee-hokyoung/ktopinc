@@ -7,20 +7,29 @@
 // }];
 
 module.exports = {
-  apps:[{
-    name:'ktop',
-    script:'app.js',
-    // 개발
-    env:{
-      PORT:3000,
-      NODE_ENV:'development'
-    },
-    // 배포
-    env_production:{
-      PORT:8000,
-      NODE_ENV:'production'
-    },
-    out_file: null,
-    log_file: null,
-  }]
+  apps: [
+    {
+      name: 'ktop',
+      script: 'app.js',
+      // 개발
+      // env: {
+      //   PORT: 3000,
+      //   NODE_ENV: 'development'
+      // },
+      // 배포
+      env_production: {
+        PORT: 8000,
+        NODE_ENV: 'production'
+      },
+      out_file: null,
+      log_file: null,
+    }, {
+      name: 'ktop-dev',
+      script: 'app.js',
+      env: {
+        PORT: 3000,
+        NODE_ENV: 'development'
+      }
+    }
+  ]
 };

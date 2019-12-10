@@ -45,6 +45,19 @@ html(lang='en')
               a.nav-link(rel='tooltip', title='업무일지', data-placement='bottom', href='/work/list')
                 i.now-ui-icons.ui-1_calendar-60
                 p.d-lg-none.d-xl-none 업무일지
+            li.nav-item
+              a.nav-link(rel='tooltip', title='공지사항', data-placement='bottom', href='/notice')
+                i.now-ui-icons.objects_diamond
+                p.d-lg-none.d-xl-none 공지사항
+            li.nav-item
+              a.nav-link(rel='tooltip', title='휴무계', data-placement='bottom', href='/work/closed/list')
+                i.now-ui-icons.shopping_shop
+            li.nav-item
+              a.nav-link(rel='tooltip', title='가동보고서 확인', data-placement='bottom', href='/work/report')
+                i.now-ui-icons.education_atom
+            li.nav-item
+              a.nav-link(rel='tooltip', title='월간업무보고서', data-placement='bottom', href='/work/business')
+                i.now-ui-icons.education_paper
             if(user_lv > 1)
               li.nav-item.dropdown
                 a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
