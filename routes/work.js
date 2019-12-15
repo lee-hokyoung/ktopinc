@@ -288,11 +288,13 @@ router.post('/closed/write', middle.isLoggedIn, async (req, res) => {
 });
 // 휴무계 리스트
 router.get('/closed/list', middle.isLoggedIn, async (req, res) => {
+  const user = await User.findOne({_id: req.session.passport.user._id});
   let user_id = req.session.passport.user._id;
   let list = await Closed.find({user_id: user_id}).sort({closed_year:-1, closed_month:-1, closed_day:-1});
   res.render('my_closed_list', {
-    list: list
-  })
+    list: list,
+    user:user
+  });
 });
 // 휴무계 읽기
 router.get('/closed/:id', middle.isLoggedIn, async (req, res) => {
