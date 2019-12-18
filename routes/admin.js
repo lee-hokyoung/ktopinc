@@ -251,21 +251,24 @@ router.delete('/work/:id', middle.isAdmin, async (req, res) => {
   res.json(result);
 });
 // 작업관리 화면, 부서 신규등록
-router.post('/work/region', middle.isAdmin, async (req, res, next) => {
-  let data = req.body.region;
-  if (typeof req.body.region === 'string') data = [req.body.region];
-  let query = data.filter((v) => {
-    if (v) return v
-  }).map((v) => {
-    return {region_name: v}
-  });
-  const exData = await Region.find({$or: query});
-  if (exData.length > 0) { // 이미 동일한 데이터가 있을 경우
-    res.sendStatus(301);
-  } else {
-    const result = await Region.insertMany(query);
-    res.json(result);
-  }
+router.post('/work/region', middle.isAdmin, async (req, res) => {
+  await Region.deleteMany({});
+  let result = await Region.insertMany(req.body);
+  res.status(200).json(result);
+  // let data = req.body.region;
+  // if (typeof req.body.region === 'string') data = [req.body.region];
+  // let query = data.filter((v) => {
+  //   if (v) return v
+  // }).map((v) => {
+  //   return {region_name: v}
+  // });
+  // const exData = await Region.find({$or: query});
+  // if (exData.length > 0) { // 이미 동일한 데이터가 있을 경우
+  //   res.sendStatus(301);
+  // } else {
+  //   const result = await Region.insertMany(query);
+  //   res.json(result);
+  // }
 });
 // 작업관리 화면, 부서 수정
 router.put('/work/region/:id/:name', middle.isAdmin, async (req, res, next) => {
