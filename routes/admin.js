@@ -281,26 +281,28 @@ router.delete('/work/region/:id', middle.isAdmin, async (req, res, next) => {
   res.json(result);
 });
 
-
 // 작업관리 작업명 등록
 router.post('/work/work_title', middle.isAdmin, async (req, res, next) => {
-  let data = req.body.work_title;
-  if (typeof req.body.work_title === 'string') data = [req.body.work_title];
-  let query = data.filter((v) => {
-    if (v) return v
-  }).map((v) => {
-    return {work_title: v}
-  });
-  const exData = await WorkTitle.find({$or: query});
-  if (exData.length > 0) { // 이미 동일한 데이터가 있을 경우
-    res.sendStatus(301);
-  } else {
-    const result = await WorkTitle.insertMany(query);
-    res.json(result);
-  }
+  await WorkTitle.deleteMany({});
+  let result = await WorkTitle.insertMany(req.body);
+  res.status(200).json(result);
+  // let data = req.body.work_title;
+  // if (typeof req.body.work_title === 'string') data = [req.body.work_title];
+  // let query = data.filter((v) => {
+  //   if (v) return v
+  // }).map((v) => {
+  //   return {work_title: v}
+  // });
+  // const exData = await WorkTitle.find({$or: query});
+  // if (exData.length > 0) { // 이미 동일한 데이터가 있을 경우
+  //   res.sendStatus(301);
+  // } else {
+  //   const result = await WorkTitle.insertMany(query);
+  //   res.json(result);
+  // }
 });
 // 작업관리 화면, 작업명 수정
-router.put('/work/work_title/:id/:name', middle.isAdmin, async (req, res, next) => {
+router.put('/work/work_title/:id/:name', middle.isAdmin, async (req, res) => {
   const result = await WorkTitle.update({_id: req.params.id}, {$set: {work_title: req.params.name}});
   res.json(result);
 });
@@ -310,23 +312,25 @@ router.delete('/work/work_title/:id', middle.isAdmin, async (req, res, next) => 
   res.json(result);
 });
 
-
 // 작업관리 비고 등록
-router.post('/work/remark', middle.isAdmin, async (req, res, next) => {
-  let data = req.body.remark;
-  if (typeof req.body.remark === 'string') data = [req.body.remark];
-  let query = data.filter((v) => {
-    if (v) return v
-  }).map((v) => {
-    return {remark: v}
-  });
-  const exData = await Remark.find({$or: query});
-  if (exData.length > 0) { // 이미 동일한 데이터가 있을 경우
-    res.sendStatus(301);
-  } else {
-    const result = await Remark.insertMany(query);
-    res.json(result);
-  }
+router.post('/work/remark', middle.isAdmin, async (req, res) => {
+  await Remark.deleteMany({});
+  let result = await Remark.insertMany(req.body);
+  res.status(200).json(result);
+  // let data = req.body.remark;
+  // if (typeof req.body.remark === 'string') data = [req.body.remark];
+  // let query = data.filter((v) => {
+  //   if (v) return v
+  // }).map((v) => {
+  //   return {remark: v}
+  // });
+  // const exData = await Remark.find({$or: query});
+  // if (exData.length > 0) { // 이미 동일한 데이터가 있을 경우
+  //   res.sendStatus(301);
+  // } else {
+  //   const result = await Remark.insertMany(query);
+  //   res.json(result);
+  // }
 });
 // 작업관리 화면, 비고 수정
 router.put('/work/remark/:id/:name', middle.isAdmin, async (req, res, next) => {
