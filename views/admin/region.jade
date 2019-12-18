@@ -12,6 +12,7 @@
               tr
                 th.text-center #
                 th.text-center 지역명
+                th.text-center 일본어
                 th.text-center
             tbody#new_region
               each r, i in region
@@ -20,6 +21,9 @@
                   td.text-center
                     .form-group.my-0
                       input.form-control(type='text', value=r.region_name)
+                  td.text-center
+                    .form-group.my-0
+                      input.form-control(type='text', value='')
                   td.td-actions.text-right
                     button.btn.btn-info.btn-round.btn-icon.btn-icon-mini.btn-neutral(type='button', onclick='fnUpdate("' + r._id + '", this, "region")')
                       i.now-ui-icons.ui-2_settings-90
@@ -31,5 +35,7 @@
                   .form-group.my-0
                     input.form-control(type='text', name='region')
                 td.text-center
+                  .form-group.my-0
+                    input.form-control(type='text', name='region_jp')
+                td.text-center
                   a.btn.btn-info.btn-sm.px-2(onclick='fnNewRow("#new_region", "region")')
-                    i.now-ui-icons.ui-1_simple-add.text-white(style='font-size:9px;')

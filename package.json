@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "run": "pm2-dev start ecosystem.config.js --env development",
-    "test": "node app.js",
+    "test": "pm2-dev start ecosystem.config.js --env development",
+    "run": "node app.js",
     "start": "pm2 start ecosystem.config.js --env production"
   },
   "dependencies": {

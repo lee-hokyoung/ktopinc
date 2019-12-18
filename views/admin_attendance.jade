@@ -121,7 +121,7 @@ block content
                                 option(value=1 selected=confirm===1) 확정
                                 option(value=2 selected=confirm===2) 신규
                               button.btn.btn-success.btn-round.px-3.py-2(onclick='fnOpenSetTimeModal("' + item.works._id.toString() + '")')
-                                i.now-ui-icons.ui-2_time-alarm
+                                i.now-ui-icons.ui-1_settings-gear-63
                           td.text-nowrap #{created_date}
                           td.text-center
                             button.btn.btn-danger.btn-round.btn-icon.btn-icon-mini.btn-neutral(type='button', onclick='fnDelete("' + item.works._id + '", this)')
@@ -213,6 +213,14 @@ block content
                 .form-group
                   label 퇴근시간
                   input.form-control.w220px#timepicker_end(type='text', name='end_time')
+            .row
+              .col-md-6
+                .form-group
+                  lable 작업내용
+                  select#work_title.selectpicker(data-style="select-with-transition btn-neutral border text-dark btn-round w220px" data-live-search="true" name='work_title')
+                    each item in work_titles
+                      option(value=item.work_title) #{item.work_title}
+                    //option(value='직접입력' onselect='fnChangeSelect("work_title")') 직접입력
 
         .modal-footer.justify-content-center
           button.btn.btn-danger.mr-3(type="button" data-dismiss="modal") 닫기
@@ -220,14 +228,16 @@ block content
 block append_js
   script.
     let current_work_id = '';
-    // 근무시간 수정
+    // 근무시간 및 작업사항 수정
     function fnUpdateTime(){
       console.log('work id : ', current_work_id);
       let tds = document.querySelectorAll('tr[data-id="' + current_work_id + '"] td');
       let start_time = document.querySelector('#timepicker_start');
       let end_time = document.querySelector('#timepicker_end');
+      let work_title = $('#work_title').selectpicker('val');
       tds[6].innerText = start_time.value;
       tds[7].innerText = end_time.value;
+      tds[8].innerText = work_title;
       let xhr = new XMLHttpRequest();
       xhr.open("POST", '/admin/attendance/time/' + current_work_id, true);
       xhr.setRequestHeader("Content-Type", "application/json");
@@ -244,7 +254,7 @@ block append_js
           });
         }
       };
-      xhr.send(JSON.stringify({start_time:start_time.value, end_time:end_time.value}));
+      xhr.send(JSON.stringify({start_time:start_time.value, end_time:end_time.value, work_title:work_title}));
       $('#setTimeModal').modal('hide');
     }
     // 근무시간 모달창 띄우기
@@ -259,6 +269,7 @@ block append_js
           document.querySelector('#modal_nick').value = res.user_id.user_nick;
           document.querySelector('#timepicker_start').value = res.start_time || '';
           document.querySelector('#timepicker_end').value = res.end_time || '';
+          $('#work_title').selectpicker('val', res.work_title);
           // 모달창 띄우기
           $('#timepicker_start').datetimepicker({
             format: 'HH:mm',

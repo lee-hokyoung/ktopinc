@@ -45,6 +45,7 @@ router.get('/memberProfile/:id', middle.isAdmin, async (req, res) => {
 });
 // 관리자 화면. 근태관리 화면
 router.all('/attendance', middle.isAdmin, async (req, res, next) => {
+  const work_titles = await WorkTitle.find({});
   const page = req.body.page || 1;
   let size = parseInt(req.body.entries) || 30;
   if (req.method === 'PATCH') size = 65536;
@@ -176,7 +177,8 @@ router.all('/attendance', middle.isAdmin, async (req, res, next) => {
       end_period: end_period,
       user_nick: req.body.user_nick,
       region: req.body.region,
-      isDataOnly: req.body.isDataOnly
+      isDataOnly: req.body.isDataOnly,
+      work_titles:work_titles
     });
   }
 });
@@ -212,9 +214,9 @@ router.post('/attendance/excelDownload', middle.isAdmin, async (req, res) => {
 router.post('/attendance/time/:id', middle.isAdmin, async (req, res) => {
   let result = await Work.updateMany({_id: req.params.id}, {
     $set:
-      {start_time: req.body.start_time, end_time: req.body.end_time}
+      {start_time: req.body.start_time, end_time: req.body.end_time, work_title:req.body.work_title}
   });
-  if (result.ok === 1) result.message = '등록 성공';
+  if (result.ok === 1) result.message = '수정 성공';
   else result.message = '수정 실패';
   res.json(result);
 });
