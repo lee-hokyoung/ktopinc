@@ -1,6 +1,6 @@
 public/assets/css/
 public/assets/icomoon/
-node_modules
+node_modules/
 test/
 uploads/
 .idea/
