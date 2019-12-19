@@ -100,10 +100,10 @@ block content
 											.border(style='width:230px; height:130px')
 												.mt-2(style='text-decoration:underline') 現場責任者様承認印
 					.form-group
-						button.btn.btn-success(type='button', onclick='fnDownPDF()') PDF 다운로드
-						button.btn.btn-warning.ml-3(type='button', onclick='exportExcel()') 엑셀 다운로드
-						button.btn.btn-info.ml-3(type='button', onclick='fnSwitchLang("ko")') 한국어로 변경
-						button.btn.btn-danger.ml-3(type='button', onclick='fnSwitchLang("jp")') 일본어로 변경
+						button.btn.btn-success.mr-3(type='button', onclick='fnDownPDF()') PDF 다운로드
+						button.btn.btn-warning.mr-3(type='button', onclick='exportExcel()') 엑셀 다운로드
+						button.btn.btn-info.mr-3(type='button', onclick='fnSwitchLang("ko")') 한국어로 변경
+						button.btn.btn-danger(type='button', onclick='fnSwitchLang("jp")') 일본어로 변경
 	style.
 		#htmlToCanvas canvas {
 			width: 100% !important;

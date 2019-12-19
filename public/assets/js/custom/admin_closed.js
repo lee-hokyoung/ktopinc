@@ -16,8 +16,11 @@ function fnShowClosedModal(id) {
     else v.value = doc[v.name];
   });
   document.querySelector('input[name="doc_id"]').value = doc._id;
+  let btnDelete = document.querySelector('button[name="btnDelete"]');
   if(doc.status === 2){
-    document.querySelector('button[name="btnDelete"]').classList.remove('d-none');
+    btnDelete.setAttribute('class', 'btn btn-info');
+  }else{
+    btnDelete.setAttribute('class','btn btn-info d-none');
   }
   $('#closedModal').modal('show');
 }

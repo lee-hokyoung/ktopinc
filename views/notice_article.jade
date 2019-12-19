@@ -6,32 +6,36 @@ block content
     @media screen and (max-width: 991px){
       /*.wrapper{height:inherit;}*/
     }
+  //.wrapper
+  //  .container.d-flex.align-self-center(style='padding-top:10vh;')
   .wrapper
-    .container.d-flex.align-self-center(style='padding-top:10vh;')
-      .card
-        .card-header
-          h3.m-3 공지사항
-        .card-body
-          .row
-            .col-md-9
-              h5 #{article.title}
-            .col-md-3
-              h6 #{article.writer}
-          .row
-            .col-12
-              .border.p-2#notice_content
-          if(article.path)
-            .py-3
-              .row
-                .col
-                  h6 첨부파일
-              .row
-                .col
-                  each file, idx in article.originalname.split(',')
-                    .m-0
-                      a(href='/docs' + article.path.split(',')[idx].replace('temps', ''), target='_blank') #{file}
-          .text-center
-            a.btn.btn-info(href='/notice') 목록으로
+    .content
+      .space-100
+      .container
+        .card
+          .card-header
+            h3.m-3 공지사항
+          .card-body
+            .row
+              .col-md-9
+                h5 #{article.title}
+              .col-md-3
+                h6 #{article.writer}
+            .row
+              .col-12
+                .border.p-2#notice_content
+            if(article.path)
+              .py-3
+                .row
+                  .col
+                    h6 첨부파일
+                .row
+                  .col
+                    each file, idx in article.originalname.split(',')
+                      .m-0
+                        a(href='/docs' + article.path.split(',')[idx].replace('temps', ''), target='_blank') #{file}
+            .text-center
+              a.btn.btn-info(href='/notice') 목록으로
 block append_js
   script.
     let notice_content = `!{article.content.replace(/\r\n/g, '')}`;

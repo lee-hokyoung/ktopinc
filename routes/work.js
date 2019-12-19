@@ -302,7 +302,12 @@ router.post('/closed/write', middle.isLoggedIn, async (req, res) => {
 router.get('/closed/list', middle.isLoggedIn, async (req, res) => {
   const user = await User.findOne({_id: req.session.passport.user._id});
   let user_id = req.session.passport.user._id;
-  let list = await Closed.find({user_id: user_id}).sort({closed_year:-1, closed_month:-1, closed_day:-1});
+  let list = await Closed.find({user_id: user_id});
+  list.sort(function(a, b){
+    let date_a = new Date(a.closed_year, a.closed_month, a.closed_day);
+    let date_b = new Date(b.closed_year, b.closed_month, b.closed_day);
+    return (date_a < date_b ? 1: -1);
+  });
   res.render('my_closed_list', {
     list: list,
     user:user

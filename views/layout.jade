@@ -52,15 +52,19 @@ html(lang='en')
             li.nav-item
               a.nav-link(rel='tooltip', title='휴무계', data-placement='bottom', href='/work/closed/list')
                 i.now-ui-icons.shopping_shop
+                p.d-lg-none.d-xl-none 휴무계
             li.nav-item
               a.nav-link(rel='tooltip', title='가동보고서 확인', data-placement='bottom', href='/work/report')
                 i.now-ui-icons.education_atom
+                p.d-lg-none.d-xl-none 가동보고서 확인
             li.nav-item
               a.nav-link(rel='tooltip', title='월간업무보고서', data-placement='bottom', href='/work/business')
                 i.now-ui-icons.education_paper
+                p.d-lg-none.d-xl-none 월간업무보고서
             li.nav-item
               a.nav-link(rel='tooltip', title='zoom', data-placement='bottom', href='https://zoom.us/', target='_blank')
                 img(src='/assets/img/zoom-icon.svg', alt='줌 링크', width='20px')
+                p.d-lg-none.d-xl-none(style='margin-left:3px;') zoom.us
             if(user_lv > 1)
               li.nav-item.dropdown
                 a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
@@ -70,6 +74,8 @@ html(lang='en')
                   a.dropdown-item(href='/admin') 직원관리
                   a.dropdown-item(href='/admin/attendance') 근태관리
                   a.dropdown-item(href='/admin/work') 작업관리
+                  a.dropdown-item(href='/admin/notice/list') 공지사항
+                  a.dropdown-item(href='/admin/closed/list') 휴무계 관리
                   a.dropdown-item(href='/admin/superAdmin') 전체회원관리
       // End Navbar
     block content

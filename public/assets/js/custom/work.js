@@ -74,62 +74,6 @@ $('#timepicker_end').datetimepicker({
     down: 'fa fa-chevron-down'
   }
 });
-// 보고일시 선택
-$('#reportDate').on('click', function () {
-  $('#selectCalendarModal').modal('show');
-});
-$('#selectCalendarModal').on('shown.bs.modal', function(){
-  let current_date = document.querySelector('#reportDate');
-  console.log('current date : ', current_date);
-  if(current_date.value === ''){
-    current_date.value = document.querySelector('#selectCalendarModal .table-condensed td.today').dataset.day;
-  }
-});
-$('#datepicker-inline').datetimepicker({
-  inline: true,
-  format: 'YYYY-MM-DD',
-  locale: 'ko'
-}).on('dp.change', function (e) {
-  let selected = document.querySelector('#selectCalendarModal .table-condensed td.active');
-  document.querySelector('#reportDate').value = selected.dataset.day;
-});
-// 신청기간 선택
-$('#application_period').on('click', function () {
-  $('#selectedRangeModal').modal('show');
-});
-$('#datepickerStart').datetimepicker({
-  inline:true,
-  format: 'YYYY-MM-DD',
-  locale:'ko',
-  useCurrent:false
-}).on('dp.change', function(){
-  let start_date = document.querySelector('#datepickerStart td.day.active').dataset.day;
-  $('#datepickerEnd').data('DateTimePicker').minDate(start_date);
-  document.querySelector('input[name="selectedRange"]').value = '';
-  document.querySelector('input[name="period"]').value = '';
-});
-$('#datepickerEnd').datetimepicker({
-  inline:true,
-  format: 'YYYY-MM-DD',
-  locale:'ko',
-  useCurrent: false
-}).on('dp.change', function(){
-  let end_date = document.querySelector('#datepickerEnd td.day.active').dataset.day;
-  console.log('end : ', end_date);
-  let p_start = document.querySelector('#datepickerStart td.day.active').dataset.day;
-  let p_end = document.querySelector('#datepickerEnd td.day.active').dataset.day;
-  let d_start = new Date(p_start.slice(0, p_start.length - 1).replace(/\./g, '-'));
-  let d_end = new Date(p_end.slice(0, p_end.length - 1).replace(/\./g, '-'));
-  console.log('start : ', d_start, ', end : ', d_end);
-  let period = Math.abs(d_start - d_end) + 1;
-  document.querySelector('input[name="selectedRange"]').value = p_start + '~' + p_end;
-  document.querySelector('input[name="period"]').value =  Math.ceil(period / (1000 * 60 * 60 * 24));
-});
-function fnSelectedPeriod(){
-  document.querySelector('#application_period').value = document.querySelector('input[name="selectedRange"]').value;
-  document.querySelector('input[name="days"]').value = document.querySelector('input[name="period"]').value;
-  $('#selectedRangeModal').modal('hide');
-}
 
 /*  form 전송하는 부분  */
 function fnCheckSubmit(id) {

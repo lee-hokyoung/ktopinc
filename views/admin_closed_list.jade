@@ -35,7 +35,9 @@ block content
       background-color: lightgoldenrodyellow;
       border: none;
     }
-
+    .status-color[data-color="정상"]{color:blue;}
+    .status-color[data-color="삭제"]{color:#888;}
+    .status-color[data-color="삭제요청"]{color:red;}
   .panel-header.panel-header-sm
   .content
     .row
@@ -97,7 +99,7 @@ block content
                       .col-md-1.col-6 #{row.rank}
                       .col-md-3.col-6 #{row.reason}
                       .col-md-2.col-6 #{row.user_id.user_nick}
-                      .col-md-1.col-6 #{status}
+                      .col-md-1.col-6.status-color(data-color=status) #{status}
           .card-footer
   // 휴무계 검색 결과 모달창
   #closedEmployeeList.modal.fade(tabindex="-1", role="dialog", aria-labelledby="closedEmployeeListLabel", aria-hidden="true")
