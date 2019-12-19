@@ -193,6 +193,15 @@ router.get('/report/:month?', middle.isLoggedIn, async (req, res) => {
   //
   // const list = await Work.find(query).populate('user_id').sort({date: 1});
 
+  /*  작업관리 관련 정보 추출
+  *   1. 지역
+  *   2. 작업명
+  *   3. 비고
+  */
+  let region_info = await Region.find({});
+  let work_info = await WorkTitle.find({});
+  let remark_info = await Remark.find({});
+
   // 유저 정보 추출
   const user_info = await User.findOne({_id: user_id});
   // 근무한 월 추출
@@ -207,8 +216,11 @@ router.get('/report/:month?', middle.isLoggedIn, async (req, res) => {
     user_info: user_info,
     groupByMonth: groupByMonth,
     search_month: search_month,
-    search_year: search_year
-  })
+    search_year: search_year,
+    region_info:region_info,
+    work_info:work_info,
+    remark_info:remark_info
+  });
 });
 // 가동보고서 엑셀 다운로드
 router.post('/report/excel', middle.isLoggedIn, async (req, res) => {
