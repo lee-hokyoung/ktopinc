@@ -27,7 +27,7 @@ block content
 							thead
 								tr
 									td(colspan='3', data-cell='A2') ﾌﾘｶﾞﾅ
-									td(colspan='2', data-cell='D2', class=user_info.user_en_name?'':'text-danger') #{user_info.user_en_name || '영문명을 입력해주세요'}
+									td(colspan='2', data-cell='D2', class=user_info.user_en_name ? '' : 'text-danger') #{user_info.user_en_name || '영문명을 입력해주세요'}
 									td(rowspan='2')
 										.rounded-circle.mx-auto.p-2.text-danger.font-weight-bold(style='width:45px; border:2px solid #FF3636; white-space:normal;') #{user_info.user_nick}
 									td(colspan='4', rowspan='2')
@@ -63,7 +63,6 @@ block content
 									- var diff_hours = parseInt(end[0]) - parseInt(start[0]);
 									- var diff_min = (parseInt(end[1]) - parseInt(start[1])) / 60;
 									- var work_day = (isNaN(parseFloat(diff_hours) + parseFloat(diff_min)))?0:parseFloat(diff_hours) + parseFloat(diff_min);
-									// - total_time += isNaN(work_day)?0:work_day;
 									- total_time += work_day;
 									- var work = parseFloat(work_day) >= 8 ? 1:0;
 									- var work_under = parseFloat(work_day) < 8 ? parseFloat(work_day) : 0;
@@ -71,15 +70,20 @@ block content
 									- total_work_day += work;
 									- total_work_under += work_under;
 									- total_work_over += work_over;
+									- var work_title = row.works ? row.works.work_title : '';
+									- var jp_name = '';
+									each info in work_info
+										if(info.work_title === work_title)
+											- jp_name = info.jp_name;
 									tr
 										td(data-cell='A' + cell_idx) #{date.getDate()}
 										td(data-cell='B' + cell_idx) #{day[date.getDay()]}
 										td(data-cell='C' + cell_idx) #{row.works ? row.works.start_time : ''}
 										td(data-cell='D' + cell_idx) #{row.works ? row.works.end_time : ''}
-										td(data-cell='E' + cell_idx) #{row.works ? row.works.work_title : ''}
+										td(data-cell='E' + cell_idx, data-ko=work_title, data-jp=jp_name) #{work_title}
 										td(data-cell='G' + cell_idx) #{work_day > 0 ? work_day.toFixed(2) + ' H' : ''}
 										td(data-cell='H' + cell_idx) #{parseFloat(work_day) >= 8 ? 1 : ''}
-										td(data-cell='I' + cell_idx) #{(parseFloat(work_day) < 8 && work_day !== 0)? work_day.toFixed(1) : ''}
+										td(data-cell='I' + cell_idx) #{(parseFloat(work_day) < 8 && work_day !== 0) ? work_day.toFixed(1) : ''}
 										td(data-cell='J' + cell_idx) #{parseFloat(work_day) > 10 ? (parseFloat(work_day) - 10).toFixed(1) : ''}
 										td
 								tr
@@ -92,15 +96,24 @@ block content
 								tr
 									td(colspan='10')
 										.d-flex.justify-content-between
-											div
+											div 製番 :
 											.border(style='width:230px; height:130px')
 												.mt-2(style='text-decoration:underline') 現場責任者様承認印
 					.form-group
-						button.btn.btn-success(type='button', onclick='fnDownPDF()') PDF 다운로드
-						button.btn.btn-info.ml-3(type='button', onclick='exportExcel()') 엑셀 다운로드
+						button.btn.btn-success.mr-3(type='button', onclick='fnDownPDF()') PDF 다운로드
+						button.btn.btn-warning.mr-3(type='button', onclick='exportExcel()') 엑셀 다운로드
+						button.btn.btn-info.mr-3(type='button', onclick='fnSwitchLang("ko")') 한국어로 변경
+						button.btn.btn-danger(type='button', onclick='fnSwitchLang("jp")') 일본어로 변경
 	style.
-		#htmlToCanvas canvas{width:100% !important; height:auto !important;}
-		#pdfModal .modal-lg{max-width:90% !important;}
+		#htmlToCanvas canvas {
+			width: 100% !important;
+			height: auto !important;
+		}
+
+		#pdfModal .modal-lg {
+			max-width: 90% !important;
+		}
+
 		/*.html2canvas-container { width: 100% !important; height: 1000px !important; }*/
 	#pdfModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='pdfModalLabel', aria-hidden='true')
 		.modal-dialog.modal-lg(role='document')
@@ -123,4 +136,10 @@ block append_js
 	script.
 		console.log('work list : ', !{JSON.stringify(report_list)});
 		console.log(!{JSON.stringify(user_info)});
-
+		// 언어 변경
+		function fnSwitchLang(lang) {
+			let work_col = document.querySelectorAll('td[data-cell^="E"]');
+			work_col.forEach(function (cell, idx) {
+				if(idx > 0) cell.innerText = cell.dataset[lang];
+			});
+		}

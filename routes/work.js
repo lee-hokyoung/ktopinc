@@ -117,7 +117,7 @@ router.post('/insert', async (req, res, next) => {
 // 가동보고서
 router.get('/report/:month?', middle.isLoggedIn, async (req, res) => {
   let user_id = req.session.passport.user._id;
-  let today = moment(), day = moment(today).format('DD'), start_date = 26, month_start, month_end;
+  let today = moment(), day = moment(today).format('DD'), start_date = 19, month_start, month_end;
   let month = req.params.month || moment(today).format('MM');
   let search_year = moment(today).format('YYYY');
   let search_month = moment(today).format('MM');
@@ -193,6 +193,15 @@ router.get('/report/:month?', middle.isLoggedIn, async (req, res) => {
   //
   // const list = await Work.find(query).populate('user_id').sort({date: 1});
 
+  /*  작업관리 관련 정보 추출
+  *   1. 지역
+  *   2. 작업명
+  *   3. 비고
+  */
+  let region_info = await Region.find({});
+  let work_info = await WorkTitle.find({});
+  let remark_info = await Remark.find({});
+
   // 유저 정보 추출
   const user_info = await User.findOne({_id: user_id});
   // 근무한 월 추출
@@ -207,8 +216,11 @@ router.get('/report/:month?', middle.isLoggedIn, async (req, res) => {
     user_info: user_info,
     groupByMonth: groupByMonth,
     search_month: search_month,
-    search_year: search_year
-  })
+    search_year: search_year,
+    region_info:region_info,
+    work_info:work_info,
+    remark_info:remark_info
+  });
 });
 // 가동보고서 엑셀 다운로드
 router.post('/report/excel', middle.isLoggedIn, async (req, res) => {
@@ -288,11 +300,18 @@ router.post('/closed/write', middle.isLoggedIn, async (req, res) => {
 });
 // 휴무계 리스트
 router.get('/closed/list', middle.isLoggedIn, async (req, res) => {
+  const user = await User.findOne({_id: req.session.passport.user._id});
   let user_id = req.session.passport.user._id;
-  let list = await Closed.find({user_id: user_id}).sort({closed_year:-1, closed_month:-1, closed_day:-1});
+  let list = await Closed.find({user_id: user_id});
+  list.sort(function(a, b){
+    let date_a = new Date(a.closed_year, a.closed_month, a.closed_day);
+    let date_b = new Date(b.closed_year, b.closed_month, b.closed_day);
+    return (date_a < date_b ? 1: -1);
+  });
   res.render('my_closed_list', {
-    list: list
-  })
+    list: list,
+    user:user
+  });
 });
 // 휴무계 읽기
 router.get('/closed/:id', middle.isLoggedIn, async (req, res) => {

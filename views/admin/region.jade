@@ -12,6 +12,7 @@
               tr
                 th.text-center #
                 th.text-center 지역명
+                th.text-center 일본어
                 th.text-center
             tbody#new_region
               each r, i in region
@@ -19,17 +20,22 @@
                   td.text-center #{i + 1}
                   td.text-center
                     .form-group.my-0
-                      input.form-control(type='text', value=r.region_name)
-                  td.td-actions.text-right
-                    button.btn.btn-info.btn-round.btn-icon.btn-icon-mini.btn-neutral(type='button', onclick='fnUpdate("' + r._id + '", this, "region")')
-                      i.now-ui-icons.ui-2_settings-90
-                    button.btn.btn-danger.btn-round.btn-icon.btn-icon-mini.btn-neutral(type='button', onclick='fnDelete("' + r._id + '", this, "region")')
-                      i.now-ui-icons.ui-1_simple-remove
+                      input.form-control(type='text', value=r.region_name, name='region_name')
+                  td.text-center
+                    .form-group.my-0
+                      input.form-control(type='text', value=r.jp_name, name='jp_name', title='일본어 지역명')
+                  //td.td-actions.text-right
+                  //  button.btn.btn-info.btn-round.btn-icon.btn-icon-mini.btn-neutral(type='button', onclick='fnUpdate("' + r._id + '", this, "region")')
+                  //    i.now-ui-icons.ui-2_settings-90
+                  //  button.btn.btn-danger.btn-round.btn-icon.btn-icon-mini.btn-neutral(type='button', onclick='fnDelete("' + r._id + '", this, "region")')
+                  //    i.now-ui-icons.ui-1_simple-remove
               tr
                 td.text-center
+                  a.btn.btn-info.btn-sm.px-2(onclick='fnNewRow("#new_region", "region_name", "jp_name")')
+                    i.now-ui-icons.ui-1_simple-add.text-white(style='font-size:9px;')
                 td.text-center
                   .form-group.my-0
-                    input.form-control(type='text', name='region')
+                    input.form-control(type='text', name='region_name', title='region')
                 td.text-center
-                  a.btn.btn-info.btn-sm.px-2(onclick='fnNewRow("#new_region", "region")')
-                    i.now-ui-icons.ui-1_simple-add.text-white(style='font-size:9px;')
+                  .form-group.my-0
+                    input.form-control(type='text', name='jp_name', title='region')

@@ -12,24 +12,30 @@
               tr
                 th.text-center #
                 th.text-center 작업명
-                th.text-center
+                th.text-center 일본어
+                //th.text-center
             tbody#new_work
               each w, i in work_title
                 tr
                   td.text-center #{i + 1}
                   td.text-center
                     .form-group.my-0
-                      input.form-control(type='text', value=w.work_title)
-                  td.td-actions.text-right
-                    button.btn.btn-info.btn-round.btn-icon.btn-icon-mini.btn-neutral(type='button', onclick='fnUpdate("' + w._id + '", this, "work_title")')
-                      i.now-ui-icons.ui-2_settings-90
-                    button.btn.btn-danger.btn-round.btn-icon.btn-icon-mini.btn-neutral(type='button', onclick='fnDelete("' + w._id + '", this, "work_title")')
-                      i.now-ui-icons.ui-1_simple-remove
+                      input.form-control(type='text', value=w.work_title, name='work_title')
+                  td.text-center
+                    .form-group.my-0
+                      input.form-control(type='text', value=w.jp_name, name='jp_name', title='일본어 지역명')
+                  //td.td-actions.text-right
+                  //  button.btn.btn-info.btn-round.btn-icon.btn-icon-mini.btn-neutral(type='button', onclick='fnUpdate("' + w._id + '", this, "work_title")')
+                  //    i.now-ui-icons.ui-2_settings-90
+                  //  button.btn.btn-danger.btn-round.btn-icon.btn-icon-mini.btn-neutral(type='button', onclick='fnDelete("' + w._id + '", this, "work_title")')
+                  //    i.now-ui-icons.ui-1_simple-remove
               tr
                 td.text-center
+                  a.btn.btn-info.btn-sm.px-2(onclick='fnNewRow("#new_work", "work_name", "jp_name")')
+                    i.now-ui-icons.ui-1_simple-add.text-white(style='font-size:9px;')
                 td.text-center
                   .form-group.my-0
-                    input.form-control(type='text', name='work_title')
+                    input.form-control(type='text', name='work_title', title='work')
                 td.text-center
-                  a.btn.btn-info.btn-sm.px-2(onclick='fnNewRow("#new_work", "work_title")')
-                    i.now-ui-icons.ui-1_simple-add.text-white(style='font-size:9px;')
+                  .form-group.my-0
+                    input.form-control(type='text', name='jp_name', title='work')
