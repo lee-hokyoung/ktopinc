@@ -73,3 +73,23 @@ function fnGenerateEmployeeList(res){
   document.querySelector('#closed_count').innerText = res.list.length;
   $('#closedEmployeeList').modal('show');
 }
+// 휴무계 전체 체크/해제
+function fnCheckAll(chk){
+  let toggle = chk.dataset.toggle;
+  document.querySelectorAll('input[data-check]').forEach(function(chk){
+    chk.checked = toggle === 'false';
+  });
+  if(chk.dataset.toggle === 'false') chk.dataset.toggle = 'true';
+  else chk.dataset.toggle = 'false';
+}
+// 휴무계 체크 항목 삭제
+function fnDeleteChecked(){
+  let checkedItems = document.querySelectorAll('input[data-check]:checked');
+  if(checkedItems.length > 0){
+    if(confirm('삭제하시면 복구할 수 없습니다. 삭제하시겠습니까?')){
+      console.log('chk item : ', checkedItems);
+    }
+  }else{
+    alert('체크된 항목이 없습니다.');
+  }
+}

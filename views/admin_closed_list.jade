@@ -65,10 +65,17 @@ block content
                     input.form-control.rounded-0(type='text', name='searchEmployee', placeholder='검색할 직원을 입력해주세요.')
                     .input-group-append
                       button.btn.btn-primary.input-group-append(type='submit') 조회
+              .col-md-2
+                button.btn.btn-danger.m-0.p-2(onclick='fnDeleteChecked()') 체크항목 삭제
 
             ul.list-group.list-group-flush
-              li.list-group-item.bg-secondary.text-white.font-weight-bold
+              li.list-group-item.bg-info.text-white.font-weight-bold
                 .row
+                  .col
+                    .form-check.p-0
+                      label.form-check-label
+                        input.form-check-input(type="checkbox", onclick='fnCheckAll(this)', data-toggle='false')
+                        span.form-check-sign
                   .col #
                   .col-md-3.col-12 신청구분
                   .col-md-1.col-6 부서
@@ -90,16 +97,21 @@ block content
                   when 'tardy'
                     - type = '지각/조퇴';
                 - var status = row.status === 1?'정상':row.status===2?'삭제요청':'삭제'
-                a.text-dark(href='#', style='text-decoration:none;', onclick='fnShowClosedModal("' + row._id.toString() + '")')
-                  li.list-group-item(class=idx%2===1?'list-group-item-secondary':'')
-                    .row
-                      .col #{idx + 1}
-                      .col-md-3.col-12 #{type}
-                      .col-md-1.col-6 #{row.department}
-                      .col-md-1.col-6 #{row.rank}
-                      .col-md-3.col-6 #{row.reason}
-                      .col-md-2.col-6 #{row.user_id.user_nick}
-                      .col-md-1.col-6.status-color(data-color=status) #{status}
+                li.list-group-item(class=idx%2===1?'list-group-item-secondary':'')
+                  .row
+                    .col
+                      .form-check.p-0
+                        label.form-check-label
+                          input.form-check-input(type="checkbox", value=row._id, data-check)
+                          span.form-check-sign
+                    .col #{idx + 1}
+                    .col-md-3.col-12 #{type}
+                    .col-md-1.col-6 #{row.department}
+                    .col-md-1.col-6 #{row.rank}
+                    .col-md-3.col-6 #{row.reason}
+                    .col-md-2.col-6
+                      a.text-info(href='#', style='text-decoration:none;', onclick='fnShowClosedModal("' + row._id.toString() + '")') #{row.user_id.user_nick}
+                    .col-md-1.col-6.status-color(data-color=status) #{status}
           .card-footer
   // 휴무계 검색 결과 모달창
   #closedEmployeeList.modal.fade(tabindex="-1", role="dialog", aria-labelledby="closedEmployeeListLabel", aria-hidden="true")
