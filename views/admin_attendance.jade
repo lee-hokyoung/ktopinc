@@ -82,9 +82,9 @@ block content
                     tr
                       td.text-center(colspan=12) 데이터가 없습니다.
                   else
+                    // - w_date.setHours(w_date.getHours() - 9);  // 한국 시간을 위해 +15 해줌.
                     each item, idx in work_list
                       - var w_date = new Date(item.work_date);
-                      // - w_date.setHours(w_date.getHours() - 9);  // 한국 시간을 위해 +15 해줌.
                       - var confirm = 2;
                       - if(item.works){if(item.works.work_confirm === 1){confirm = 1;}}
                       - var month = '00' + (w_date.getMonth() + 1);
@@ -186,61 +186,53 @@ block content
                     a.page-link(href='#') >>
             .form-group
               button.btn.btn-success(onclick='fnExcelDownload()') 엑셀다운로드
-    #setTimeModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="userWorkInfoLabel", aria-hidden="true")
-      .modal-dialog(role="document")
-        .modal-content
-          .modal-header
-            h5#userWorkInfoLabel.modal-title 근무정보 수정
-            button.close(type='button', data-dismiss='modal', aria-label='Close')
-              span(aria-hidden='true')
-          .modal-body
-            form#formWorkInfo
-              .row
-                .col-md-6
-                  .form-group
-                    label 이름
-                    input.form-control#modal_nick(type='text', disabled, name='user_nick')
-                //.col-md-6
-                //  .form-group
-                //    label 지역
-                //    input.form-control#modal_region(type='text', name='region')
-              .row
-                .col-md-6
-                  .form-group
-                    label 출근시간
-                    input.form-control.w220px#timepicker_start(type='text', name='start_time')
-                .col-md-6
-                  .form-group
-                    label 퇴근시간
-                    input.form-control.w220px#timepicker_end(type='text', name='end_time')
-              .row
-                .col-md-6
-                  .form-group
-                    lable 작업내용
-                    select#work_title.selectpicker(data-style="select-with-transition btn-neutral border text-dark btn-round w220px" data-live-search="true" name='work_title')
-                      each item in work_titles
-                        option(value=item.work_title) #{item.work_title}
-                .col-md-6
-                  .form-group
-                    label 비고
-                    select#remark.selectpicker(data-style='select-with-transition btn-neutral border text-dark btn-round w220px', data-live-search='true', name='remark')
-                      each item in remarks
-                        option(value=item.remark) #{item.remark}
+  #setTimeModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="setTimeModalLabel", aria-hidden="true")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5#userWorkInfoLabel.modal-title 근무정보 수정
+          button.close(type='button', data-dismiss='modal', aria-label='Close')
+            span(aria-hidden='true')
+        .modal-body
+          form#formWorkInfo
+            .row
+              .col-md-6
+                .form-group
+                  label 이름
+                  input.form-control#modal_nick(type='text', disabled, name='user_nick')
+              //.col-md-6
+              //  .form-group
+              //    label 지역
+              //    input.form-control#modal_region(type='text', name='region')
+            .row
+              .col-md-6
+                .form-group
+                  label 출근시간
+                  input.form-control.w220px#timepicker_start(type='text', name='start_time')
+              .col-md-6
+                .form-group
+                  label 퇴근시간
+                  input.form-control.w220px#timepicker_end(type='text', name='end_time')
+            .row
+              .col-md-6
+                .form-group
+                  label 작업내용
+                  select#work_title.selectpicker(data-style="select-with-transition btn-neutral border text-dark btn-round w220px" data-live-search="true" name='work_title')
+                    each item in work_titles
+                      option(value=item.work_title) #{item.work_title}
+              .col-md-6
+                .form-group
+                  label 비고
+                  select#remark.selectpicker(data-style='select-with-transition btn-neutral border text-dark btn-round w220px', data-live-search='true', name='remark')
+                    each item in remarks
+                      option(value=item.remark) #{item.remark}
 
-          .modal-footer.justify-content-center
-            button.btn.btn-danger.mr-3(type="button" data-dismiss="modal", onclick='closeModal()') 닫기
-            button.btn.btn-info(type="button", onclick='fnUpdateTime()') 수정
+        .modal-footer.justify-content-center
+          button.btn.btn-danger.mr-3(type="button" data-dismiss="modal", onclick='closeModal()') 닫기
+          button.btn.btn-info(type="button", onclick='fnUpdateTime()') 수정
 block append_js
   script(src='/assets/js/custom/admin_attendance.js')
   script.
-    if (isWindows) {
-      $('.modal').on('show.bs.modal', function () {
-        var ps1 = new PerfectScrollbar('#setTimeModal');
-      }).on('hide.bs.modal', function () {
-        var ps1 = new PerfectScrollbar('#setTimeModal');
-        ps1.destroy();
-      });
-    }
     let date = new Date();
     let start_period = "!{new Intl.DateTimeFormat('en').format(start_period)}";
     let end_period = "!{new Intl.DateTimeFormat('en').format(end_period)}";

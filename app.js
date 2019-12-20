@@ -12,6 +12,7 @@ const authRouter = require('./routes/auth');
 const workRouter = require('./routes/work');
 const adminRouter = require('./routes/admin');
 const noticeRouter = require('./routes/notice');
+const testRouter = require('./routes/test');
 
 const connect = require('./model');
 const passportConfig = require('./passport');
@@ -54,6 +55,7 @@ app.use('/auth', authRouter);
 app.use('/work', workRouter);
 app.use('/admin', adminRouter);
 app.use('/notice', noticeRouter);
+app.use('/test', testRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

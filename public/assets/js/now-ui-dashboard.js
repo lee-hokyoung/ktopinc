@@ -1,10 +1,10 @@
 /*!
 
  =========================================================
- * Now UI Dashboard - v1.3.0
+ * Now UI Dashboard PRO - v1.4.1
  =========================================================
 
- * Product Page: https://www.creative-tim.com/product/now-ui-dashboard
+ * Product Page: https://www.creative-tim.com/product/now-ui-dashboard-pro
  * Copyright 2019 Creative Tim (http://www.creative-tim.com)
 
  * Designed by www.invisionapp.com Coded by www.creative-tim.com
@@ -14,20 +14,6 @@
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
  */
-
-(function() {
-  isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
-
-  if (isWindows) {
-    // if we are on windows OS we activate the perfectScrollbar function
-    var ps = new PerfectScrollbar('.sidebar-wrapper');
-    var ps2 = new PerfectScrollbar('.main-panel');
-
-    $('html').addClass('perfect-scrollbar-on');
-  } else {
-    $('html').addClass('perfect-scrollbar-off');
-  }
-})();
 
 transparent = true;
 transparentDemo = true;
@@ -44,24 +30,139 @@ var scrollElement = navigator.platform.indexOf('Win') > -1 ? $(".main-panel") : 
 seq = 0, delays = 80, durations = 500;
 seq2 = 0, delays2 = 80, durations2 = 500;
 
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
+
+function debounce(func, wait, immediate) {
+  var timeout;
+  return function() {
+    var context = this,
+      args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(function() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    }, wait);
+    if (immediate && !timeout) func.apply(context, args);
+  };
+};
+
+(function() {
+  isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
+
+  if (isWindows) {
+    // if we are on windows OS we activate the perfectScrollbar function
+    var ps = new PerfectScrollbar('.sidebar-wrapper');
+    var ps2 = new PerfectScrollbar('.main-panel');
+
+    $('html').addClass('perfect-scrollbar-on');
+  } else {
+    $('html').addClass('perfect-scrollbar-off');
+  }
+})();
+
 $(document).ready(function() {
+  $navbar = $('.navbar[color-on-scroll]');
+  scroll_distance = $navbar.attr('color-on-scroll') || 500;
+
+  //  Activate the Tooltips
+  $('[data-toggle="tooltip"], [rel="tooltip"]').tooltip();
+
+  // Activate Popovers and set color for popovers
+  $('[data-toggle="popover"]').each(function() {
+    color_class = $(this).data('color');
+    $(this).popover({
+      template: '<div class="popover popover-' + color_class + '" role="tooltip"><div class="arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
+    });
+  });
+
+  var tagClass = $('.tagsinput').data('color');
+
+  if ($(".tagsinput").length != 0) {
+    $('.tagsinput').tagsinput();
+  }
+
+  $('.bootstrap-tagsinput').addClass('' + tagClass + '-badge');
+
+  //    Activate bootstrap-select
+  if ($(".selectpicker").length != 0) {
+    $(".selectpicker").selectpicker({
+      iconBase: "now-ui-icons",
+      tickIcon: "ui-1_check"
+    });
+  }
+
+  if ($('body').hasClass('sidebar-mini')) {
+    sidebar_mini_active = true
+  }
+
+  var isWindows = navigator.platform.startsWith('Win');
+  if (isWindows) {
+    $('.modal').on('show.bs.modal', function() {
+      var ps1 = new PerfectScrollbar('#myModal');
+      var ps2 = new PerfectScrollbar('#noticeModal');
+      var ps3 = new PerfectScrollbar('#myModal10');
+
+    }).on('hide.bs.modal', function() {
+      var ps1 = new PerfectScrollbar('#myModal');
+      var ps2 = new PerfectScrollbar('#noticeModal');
+      var ps3 = new PerfectScrollbar('#myModal10');
+
+      ps1.destroy();
+      ps2.destroy();
+      ps3.destroy();
+    });
+  }
 
   if ($('.full-screen-map').length == 0 && $('.bd-docs').length == 0) {
     // On click navbar-collapse the menu will be white not transparent
     $('.collapse').on('show.bs.collapse', function() {
       $(this).closest('.navbar').removeClass('navbar-transparent').addClass('bg-white');
     }).on('hide.bs.collapse', function() {
-      $(this).closest('.navbar').addClass('navbar-transparent').removeClass('bg-white');
+      if ($(document).scrollTop() <= scroll_distance) {
+        $(this).closest('.navbar').addClass('navbar-transparent').removeClass('bg-white');
+      }
     });
   }
 
-  $navbar = $('.navbar[color-on-scroll]');
-  scroll_distance = $navbar.attr('color-on-scroll') || 500;
 
-  // Check if we have the class "navbar-color-on-scroll" then add the function to remove the class "navbar-transparent" so it will transform to a plain color.
+  // FileInput
+  $('.form-file-simple .inputFileVisible').click(function() {
+    $(this).siblings('.inputFileHidden').trigger('click');
+  });
+
+  $('.form-file-simple .inputFileHidden').change(function() {
+    var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+    $(this).siblings('.inputFileVisible').val(filename);
+  });
+  $('.form-file-simple .inputFileHidden, .form-file-multiple .inputFileHidden').css('z-index', '-1');
+
+  $('.form-file-multiple .inputFileVisible, .form-file-multiple .input-group-btn').click(function() {
+    $(this).siblings('.inputFileHidden').trigger('click');
+  });
+
+  $('.form-file-multiple .inputFileHidden').change(function() {
+    var names = '';
+    for (var i = 0; i < $(this).get(0).files.length; ++i) {
+      if (i < $(this).get(0).files.length - 1) {
+        names += $(this).get(0).files.item(i).name + ',';
+      } else {
+        names += $(this).get(0).files.item(i).name;
+      }
+    }
+    $(this).siblings('.inputFileVisible').val(names);
+  });
+
+  nowuiDashboard.initMinimizeSidebar();
+
+  // Check if we have the attr "color-on-scroll" then add the function to remove the class "navbar-transparent" so it will transform to a plain color.
+
+
   if ($('.navbar[color-on-scroll]').length != 0) {
     nowuiDashboard.checkScrollForTransparentNavbar();
-    $(window).on('scroll', nowuiDashboard.checkScrollForTransparentNavbar)
+    scrollElement.on('scroll', nowuiDashboard.checkScrollForTransparentNavbar)
   }
 
   $('.form-control').on("focus", function() {
@@ -81,6 +182,10 @@ $(document).ready(function() {
       offText: data_off_label
     });
   });
+
+  if (is_iPad) {
+    $('body').removeClass('sidebar-mini');
+  }
 });
 
 $(document).on('click', '.navbar-toggle', function() {
@@ -140,24 +245,125 @@ nowuiDashboard = {
     navbar_menu_visible: 0
   },
 
-  showNotification: function(from, align) {
-    color = 'primary';
+  checkScrollForTransparentNavbar: debounce(function() {
+    if (scrollElement.scrollTop() >= scroll_distance) {
+      if (transparent) {
+        transparent = false;
+        $('.navbar[color-on-scroll]').removeClass('navbar-transparent').addClass('bg-white');
+      }
+    } else {
+      if (!transparent) {
+        transparent = true;
+        if ($(".navbar.fixed-top .navbar-toggler[aria-expanded='false']").length !== 0 || $(window).width() > 991) {
+          $('.navbar[color-on-scroll]').addClass('navbar-transparent').removeClass('bg-white');
+        }
+      }
+    }
+  }, 17),
 
-    $.notify({
-      icon: "now-ui-icons ui-1_bell-53",
-      message: "Welcome to <b>Now Ui Dashboard</b> - a beautiful freebie for every web developer."
+  checkSidebarImage: function() {
+    $sidebar = $('.sidebar');
+    image_src = $sidebar.data('image');
 
-    }, {
-      type: color,
-      timer: 8000,
-      placement: {
-        from: from,
-        align: align
+    if (image_src !== undefined) {
+      sidebar_container = '<div class="sidebar-background" style="background-image: url(' + image_src + ') "/>'
+      $sidebar.append(sidebar_container);
+    }
+  },
+
+  initMinimizeSidebar: function() {
+    $('#minimizeSidebar').click(function() {
+      var $btn = $(this);
+
+
+      if (sidebar_mini_active == true) {
+        $('body').removeClass('sidebar-mini');
+        sidebar_mini_active = false;
+        nowuiDashboard.showSidebarMessage('Sidebar mini deactivated...');
+      } else {
+        $('body').addClass('sidebar-mini');
+        sidebar_mini_active = true;
+        nowuiDashboard.showSidebarMessage('Sidebar mini activated...');
+      }
+
+      // we simulate the window Resize so the charts will get updated in realtime.
+      var simulateWindowResize = setInterval(function() {
+        window.dispatchEvent(new Event('resize'));
+      }, 180);
+
+      // we stop the simulation of Window Resize after the animations are completed
+      setTimeout(function() {
+        clearInterval(simulateWindowResize);
+      }, 1000);
+    });
+  },
+
+  startAnimationForLineChart: function(chart) {
+
+    chart.on('draw', function(data) {
+      if (data.type === 'line' || data.type === 'area') {
+        data.element.animate({
+          d: {
+            begin: 600,
+            dur: 700,
+            from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
+            to: data.path.clone().stringify(),
+            easing: Chartist.Svg.Easing.easeOutQuint
+          }
+        });
+      } else if (data.type === 'point') {
+        seq++;
+        data.element.animate({
+          opacity: {
+            begin: seq * delays,
+            dur: durations,
+            from: 0,
+            to: 1,
+            easing: 'ease'
+          }
+        });
       }
     });
+
+    seq = 0;
+  },
+  startAnimationForBarChart: function(chart) {
+
+    chart.on('draw', function(data) {
+      if (data.type === 'bar') {
+        seq2++;
+        data.element.animate({
+          opacity: {
+            begin: seq2 * delays2,
+            dur: durations2,
+            from: 0,
+            to: 1,
+            easing: 'ease'
+          }
+        });
+      }
+    });
+
+    seq2 = 0;
+  },
+  showSidebarMessage: function(message) {
+    try {
+      $.notify({
+        icon: "now-ui-icons ui-1_bell-53",
+        message: message
+      }, {
+        type: 'info',
+        timer: 4000,
+        placement: {
+          from: 'top',
+          align: 'right'
+        }
+      });
+    } catch (e) {
+      console.log('Notify library is missing, please make sure you have the notifications library added.');
+    }
+
   }
-
-
 };
 
 function hexToRGB(hex, alpha) {

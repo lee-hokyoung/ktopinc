@@ -3,27 +3,6 @@ function fnSearchClosed(){
   let month = document.querySelector('select[name="month"]');
   location.href = '/admin/closed/list/' + year.value + '/' + month.value;
 }
-// 휴무계 읽기
-function fnShowClosedModal(id) {
-  let doc = list.filter(function(v){if(v._id === id) return v;})[0];
-  console.log(doc);
-  document.querySelectorAll('input[name="closed_type"]').forEach(function(v){
-    v.checked = false;
-  });
-  document.querySelector('input[value="' + doc.closed_type + '"]').checked = true;
-  document.querySelectorAll('input[type="text"]:not([name="searchEmployee"])').forEach(function (v) {
-    if (v.name === 'user_nick') v.value = doc.user_id.user_nick;
-    else v.value = doc[v.name];
-  });
-  document.querySelector('input[name="doc_id"]').value = doc._id;
-  let btnDelete = document.querySelector('button[name="btnDelete"]');
-  if(doc.status === 2){
-    btnDelete.setAttribute('class', 'btn btn-info');
-  }else{
-    btnDelete.setAttribute('class','btn btn-info d-none');
-  }
-  $('#closedModal').modal('show');
-}
 // 휴무계 삭제 승인
 function fnDeleteDoc(){
   if(!confirm('삭제승인 하시겠습니까?')) return false;
@@ -89,7 +68,6 @@ function fnGenerateEmployeeList(res){
     html += `</li>`;
   });
   html += '</ul>';
-  console.log('res : ', res);
   document.querySelector('#closedList').innerHTML = html;
   document.querySelector('#employeeName').innerText = res.name;
   document.querySelector('#closed_count').innerText = res.list.length;

@@ -1,7 +1,7 @@
 let current_work_id = '';
+
 // 근무시간 및 작업사항 수정
 function fnUpdateTime() {
-  console.log('work id : ', current_work_id);
   let tds = document.querySelectorAll('tr[data-id="' + current_work_id + '"] td');
   let start_time = document.querySelector('#timepicker_start');
   let end_time = document.querySelector('#timepicker_end');
@@ -23,21 +23,14 @@ function fnUpdateTime() {
         template: now_ui_template,
         delay: 2000
       });
-      closeModal();
       $('#setTimeModal').modal('hide');
     }
   };
   xhr.send(JSON.stringify({start_time: start_time.value, end_time: end_time.value, work_title: work_title}));
-  // $('#setTimeModal').modal('hide');
 }
-
-// function closeModal() {
-//   $('#setTimeModal').css('display', 'none').removeClass('show');
-// }
 
 // 근무시간 모달창 띄우기
 function fnOpenSetTimeModal(work_id) {
-  let ps_modal = new PerfectScrollbar('.modal-content');
   current_work_id = work_id;
   let xhr = new XMLHttpRequest();
   xhr.open("GET", '/admin/attendance/work/read/' + work_id, true);
@@ -67,8 +60,6 @@ function fnOpenSetTimeModal(work_id) {
           down: 'fa fa-chevron-down'
         }
       });
-      // perfect scroll 과 충돌이 생겨서 불가피하게 수동으로 모달창을 띄움........
-      // $('#setTimeModal').css('display', 'block').addClass('show');
       $('#setTimeModal').modal('show');
     }
   };
@@ -194,11 +185,17 @@ $('#attendance-table').dataTable({
   scrollX: true,
   searching: false,
   info: false,
-  columnDefs: [{
-    targets: [0, 3, 10, 12],
-    orderable: false
-  }],
-  responsive: true,
+  columnDefs: [
+    {
+      targets: [0, 3, 10, 12],
+      orderable: false
+    },
+    {
+      targets:[12],
+      visible:true
+    }
+  ],
+  responsive:false,
   initComplete: function (settings, json) {
     settings.nTHead.querySelectorAll('th')[1].click();
     const ps_table = new PerfectScrollbar('.dataTables_scrollBody');

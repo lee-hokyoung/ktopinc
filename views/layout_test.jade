@@ -1,0 +1,483 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    link(rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png")
+    link(rel="icon" type="image/png" href="/assets/img/favicon.png")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+    title !{title}
+    meta(content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no" name="viewport")
+    // Fonts and icons
+    link(href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet")
+    link(rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous")
+    // CSS Files
+    link(href="/assets/css/bootstrap.min.css" rel="stylesheet")
+    link(href="/assets/css/now-ui-dashboard.css?v=1.5.0" rel="stylesheet")
+    // CSS Just for demo purpose, don't include it in your project
+    link(href="/assets/demo/demo.css" rel="stylesheet")
+  body.sidebar-mini
+    .wrapper
+      .sidebar(data-color="orange")
+        //
+          Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
+        .logo
+          a.simple-text.logo-mini(href="http://www.creative-tim.com")
+            | CT
+          a.simple-text.logo-normal(href="http://www.creative-tim.com")
+            | Creative Tim
+          .navbar-minimize
+            button#minimizeSidebar.btn.btn-outline-white.btn-icon.btn-round
+              i.now-ui-icons.text_align-center.visible-on-sidebar-regular
+              i.now-ui-icons.design_bullet-list-67.visible-on-sidebar-mini
+        #sidebar-wrapper.sidebar-wrapper
+          .user
+            .photo
+              img(src="/assets/img/james.jpg")
+            .info
+              a.collapsed(data-toggle="collapse" href="#collapseExample")
+                span
+                  | James Amos
+                  b.caret
+              .clearfix
+              #collapseExample.collapse
+                ul.nav
+                  li
+                    a(href="#")
+                      span.sidebar-mini-icon MP
+                      span.sidebar-normal My Profile
+                  li
+                    a(href="#")
+                      span.sidebar-mini-icon EP
+                      span.sidebar-normal Edit Profile
+                  li
+                    a(href="#")
+                      span.sidebar-mini-icon S
+                      span.sidebar-normal Settings
+          ul.nav
+            li
+              a(href="/examples/dashboard.html")
+                i.now-ui-icons.design_app
+                p Dashboard
+            li
+              a(data-toggle="collapse" href="#pagesExamples")
+                i.now-ui-icons.design_image
+                p
+                  | Pages
+                  b.caret
+              #pagesExamples.collapse
+                ul.nav
+                  li
+                    a(href="/examples/pages/pricing.html")
+                      span.sidebar-mini-icon P
+                      span.sidebar-normal  Pricing
+                  li
+                    a(href="/examples/pages/rtl.html")
+                      span.sidebar-mini-icon RS
+                      span.sidebar-normal  RTL Support
+                  li
+                    a(href="/examples/pages/invoice.html")
+                      span.sidebar-mini-icon I
+                      span.sidebar-normal  Invoice
+                  li
+                    a(href="/examples/pages/timeline.html")
+                      span.sidebar-mini-icon T
+                      span.sidebar-normal  Timeline
+                  li
+                    a(href="/examples/pages/login.html")
+                      span.sidebar-mini-icon L
+                      span.sidebar-normal  Login
+                  li
+                    a(href="/examples/pages/register.html")
+                      span.sidebar-mini-icon R
+                      span.sidebar-normal  Register
+                  li
+                    a(href="/examples/pages/lock.html")
+                      span.sidebar-mini-icon LS
+                      span.sidebar-normal  Lock Screen
+                  li
+                    a(href="/examples/pages/user.html")
+                      span.sidebar-mini-icon UP
+                      span.sidebar-normal  User Profile
+            li.active
+              a(data-toggle="collapse" href="#componentsExamples" aria-expanded="true")
+                i.now-ui-icons.education_atom
+                p
+                  | Components
+                  b.caret
+              #componentsExamples.collapse.show
+                ul.nav
+                  li
+                    a(href="/examples/components/buttons.html")
+                      span.sidebar-mini-icon B
+                      span.sidebar-normal  Buttons
+                  li
+                    a(href="/examples/components/grid.html")
+                      span.sidebar-mini-icon G
+                      span.sidebar-normal  Grid System
+                  li
+                    a(href="/examples/components/panels.html")
+                      span.sidebar-mini-icon P
+                      span.sidebar-normal  Panels
+                  li
+                    a(href="/examples/components/sweet-alert.html")
+                      span.sidebar-mini-icon SA
+                      span.sidebar-normal  Sweet Alert
+                  li.active
+                    a(href="/examples/components/notifications.html")
+                      span.sidebar-mini-icon N
+                      span.sidebar-normal  Notifications
+                  li
+                    a(href="/examples/components/icons.html")
+                      span.sidebar-mini-icon I
+                      span.sidebar-normal  Icons
+                  li
+                    a(href="/examples/components/typography.html")
+                      span.sidebar-mini-icon T
+                      span.sidebar-normal  Typography
+            li
+              a(data-toggle="collapse" href="#formsExamples")
+                i.now-ui-icons.files_single-copy-04
+                p
+                  | Forms
+                  b.caret
+              #formsExamples.collapse
+                ul.nav
+                  li
+                    a(href="/examples/forms/regular.html")
+                      span.sidebar-mini-icon RF
+                      span.sidebar-normal  Regular Forms
+                  li
+                    a(href="/examples/forms/extended.html")
+                      span.sidebar-mini-icon EF
+                      span.sidebar-normal  Extended Forms
+                  li
+                    a(href="/examples/forms/validation.html")
+                      span.sidebar-mini-icon V
+                      span.sidebar-normal  Validation Forms
+                  li
+                    a(href="/examples/forms/wizard.html")
+                      span.sidebar-mini-icon W
+                      span.sidebar-normal  Wizard
+            li
+              a(data-toggle="collapse" href="#tablesExamples")
+                i.now-ui-icons.design_bullet-list-67
+                p
+                  | Tables
+                  b.caret
+              #tablesExamples.collapse
+                ul.nav
+                  li
+                    a(href="/examples/tables/regular.html")
+                      span.sidebar-mini-icon RT
+                      span.sidebar-normal  Regular Tables
+                  li
+                    a(href="/examples/tables/extended.html")
+                      span.sidebar-mini-icon ET
+                      span.sidebar-normal  Extended Tables
+                  li
+                    a(href="/examples/tables/datatables.net.html")
+                      span.sidebar-mini-icon DT
+                      span.sidebar-normal  DataTables.net
+            li
+              a(data-toggle="collapse" href="#mapsExamples")
+                i.now-ui-icons.location_pin
+                p
+                  | Maps
+                  b.caret
+              #mapsExamples.collapse
+                ul.nav
+                  li
+                    a(href="/examples/maps/google.html")
+                      span.sidebar-mini-icon GM
+                      span.sidebar-normal  Google Maps
+                  li
+                    a(href="/examples/maps/fullscreen.html")
+                      span.sidebar-mini-icon FM
+                      span.sidebar-normal  Full Screen Map
+                  li
+                    a(href="/examples/maps/vector.html")
+                      span.sidebar-mini-icon VM
+                      span.sidebar-normal  Vector Map
+            li
+              a(href="/examples/widgets.html")
+                i.now-ui-icons.objects_diamond
+                p Widgets
+            li
+              a(href="/examples/charts.html")
+                i.now-ui-icons.business_chart-pie-36
+                p Charts
+            li
+              a(href="/examples/calendar.html")
+                i.now-ui-icons.media-1_album
+                p Calendar
+      #main-panel.main-panel
+        // Navbar
+        nav.navbar.navbar-expand-lg.navbar-transparent.bg-primary.navbar-absolute
+          .container-fluid
+            .navbar-wrapper
+              .navbar-toggle
+                button.navbar-toggler(type="button")
+                  span.navbar-toggler-bar.bar1
+                  span.navbar-toggler-bar.bar2
+                  span.navbar-toggler-bar.bar3
+              a.navbar-brand(href="#pablo") Notifications
+            button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation")
+              span.navbar-toggler-bar.navbar-kebab
+              span.navbar-toggler-bar.navbar-kebab
+              span.navbar-toggler-bar.navbar-kebab
+            #navigation.collapse.navbar-collapse.justify-content-end
+              form
+                .input-group.no-border
+                  input.form-control(type="text" value="" placeholder="Search...")
+                  .input-group-append
+                    .input-group-text
+                      i.now-ui-icons.ui-1_zoom-bold
+              ul.navbar-nav
+                li.nav-item
+                  a.nav-link(href="#pablo")
+                    i.now-ui-icons.media-2_sound-wave
+                    p
+                      span.d-lg-none.d-md-block Stats
+                li.nav-item.dropdown
+                  a#navbarDropdownMenuLink.nav-link.dropdown-toggle(data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+                    i.now-ui-icons.location_world
+                    p
+                      span.d-lg-none.d-md-block Some Actions
+                  .dropdown-menu.dropdown-menu-right(aria-labelledby="navbarDropdownMenuLink")
+                    a.dropdown-item(href="#") Action
+                    a.dropdown-item(href="#") Another action
+                    a.dropdown-item(href="#") Something else here
+                li.nav-item
+                  a.nav-link(href="#pablo")
+                    i.now-ui-icons.users_single-02
+                    p
+                      span.d-lg-none.d-md-block Account
+        // End Navbar
+        .panel-header
+          .header.text-center
+            h2.title Notifications
+            p.category
+              | Handcrafted by our friend
+              a(target="_blank" href="https://github.com/mouse0270") Robert McIntosh
+              | . Please checkout the
+              a(href="http://bootstrap-notify.remabledesigns.com/" target="_blank") full documentation.
+        .content
+          .row
+            .col-md-6
+              .card
+                .card-header
+                  h4.card-title Notifications Style
+                .card-body
+                  .alert.alert-info
+                    span This is a plain notification
+                  .alert.alert-info
+                    button.close(type="button" aria-hidden="true")
+                      i.now-ui-icons.ui-1_simple-remove
+                    span This is a notification with close button.
+                  .alert.alert-info.alert-with-icon(data-notify="container")
+                    button.close(type="button" aria-hidden="true")
+                      i.now-ui-icons.ui-1_simple-remove
+                    span.now-ui-icons.ui-1_bell-53(data-notify="icon")
+                    span(data-notify="message") This is a notification with close button and icon.
+                  .alert.alert-info.alert-with-icon(data-notify="container")
+                    button.close(type="button" aria-hidden="true")
+                      i.now-ui-icons.ui-1_simple-remove
+                    span.now-ui-icons.ui-1_bell-53(data-notify="icon")
+                    span(data-notify="message")
+                      | This is a notification with close button and icon and have many lines. You can see that the icon and the close button are always vertically aligned. This is a beautiful notification. So you don't have to worry about the style.
+            .col-md-6
+              .card
+                .card-header
+                  h4.card-title Notification states
+                .card-body
+                  .alert.alert-primary
+                    button.close(type="button" aria-hidden="true")
+                      i.now-ui-icons.ui-1_simple-remove
+                    span
+                      b  Primary -
+                      |  This is a regular notification made with ".alert-primary"
+                  .alert.alert-info
+                    button.close(type="button" aria-hidden="true")
+                      i.now-ui-icons.ui-1_simple-remove
+                    span
+                      b  Info -
+                      |  This is a regular notification made with ".alert-info"
+                  .alert.alert-success
+                    button.close(type="button" aria-hidden="true")
+                      i.now-ui-icons.ui-1_simple-remove
+                    span
+                      b  Success -
+                      |  This is a regular notification made with ".alert-success"
+                  .alert.alert-warning
+                    button.close(type="button" aria-hidden="true")
+                      i.now-ui-icons.ui-1_simple-remove
+                    span
+                      b  Warning -
+                      |  This is a regular notification made with ".alert-warning"
+                  .alert.alert-danger
+                    button.close(type="button" aria-hidden="true")
+                      i.now-ui-icons.ui-1_simple-remove
+                    span
+                      b  Danger -
+                      |  This is a regular notification made with ".alert-danger"
+            .col-md-12
+              .card
+                .card-body
+                  .places-buttons
+                    .row
+                      .col-md-6.ml-auto.mr-auto.text-center
+                        h4.card-title
+                          | Notifications Places
+                          p.category Click to view notifications
+                    .row
+                      .col-lg-8.ml-auto.mr-auto
+                        .row
+                          .col-md-4
+                            button.btn.btn-primary.btn-block(onclick="demo.showNotification('top','left')") Top Left
+                          .col-md-4
+                            button.btn.btn-primary.btn-block(onclick="demo.showNotification('top','center')") Top Center
+                          .col-md-4
+                            button.btn.btn-primary.btn-block(onclick="demo.showNotification('top','right')") Top Right
+                    .row
+                      .col-lg-8.ml-auto.mr-auto
+                        .row
+                          .col-md-4
+                            button.btn.btn-primary.btn-block(onclick="demo.showNotification('bottom','left')") Bottom Left
+                          .col-md-4
+                            button.btn.btn-primary.btn-block(onclick="demo.showNotification('bottom','center')") Bottom Center
+                          .col-md-4
+                            button.btn.btn-primary.btn-block(onclick="demo.showNotification('bottom','right')") Bottom Right
+                  .row
+                    .col-md-12.text-center
+                      .card-header
+                        h4.card-title Modal
+                      button.btn.btn-primary(data-toggle="modal" data-target="#myModal")
+                        | Classic modal
+                      button.btn.btn-info(data-toggle="modal" data-target="#noticeModal")
+                        | Notice modal
+                      button.btn(data-toggle="modal" data-target="#myModal10")
+                        | Small alert modal
+                      // Classic Modal
+                      #myModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+                        .modal-dialog
+                          .modal-content
+                            .modal-header.justify-content-center
+                              button.close(type="button" data-dismiss="modal" aria-hidden="true")
+                                i.now-ui-icons.ui-1_simple-remove
+                              h4.title.title-up Modal title
+                            .modal-body
+                              p
+                                | Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+                            .modal-footer
+                              button.btn.btn-default(type="button") Nice Button
+                              button.btn.btn-danger(type="button" data-dismiss="modal") Close
+                      // End Modal
+                      // notice modal
+                      #noticeModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+                        .modal-dialog.modal-notice
+                          .modal-content
+                            .modal-header
+                              button.close(type="button" data-dismiss="modal" aria-hidden="true")
+                                i.now-ui-icons.ui-1_simple-remove
+                              h5#myModalLabel.modal-title How Do You Become an Affiliate?
+                            .modal-body
+                              .instruction
+                                .row
+                                  .col-md-8
+                                    strong 1. Register
+                                    p.description
+                                      | The first step is to create an account at
+                                      a(href="http://www.creative-tim.com/") Creative Tim
+                                      | . You can choose a social network or go for the classic version, whatever works best for you.
+                                  .col-md-4
+                                    .picture
+                                      img.rounded.img-raised(src="/assets/img/bg1.jpg" alt="Thumbnail Image")
+                              .instruction
+                                .row
+                                  .col-md-8
+                                    strong 2. Apply
+                                    p.description
+                                      | The first step is to create an account at
+                                      a(href="http://www.creative-tim.com/") Creative Tim
+                                      | . You can choose a social network or go for the classic version, whatever works best for you.
+                                  .col-md-4
+                                    .picture
+                                      img.rounded.img-raised(src="/assets/img/bg3.jpg" alt="Thumbnail Image")
+                              p
+                                | If you have more questions, don't hesitate to contact us or send us a tweet @creativetim. We're here to help!
+                            .modal-footer.justify-content-center
+                              button.btn.btn-info.btn-round(type="button" data-dismiss="modal") Sounds good!
+                      // end notice modal
+                      // small modal
+                      #myModal10.modal.fade.modal-mini.modal-primary(tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+                        .modal-dialog
+                          .modal-content
+                            .modal-header.justify-content-center
+                              .modal-profile
+                                i.now-ui-icons.users_circle-08
+                            .modal-body
+                              p Always have an access to your profile
+                            .modal-footer
+                              button.btn.btn-link.btn-neutral(type="button") Back
+                              button.btn.btn-link.btn-neutral(type="button" data-dismiss="modal") Close
+                      // end small modal
+        footer.footer
+          .container-fluid
+            nav
+              ul
+                li
+                  a(href="https://www.creative-tim.com")
+                    | Creative Tim
+                li
+                  a(href="http://presentation.creative-tim.com")
+                    | About Us
+                li
+                  a(href="http://blog.creative-tim.com")
+                    | Blog
+            #copyright.copyright
+              | ©
+              script.
+                document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
+              | , Designed by
+              a(href="https://www.invisionapp.com" target="_blank") Invision
+              | . Coded by
+              a(href="https://www.creative-tim.com" target="_blank") Creative Tim
+              | .
+    // Core JS Files
+    script(src="/assets/js/core/jquery.min.js")
+    script(src="/assets/js/core/popper.min.js")
+    script(src="/assets/js/core/bootstrap.min.js")
+    script(src="/assets/js/plugins/perfect-scrollbar.jquery.min.js")
+    script(src="/assets/js/plugins/moment.min.js")
+    // Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/
+    script(src="/assets/js/plugins/bootstrap-switch.js")
+    // Plugin for Sweet Alert
+    script(src="/assets/js/plugins/sweetalert2.min.js")
+    // Forms Validations Plugin
+    script(src="/assets/js/plugins/jquery.validate.min.js")
+    // Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard
+    script(src="/assets/js/plugins/jquery.bootstrap-wizard.js")
+    // Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select
+    script(src="/assets/js/plugins/bootstrap-selectpicker.js")
+    // Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/
+    script(src="/assets/js/plugins/bootstrap-datetimepicker.js")
+    // DataTables.net Plugin, full documentation here: https://datatables.net/
+    script(src="/assets/js/plugins/jquery.dataTables.min.js")
+    // Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs
+    script(src="/assets/js/plugins/bootstrap-tagsinput.js")
+    // Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput
+    script(src="/assets/js/plugins/jasny-bootstrap.min.js")
+    // Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar
+    script(src="/assets/js/plugins/fullcalendar.min.js")
+    // Vector Map plugin, full documentation here: http://jvectormap.com/documentation/
+    script(src="/assets/js/plugins/jquery-jvectormap.js")
+    // Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/
+    script(src="/assets/js/plugins/nouislider.min.js")
+    // Chart JS
+    script(src="/assets/js/plugins/chartjs.min.js")
+    // Notifications Plugin
+    script(src="/assets/js/plugins/bootstrap-notify.js")
+    // Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc
+    script(src="/assets/js/now-ui-dashboard.js?v=1.5.0" type="text/javascript")
+    // Now Ui Dashboard DEMO methods, don't include it in your project!
+    script(src="/assets/demo/demo.js")
