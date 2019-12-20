@@ -79,6 +79,42 @@ block content
                       i.now-ui-icons.ui-1_check
                   input(type='hidden', name='temp_start_time', value=last_work.start_time)
                   input(type='hidden', name='temp_end_time', value=last_work.end_time)
+    // 공지사항 모달창
+    #noticeModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='noticeModalLabel', aria-hidden='true')
+      .modal-dialog.modal-lg(role='document')
+        .modal-content
+          .modal-header
+            h5#noticeModalLabel.modal-title 공지사항
+            button.close.text-dark(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') x
+          .modal-body.text-center
+            ul.list-group.list-group-flush
+              li.list-group-item.list-group-item-primary
+                .row
+                  .d-none.d-md-block.col-md-1 #
+                  .col-9.col-md-5 제목
+                  .col-3.col-md-3 작성자
+                  .d-none.d-md-block.col-md-3 작성일
+              if(notice_list.length > 0)
+                each row, idx in notice_list
+                  - var isNew = row.read_user.toString().indexOf(user._id);
+                  - var date = new Date(row.created);
+                  li.list-group-item
+                    .row
+                      .d-none.d-md-block.col-md-1 #{idx + 1}
+                      .col-9.col-md-5
+                        if(isNew === -1)
+                          img.mr-2(src='/assets/svg/new_2.svg', width=18)
+                        a(href='/notice/read/' + row._id) #{row.title}
+                      .col-3.col-md-3 #{row.writer}
+                      .d-none.d-md-block.col-md-3 #{date.toLocaleString('ko', {hour12: false,year: 'numeric',month: '2-digit',day: '2-digit',hour: '2-digit',minute: '2-digit'})}
+              else
+                li.list-group-item
+                  .row
+                    .col 등록된 글이 없습니다.
+
+          .modal-footer.justify-content-center
+            button.btn.btn-danger.mr-3(type="button" data-dismiss="modal") 닫기
 
 block append_js
   script(src='/assets/js/custom/work.js', type='text/javascript')

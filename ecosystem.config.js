@@ -23,7 +23,8 @@ module.exports = {
       },
       out_file: null,
       log_file: null,
-    }, {
+    },
+    {
       name: 'ktop-dev',
       script: 'app.js',
       env: {

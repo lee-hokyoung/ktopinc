@@ -117,7 +117,7 @@ router.post('/insert', async (req, res, next) => {
 // 가동보고서
 router.get('/report/:month?', middle.isLoggedIn, async (req, res) => {
   let user_id = req.session.passport.user._id;
-  let today = moment(), day = moment(today).format('DD'), start_date = 26, month_start, month_end;
+  let today = moment(), day = moment(today).format('DD'), start_date = 19, month_start, month_end;
   let month = req.params.month || moment(today).format('MM');
   let search_year = moment(today).format('YYYY');
   let search_month = moment(today).format('MM');
