@@ -229,5 +229,19 @@ block content
 block append_js
   script(src='/assets/js/custom/admin_closed.js', type='text/javascript')
   script.
-    console.log(!{JSON.stringify(list)});
-    let list = !{JSON.stringify(list)};
+    if (isWindows) {
+      $('.modal').on('show.bs.modal', function () {
+        var ps1 = new PerfectScrollbar('#myModal');
+        var ps2 = new PerfectScrollbar('#noticeModal');
+        var ps3 = new PerfectScrollbar('#myModal10');
+
+      }).on('hide.bs.modal', function () {
+        var ps1 = new PerfectScrollbar('#myModal');
+        var ps2 = new PerfectScrollbar('#noticeModal');
+        var ps3 = new PerfectScrollbar('#myModal10');
+
+        ps1.destroy();
+        ps2.destroy();
+        ps3.destroy();
+      });
+    }
