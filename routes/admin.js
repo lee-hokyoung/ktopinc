@@ -46,6 +46,7 @@ router.get('/memberProfile/:id', middle.isAdmin, async (req, res) => {
 // 관리자 화면. 근태관리 화면
 router.all('/attendance', middle.isAdmin, async (req, res, next) => {
   const work_titles = await WorkTitle.find({});
+  const remarks = await Remark.find({});
   const page = req.body.page || 1;
   let size = parseInt(req.body.entries) || 30;
   if (req.method === 'PATCH') size = 65536;
@@ -178,7 +179,8 @@ router.all('/attendance', middle.isAdmin, async (req, res, next) => {
       user_nick: req.body.user_nick,
       region: req.body.region,
       isDataOnly: req.body.isDataOnly,
-      work_titles:work_titles
+      work_titles:work_titles,
+      remarks:remarks
     });
   }
 });
