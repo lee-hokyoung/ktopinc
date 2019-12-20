@@ -4,5 +4,6 @@ const Schema = mongoose.Schema;
 const remarkSchema = new Schema({
   id:mongoose.Schema.Types.ObjectId,
   remark:{type:String, required:true, unique:true},
+  jp_name:{type:String}
 });
 module.exports = mongoose.model('Remark', remarkSchema);
