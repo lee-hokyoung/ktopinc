@@ -1,13 +1,10 @@
 /public/assets/
-#/public/assets/js/core/
-#/public/assets/js/css/
+!/public/assets/js/custom
+!/public/assets/css/
 /node_modules/
 /test/
 /uploads/
 .idea
 .env
 /docs/
-#/public/assets/demo/
-#/public/assets/fonts/
-#/public/assets/img/
 /yarn.lock
