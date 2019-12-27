@@ -1,8 +1,8 @@
 /public/assets/js/core/
 /public/assets/js/plugins/
 /node_modules/
-/test
-/uploads
+/test/
+/uploads/
 .idea
 .env
 /docs/
@@ -10,5 +10,3 @@
 /public/assets/fonts/
 /public/assets/img/
 /yarn.lock
-/uploads/
-/test/
