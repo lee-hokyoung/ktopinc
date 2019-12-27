@@ -1,5 +1,6 @@
 public/assets/css/
-public/assets/icomoon/
+public/assets/js/core/
+public/assets/js/plugins/
 node_modules/
 test/
 uploads/
