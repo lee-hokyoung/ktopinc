@@ -41,12 +41,20 @@ html(lang='en')
                 p.h5 작업관리
             li(class=side_active === 'notice' ? 'active' : '')
               a(href='/admin/notice/list')
-                i.now-ui-icons.files_paper
+                i.now-ui-icons.objects_diamond
                 p.h5 공지사항
             li(class=side_active === 'closed' ? 'active' : '')
               a(href='/admin/closed/list')
-                i.now-ui-icons.files_paper
+                i.now-ui-icons.shopping_shop
                 p.h5 휴무계 관리
+            li(class=side_active === 'business' ? 'active' : '')
+              a(href='/admin/business/list')
+                i.now-ui-icons.files_paper
+                p.h5 월간업무보고서 관리
+            li(class=side_active === 'operate_report' ? 'active' : '')
+              a(href='/admin/operate/report')
+                i.now-ui-icons.education_atom
+                p.h5 월가동보고서 관리
             //if(user_lv === 9)
             li(class=side_active === 'superAdmin' ? 'active' : '')
               a(rel='tooltip', title='전체회원관리', data-placement='bottom', href='/admin/superAdmin')

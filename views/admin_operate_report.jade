@@ -7,7 +7,18 @@ block content
       .col-12
         .card
           .card-header
-            h4.card-title 가동보고서 작성 현황
+            h4.card-title 가동보고서 관리
           .card-body.overflow-auto(style='max-height:800px;')
-
+            .row
+              .col-5.col-md-2
+                .form-group
+                  label 시작일
+                  input.form-control(type='text', name='start_date', value='')
+              .col-5.col-md-2
+                .form-group
+                  label 종료일
+                  input.form-control(type='text', name='end_date', value='')
+              .col-2.col-md-2
+                button.btn.btn-primary(type='button', onclick='fnSaveReportConfig') 저장
 block append_js
+  script(src='/assets/js/custom/admin_operate.js')
