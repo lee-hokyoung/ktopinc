@@ -527,11 +527,12 @@ router.post('/notice/file_upload', middle.isAdmin, upload.array('notice_file[]',
 // 가동보고서 화면
 router.get('/operate/report', middle.isAdmin, async (req, res) => {
   let list = await Work.find({});
-  let config = await Config.find({});
+  let config = await Config.findOne({});
 
   res.render('admin_operate_report', {
     side_active: 'operate_report',
-    config: config
+    title:'가동보고서',
+    _config: config
   })
 });
 
@@ -618,9 +619,14 @@ router.get('/closed/searchEmployee/:name', middle.isAdmin, async (req, res) => {
 });
 
 // 환경설정
-router.put('/operate/', middle.isAdmin, async (req, res) => {
-  let result = await Config.findOneAndUpdate(req.body, {upsert:true});
-  res.json(result);
+router.put('/operate', middle.isAdmin, async (req, res) => {
+  let result = await Config.findOneAndUpdate({}, req.body, {upsert:true});
+  if(result){
+    res.json({result: 1, message: '수정성공'});
+  }else{
+    res.json({result:3, message:'결과값이 없습니다'});
+  }
+
 });
 
 module.exports = router;

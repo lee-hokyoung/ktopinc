@@ -13,12 +13,14 @@ block content
               .col-5.col-md-2
                 .form-group
                   label 시작일
-                  input.form-control(type='text', name='start_date', value='')
+                  input.form-control(type='text', name='start_date', value=_config.report_start)
               .col-5.col-md-2
                 .form-group
                   label 종료일
-                  input.form-control(type='text', name='end_date', value='')
+                  input.form-control(type='text', name='end_date', value=_config.report_end)
               .col-2.col-md-2
-                button.btn.btn-primary(type='button', onclick='fnSaveReportConfig') 저장
+                button.btn.btn-primary(type='button', onclick='fnSaveReportConfig()') 저장
 block append_js
   script(src='/assets/js/custom/admin_operate.js')
+  script.
+    console.log(!{JSON.stringify(_config)})

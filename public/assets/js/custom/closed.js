@@ -6,8 +6,10 @@ function fnReadDoc(id) {
   xhr.onreadystatechange = function () {
     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
       let res = JSON.parse(this.response);
-      console.log('res : ', res);
-      document.querySelector('input[value="' + res.closed_type + '"]').checked = true;
+      document.querySelectorAll('#closedModal input[type="checkbox"]').forEach(function(chk){
+        chk.checked = false;
+      });
+      document.querySelector('#closedModal input[value="' + res.closed_type + '"]').checked = true;
       document.querySelectorAll('input[type="text"]').forEach(function (v) {
         if(v.name === 'user_nick') v.value = res.user_id.user_nick;
         else v.value = res[v.name];
@@ -21,6 +23,18 @@ function fnReadDoc(id) {
       }else{
         btnDelete.disabled = true;
       }
+      if(res.improvePath){
+        //  증빙파일이 올라가있을 경우
+        document.querySelector('div[title="isNotImproveFileUploaded"]').className = 'col-md-6 d-none';
+        document.querySelector('div[title="isImproveFileUploaded"]').className = 'col-md-6';
+        let improveFile = document.querySelector('a[name="updatedImproveFile"]');
+        improveFile.innerText = res.improveOriginal;
+        improveFile.href = res.improvePath.replace('./', '/');
+      }else{
+        //  증빙파일이 올라가있지 않을 경우
+        document.querySelector('div[title="isImproveFileUploaded"]').className = 'col-md-6 d-none';
+        document.querySelector('div[title="isNotImproveFileUploaded"]').className = 'col-md-6';
+      }
       $('#closedModal').modal('show');
     }
   };
@@ -32,9 +46,12 @@ $('#closedWriteModal').on('show.bs.modal', function(){
     inp.checked = false;
   });
   document.querySelectorAll('#closedWriteModal input[type="text"]').forEach(function(inp){
-    if(inp.name !== 'department' && inp.name !== 'user_nick' &&
-      inp.name !== 'closed_year' && inp.name !== 'closed_month' && inp.name !== 'closed_day') inp.value = '';
+    if(inp.name !== 'department' && inp.name !== 'user_nick') inp.value = '';
   });
+  let date = new Date();
+  document.querySelector('input[name="closed_year"]').value = date.getFullYear();
+  document.querySelector('input[name="closed_month"]').value = date.getMonth() + 1;
+  document.querySelector('input[name="closed_day"]').value = date.getDate();
 });
 
 // 보고일시 선택
@@ -233,7 +250,8 @@ function fnCompleteWrite() {
       let res = JSON.parse(this.response);
       alert('작성완료');
       // document.querySelector('#closedCheck').checked = true;
-      $('#closedModal').modal('hide');
+      $('#closedWriteModal').modal('hide');
+      location.reload();
     }
   };
   // console.log(formData);
@@ -258,8 +276,37 @@ if(closedAttachInput){
         let path = res.map(function(v){return v.path});
         document.querySelector('input[name="closedAttachOriginalFileName"]').value = original;
         document.querySelector('input[name="closedAttachPath"]').value = path;
+        $('#closedWriteModal').modal('hide');
       }
     };
     xhr.send(formData);
   });
+}
+
+/*  휴무계 증빙파일 제출 */
+function fnUploadImprove(){
+  let file = document.querySelector('input[name="fileImprove"]');
+  if(!file.value){
+    alert('증빙 파일을 첨부해주세요.');
+    return false;
+  }
+  let doc_id = document.querySelector('input[name="doc_id"]').value;
+  let formData = new FormData();
+  formData.append('fileImprove', file.files[0], file.files[0].name);
+  if(!confirm('제출된 파일은 수정할 수 없습니다. 제출하시겠습니까?')) return false;
+  let xhr = new XMLHttpRequest();
+  xhr.open('POST', '/work/closed/uploadImprove/' + doc_id);
+  xhr.onreadystatechange = function(){
+    if(this.readyState === XMLHttpRequest.DONE && this.status === 200){
+      let res = JSON.parse(this.response);
+      if(res.code === 1){
+        alert(res.message);
+        $('#closedModal').modal('hide');
+      }else{
+        alert(res.message);
+        console.log(res.errorMsg);
+      }
+    }
+  };
+  xhr.send(formData);
 }
