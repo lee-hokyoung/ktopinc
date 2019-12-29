@@ -28,12 +28,22 @@ router.get('/', middle.isLoggedIn, async (req, res, next) => {
   const region = await Region.find({});
   const work_title = await WorkTitle.find({});
   const remark = await Remark.find({});
-  const user = await User.findOne({_id: req.session.passport.user._id});
-  let last_work = await Work.findOne({user_id: req.session.passport.user._id}).sort({'date': -1});
+  const user_id = req.session.passport.user._id;
+  const user = await User.findOne({_id: user_id});
+  let last_work = await Work.findOne({user_id: user_id}).sort({'date': -1});
   const notice_list = await Notice.find({}).sort({created: -1}).limit(5);
 
   // 최근에 등록한 작업이 없는 경우 공란으로 넣어준다.
   if (!last_work) last_work = {'region': '', 'start_time': '', 'end_time': ''};
+
+  // 해당월에 제출된 월간업무 보고서가 있는지 확인
+  let isReportBusiness = false;
+  let date = new Date();
+  let business = await Business.findOne({user_id:mongoose.Types.ObjectId(user_id), month:date.getMonth() + 1});
+  if(business){
+    isReportBusiness = true;
+  }
+
   res.render('work', {
     page_frame: 'login-page',
     title: '작업일지 등록',
@@ -42,7 +52,8 @@ router.get('/', middle.isLoggedIn, async (req, res, next) => {
     work_title: work_title,
     remark: remark,
     last_work: last_work,
-    notice_list: notice_list
+    notice_list: notice_list,
+    isReportBusiness:isReportBusiness
   });
 });
 // 작업일지 리스트

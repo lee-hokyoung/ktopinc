@@ -112,7 +112,12 @@ block content
                 li.list-group-item
                   .row
                     .col 등록된 글이 없습니다.
-
+            if(!isReportBusiness)
+              .row
+                .col
+                  .d-flex.justify-content-start
+                    h6.text-danger.pt-3 월간업무 보고서 '미제출'
+                    a.bnt.btn-link.h6.pt-3(href='/work/business') 제출하러가기
           .modal-footer.justify-content-center
             button.btn.btn-danger.mr-3(type="button" data-dismiss="modal") 닫기
 
@@ -120,9 +125,7 @@ block append_js
   script(src='/assets/js/custom/work.js', type='text/javascript')
   script.
     console.log(!{JSON.stringify(user)});
-    console.log(!{JSON.stringify(notice_list)})
+    console.log(!{JSON.stringify(isReportBusiness)});
     let user = !{JSON.stringify(user)};
     let notice_list = !{JSON.stringify(notice_list)};
     if(notice_list.length > 0) $('#noticeModal').modal('show');
-    // if(user.lv === 9) $('#noticeModal').modal('show');
-    // alert('add');
