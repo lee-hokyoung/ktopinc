@@ -87,7 +87,25 @@ function fnDeleteChecked(){
   let checkedItems = document.querySelectorAll('input[data-check]:checked');
   if(checkedItems.length > 0){
     if(confirm('삭제하시면 복구할 수 없습니다. 삭제하시겠습니까?')){
-      console.log('chk item : ', checkedItems);
+      let ids = [];
+      checkedItems.forEach(function(chk){
+        ids.push(chk.value);
+      });
+      let xhr = new XMLHttpRequest();
+      xhr.open('DELETE', '/admin/closed');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function(){
+        if(this.readyState === XMLHttpRequest.DONE && this.status === 200){
+          let res = JSON.parse(this.response);
+          if(res.result === 1){
+            alert(res.message);
+            location.reload();
+          }else{
+            alert(res.message);
+          }
+        }
+      };
+      xhr.send(JSON.stringify({delete_ids:ids}));
     }
   }else{
     alert('체크된 항목이 없습니다.');

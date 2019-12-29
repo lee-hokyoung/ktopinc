@@ -617,6 +617,25 @@ router.get('/closed/searchEmployee/:name', middle.isAdmin, async (req, res) => {
     res.json({code: -1})
   }
 });
+router.delete('/closed', middle.isAdmin, async(req, res) => {
+  let delete_ids = req.body.delete_ids;
+  try{
+    if(delete_ids.length > 0){
+      let delete_obj = delete_ids.map((v) => {
+        return mongoose.Types.ObjectId(v);
+      });
+      let result = await Closed.deleteMany({_id:{$in:delete_obj}});
+      if(result.deletedCount > 0){
+        res.json({result:1, message:'삭제성공!'});
+      }else{
+        res.json({result:0, message:'삭제실패! 관리자에게 문의해주세요'});
+      }
+    }
+  }catch(e){
+    console.error(e);
+    res.json({result:0, message:'삭제실패! 전달받은 값이 없습니다.'});
+  }
+});
 
 // 환경설정
 router.put('/operate', middle.isAdmin, async (req, res) => {
