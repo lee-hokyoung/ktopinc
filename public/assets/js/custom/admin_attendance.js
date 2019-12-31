@@ -6,9 +6,7 @@ function fnUpdateTime() {
   let start_time = document.querySelector('#timepicker_start');
   let end_time = document.querySelector('#timepicker_end');
   let work_title = $('#work_title').selectpicker('val');
-  tds[6].innerText = start_time.value;
-  tds[7].innerText = end_time.value;
-  tds[8].innerText = work_title;
+  let remarks = $('#remark').selectpicker('val');
   let xhr = new XMLHttpRequest();
   xhr.open("POST", '/admin/attendance/time/' + current_work_id, true);
   xhr.setRequestHeader("Content-Type", "application/json");
@@ -24,9 +22,18 @@ function fnUpdateTime() {
         delay: 2000
       });
       $('#setTimeModal').modal('hide');
+      tds[6].innerText = start_time.value;
+      tds[7].innerText = end_time.value;
+      tds[8].innerText = work_title;
+      tds[9].innerText = remarks;
     }
   };
-  xhr.send(JSON.stringify({start_time: start_time.value, end_time: end_time.value, work_title: work_title}));
+  xhr.send(JSON.stringify({
+    start_time: start_time.value,
+    end_time: end_time.value,
+    work_title: work_title,
+    remarks:remarks
+  }));
 }
 
 // 근무시간 모달창 띄우기

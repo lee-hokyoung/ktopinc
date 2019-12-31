@@ -217,7 +217,12 @@ router.post('/attendance/excelDownload', middle.isAdmin, async (req, res) => {
 router.post('/attendance/time/:id', middle.isAdmin, async (req, res) => {
   let result = await Work.updateMany({_id: req.params.id}, {
     $set:
-      {start_time: req.body.start_time, end_time: req.body.end_time, work_title: req.body.work_title}
+      {
+        start_time: req.body.start_time,
+        end_time: req.body.end_time,
+        work_title: req.body.work_title,
+        remarks:req.body.remarks
+      }
   });
   if (result.ok === 1) result.message = '수정 성공';
   else result.message = '수정 실패';
@@ -531,7 +536,7 @@ router.get('/operate/report', middle.isAdmin, async (req, res) => {
 
   res.render('admin_operate_report', {
     side_active: 'operate_report',
-    title:'가동보고서',
+    title: '가동보고서',
     _config: config
   })
 });
@@ -617,33 +622,33 @@ router.get('/closed/searchEmployee/:name', middle.isAdmin, async (req, res) => {
     res.json({code: -1})
   }
 });
-router.delete('/closed', middle.isAdmin, async(req, res) => {
+router.delete('/closed', middle.isAdmin, async (req, res) => {
   let delete_ids = req.body.delete_ids;
-  try{
-    if(delete_ids.length > 0){
+  try {
+    if (delete_ids.length > 0) {
       let delete_obj = delete_ids.map((v) => {
         return mongoose.Types.ObjectId(v);
       });
-      let result = await Closed.deleteMany({_id:{$in:delete_obj}});
-      if(result.deletedCount > 0){
-        res.json({result:1, message:'삭제성공!'});
-      }else{
-        res.json({result:0, message:'삭제실패! 관리자에게 문의해주세요'});
+      let result = await Closed.deleteMany({_id: {$in: delete_obj}});
+      if (result.deletedCount > 0) {
+        res.json({result: 1, message: '삭제성공!'});
+      } else {
+        res.json({result: 0, message: '삭제실패! 관리자에게 문의해주세요'});
       }
     }
-  }catch(e){
+  } catch (e) {
     console.error(e);
-    res.json({result:0, message:'삭제실패! 전달받은 값이 없습니다.'});
+    res.json({result: 0, message: '삭제실패! 전달받은 값이 없습니다.'});
   }
 });
 
 // 환경설정
 router.put('/operate', middle.isAdmin, async (req, res) => {
-  let result = await Config.findOneAndUpdate({}, req.body, {upsert:true});
-  if(result){
+  let result = await Config.findOneAndUpdate({}, req.body, {upsert: true});
+  if (result) {
     res.json({result: 1, message: '수정성공'});
-  }else{
-    res.json({result:3, message:'결과값이 없습니다'});
+  } else {
+    res.json({result: 3, message: '결과값이 없습니다'});
   }
 
 });
