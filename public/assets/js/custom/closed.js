@@ -9,10 +9,11 @@ function fnReadDoc(id) {
       document.querySelectorAll('#closedModal input[type="checkbox"]').forEach(function(chk){
         chk.checked = false;
       });
-      document.querySelector('#closedModal input[value="' + res.closed_type + '"]').checked = true;
+      let isMobile = detectmob();
+      document.querySelector('#closedModal ' + (isMobile?'.d-md-none':'') + ' input[value="' + res.closed_type + '"]').checked = true;
       document.querySelectorAll('input[type="text"]').forEach(function (v) {
         if(v.name === 'user_nick') v.value = res.user_id.user_nick;
-        else v.value = res[v.name];
+        else v.value = res[v.name.replace('_mobile','')];
       });
       if(res.path) fnGenerateClosedAttach(res);
       else document.querySelector('#closedAttachedFile').innerHTML = '';
@@ -55,7 +56,11 @@ $('#closedWriteModal').on('show.bs.modal', function(){
 });
 
 // 보고일시 선택
-$('#reportDate').on('click', function () {
+$('#reportDate').on('focus', function () {
+  $('#selectCalendarModal').modal('show');
+});
+// 보고일시 선택 모바일
+$('#reportDate_mobile').on('focus', function(){
   $('#selectCalendarModal').modal('show');
 });
 $('#selectCalendarModal').on('shown.bs.modal', function(){
@@ -78,13 +83,12 @@ $('#datepicker-inline').datetimepicker({
   document.querySelector('#reportDate').value = selected.dataset.day;
 });
 
-// 보고일시 선택 모바일
-$('#reportDate_mobile').on('focus', function(){
-  $('#selectCalendarModal').modal('show');
-});
-
 // 신청기간 선택
 $('#application_period').on('focus', function () {
+  $('#selectedRangeModal').modal('show');
+});
+// 신청기간 선택 모바일
+$('#application_period_mobile').on('focus', function(){
   $('#selectedRangeModal').modal('show');
 });
 $('#datepickerStart').datetimepicker({
@@ -114,8 +118,15 @@ $('#datepickerEnd').datetimepicker({
   document.querySelector('input[name="period"]').value =  Math.ceil(period / (1000 * 60 * 60 * 24));
 });
 function fnSelectedPeriod(){
-  document.querySelector('#application_period').value = document.querySelector('input[name="selectedRange"]').value;
-  document.querySelector('input[name="days"]').value = document.querySelector('input[name="period"]').value;
+  let isMobile = detectmob();
+  let application_period = !isMobile ?
+    document.querySelector('#application_period'):
+    document.querySelector('#application_period_mobile');
+  application_period.value = document.querySelector('input[name="selectedRange"]').value;
+  let days = !isMobile ?
+    document.querySelector('input[name="days"]'):
+    document.querySelector('input[name="days_mobile"]');
+  days.value = document.querySelector('input[name="period"]').value;
   $('#selectedRangeModal').modal('hide');
 }
 // 휴무계 삭제요청
