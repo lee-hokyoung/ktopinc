@@ -10,6 +10,7 @@ block content
 		.container-fluid.p-0
 			.card(style='margin-top:90px;')
 				.card-header
+					input(type='hidden', name='search_month', value=search_month)
 					.form-group.p-3
 						- var selected_month = search_year + '-' + search_month;
 						select.selectpicker(data-style='select-with-transition btn-neutral', data-width='fit', title='월 선택', name='work_month')
@@ -38,9 +39,9 @@ block content
 									td(colspan='3', data-cell='A4') 対応現場先
 									td(colspan='3', data-cell='D4') 다운 받은 후 입력하세요
 									td(rowspan='2', data-cell='H4', style='width:60px;') 日額
-									td(rowspan='2', data-cell='I4', style='width:60px;') 定時
-									td(rowspan='2', data-cell='J4', style='width:60px;') 殘業
-									td(rowspan='2', data-cell='K4', style='width:60px;') 夜間
+									td(rowspan='2', data-cell='J4', style='width:60px;') 定時
+									td(rowspan='2', data-cell='K4', style='width:60px;') 殘業
+									td(rowspan='2', data-cell='L4', style='width:60px;') 夜間
 								tr
 									td(style='width:60px;', data-cell='A5') 日
 									td(style='width:80px;', data-cell='B5') 曜日
@@ -83,22 +84,22 @@ block content
 										td(data-cell='E' + cell_idx, data-ko=work_title, data-jp=jp_name) #{work_title}
 										td(data-cell='G' + cell_idx) #{work_day > 0 ? work_day.toFixed(2) + ' H' : ''}
 										td(data-cell='H' + cell_idx) #{parseFloat(work_day) >= 8 ? 1 : ''}
-										td(data-cell='I' + cell_idx) #{(parseFloat(work_day) < 8 && work_day !== 0) ? work_day.toFixed(1) : ''}
-										td(data-cell='J' + cell_idx) #{parseFloat(work_day) > 10 ? (parseFloat(work_day) - 10).toFixed(1) : ''}
+										td(data-cell='J' + cell_idx) #{(parseFloat(work_day) < 8 && work_day !== 0) ? work_day.toFixed(1) : ''}
+										td(data-cell='K' + cell_idx) #{parseFloat(work_day) > 10 ? (parseFloat(work_day) - 10).toFixed(1) : ''}
 										td
 								tr
-									td(colspan='5', data-cell='A37') 合計
-									td(data-cell='G37') #{total_time.toFixed(2)} H
-									td(data-cell='H37') #{total_work_day}
-									td(data-cell='I37') #{total_work_under.toFixed(1)}
-									td(data-cell='J37') #{total_work_over.toFixed(1)}
-									td(data-cell='K37') 0
-								tr
-									td(colspan='10')
-										.d-flex.justify-content-between
-											div 製番 :
-											.border(style='width:230px; height:130px')
-												.mt-2(style='text-decoration:underline') 現場責任者様承認印
+									td(data-cell='A44', colspan='5') 合計
+									td(data-cell='G44') #{total_time.toFixed(2)} H
+									td(data-cell='H44') #{total_work_day}
+									td(data-cell='J44') #{total_work_under.toFixed(1)}
+									td(data-cell='K44') #{total_work_over.toFixed(1)}
+									td 0
+								//tr
+								//	td(colspan='10')
+								//		.d-flex.justify-content-between
+								//			div 製番 :
+								//			.border(style='width:230px; height:130px')
+								//				.mt-2(style='text-decoration:underline') 現場責任者様承認印
 					.form-group
 						button.btn.btn-success.mr-3(type='button', onclick='fnDownPDF()') PDF 다운로드
 						button.btn.btn-warning.mr-3(type='button', onclick='exportExcel()') 엑셀 다운로드

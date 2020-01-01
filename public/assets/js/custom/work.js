@@ -96,7 +96,7 @@ function fnCheckSubmit(id) {
   }
 
   let isDirectRemark = document.querySelector('div[title="remarks"]').className.indexOf('d-none') > -1;
-  let remark_field = document.querySelector('inpfnCheckSubmitut[name="remarks_etc"]');
+  let remark_field = document.querySelector('input[name="remarks_etc"]');
   if (!isDirectRemark) {
     if (remark_field.value === "") {
       alert('비고사항을 입력해주세요');

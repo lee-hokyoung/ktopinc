@@ -12,6 +12,7 @@ const Remark = require('../model/remark');
 const Notice = require('../model/notice');
 const Business = require('../model/business');
 const Closed = require('../model/closed');
+const Config = require('../model/config');
 
 // 파일 업로드 관련 모듈
 const fs = require('fs');
@@ -179,8 +180,8 @@ router.all('/attendance', middle.isAdmin, async (req, res, next) => {
       user_nick: req.body.user_nick,
       region: req.body.region,
       isDataOnly: req.body.isDataOnly,
-      work_titles:work_titles,
-      remarks:remarks
+      work_titles: work_titles,
+      remarks: remarks
     });
   }
 });
@@ -216,7 +217,12 @@ router.post('/attendance/excelDownload', middle.isAdmin, async (req, res) => {
 router.post('/attendance/time/:id', middle.isAdmin, async (req, res) => {
   let result = await Work.updateMany({_id: req.params.id}, {
     $set:
-      {start_time: req.body.start_time, end_time: req.body.end_time, work_title:req.body.work_title}
+      {
+        start_time: req.body.start_time,
+        end_time: req.body.end_time,
+        work_title: req.body.work_title,
+        remarks:req.body.remarks
+      }
   });
   if (result.ok === 1) result.message = '수정 성공';
   else result.message = '수정 실패';
@@ -427,7 +433,7 @@ router.get('/notice/list', middle.isAdmin, async (req, res) => {
   const list = await Notice.find({});
   res.render('admin_notice', {
     list: list,
-    side_active:'notice'
+    side_active: 'notice'
   });
 });
 // 공지사항 글 쓰기 화면
@@ -459,11 +465,11 @@ router.get('/notice/read/:id', middle.isAdmin, async (req, res) => {
 // 공지사항 글 등록
 router.post('/notice/create', middle.isAdmin, async (req, res) => {
   // 업로드한 파일이 있다면, temp 폴더에서 uploads 폴더로 복사
-  if(req.body.path){
+  if (req.body.path) {
     let paths = req.body.path.split(',');
-    paths.forEach(function(v){
+    paths.forEach(function (v) {
       fs.createReadStream('./' + v)
-        .pipe(fs.createWriteStream('./docs' + v.replace('temps','')));
+        .pipe(fs.createWriteStream('./docs' + v.replace('temps', '')));
     });
   }
   let result = await Notice.create(req.body);
@@ -501,18 +507,20 @@ const upload = multer({
       cb(null, path.basename(file.originalname, ext) + new Date().valueOf() + ext);
     }
   }),
-  limits:{fileSize:2*1024*1024}
+  limits: {fileSize: 2 * 1024 * 1024}
 });
-router.post('/notice/file_upload',middle.isAdmin, upload.array('notice_file[]', 10), async(req, res) => {
+router.post('/notice/file_upload', middle.isAdmin, upload.array('notice_file[]', 10), async (req, res) => {
   // temp 폴더 내에 모든 파일을 삭제
   let directory = './temps';
   fs.readdir(directory, (err, files) => {
-    if(!err){
-      let uploaded_files = req.files.map((v) => {return v.filename});
-      for(let file of files){
-        if(uploaded_files.indexOf(file) === -1)
+    if (!err) {
+      let uploaded_files = req.files.map((v) => {
+        return v.filename
+      });
+      for (let file of files) {
+        if (uploaded_files.indexOf(file) === -1)
           fs.unlink(path.join(directory, file), err => {
-            if(err) throw err;
+            if (err) throw err;
           });
       }
     }
@@ -524,8 +532,12 @@ router.post('/notice/file_upload',middle.isAdmin, upload.array('notice_file[]', 
 // 가동보고서 화면
 router.get('/operate/report', middle.isAdmin, async (req, res) => {
   let list = await Work.find({});
+  let config = await Config.findOne({});
+
   res.render('admin_operate_report', {
     side_active: 'operate_report',
+    title: '가동보고서',
+    _config: config
   })
 });
 
@@ -580,19 +592,19 @@ router.get('/business/read/:id', middle.isAdmin, async (req, res) => {
 });
 
 // 휴무계 리스트
-router.get('/closed/list/:year?/:month?', middle.isAdmin, async(req, res) => {
+router.get('/closed/list/:year?/:month?', middle.isAdmin, async (req, res) => {
   let now = new Date();
   let month = req.params.month || now.getMonth() + 1;
   let year = req.params.year || now.getFullYear();
   let list = await Closed.find({closed_month: month, closed_year: year}).populate('user_id');
   res.render('admin_closed_list', {
-    side_active:'closed',
-    list:list,
-    month:month
+    side_active: 'closed',
+    list: list,
+    month: month
   });
 });
 // 휴무계 삭제요청 승인
-router.patch('/closed/:id', middle.isAdmin, async(req, res) => {
+router.patch('/closed/:id', middle.isAdmin, async (req, res) => {
   let result = await Closed.updateOne(
     {_id: mongoose.Types.ObjectId(req.params.id)},
     {$set: {status: 3}}
@@ -600,16 +612,45 @@ router.patch('/closed/:id', middle.isAdmin, async(req, res) => {
   res.json(result);
 });
 // 휴무계 직원이름 조회
-router.get('/closed/searchEmployee/:name', middle.isAdmin, async(req, res) => {
+router.get('/closed/searchEmployee/:name', middle.isAdmin, async (req, res) => {
   let name = req.params.name;
-  let user_id = await User.findOne({user_nick:name});
-  if(user_id){
-    let list = await Closed.find({user_id:mongoose.Types.ObjectId(user_id._id)}).sort({reportDate:-1});
-    res.json({list:list, name:name, code:1});
-  }else{
-    res.json({code:-1})
+  let user_id = await User.findOne({user_nick: name});
+  if (user_id) {
+    let list = await Closed.find({user_id: mongoose.Types.ObjectId(user_id._id)}).sort({reportDate: -1});
+    res.json({list: list, name: name, code: 1});
+  } else {
+    res.json({code: -1})
+  }
+});
+router.delete('/closed', middle.isAdmin, async (req, res) => {
+  let delete_ids = req.body.delete_ids;
+  try {
+    if (delete_ids.length > 0) {
+      let delete_obj = delete_ids.map((v) => {
+        return mongoose.Types.ObjectId(v);
+      });
+      let result = await Closed.deleteMany({_id: {$in: delete_obj}});
+      if (result.deletedCount > 0) {
+        res.json({result: 1, message: '삭제성공!'});
+      } else {
+        res.json({result: 0, message: '삭제실패! 관리자에게 문의해주세요'});
+      }
+    }
+  } catch (e) {
+    console.error(e);
+    res.json({result: 0, message: '삭제실패! 전달받은 값이 없습니다.'});
   }
 });
 
+// 환경설정
+router.put('/operate', middle.isAdmin, async (req, res) => {
+  let result = await Config.findOneAndUpdate({}, req.body, {upsert: true});
+  if (result) {
+    res.json({result: 1, message: '수정성공'});
+  } else {
+    res.json({result: 3, message: '결과값이 없습니다'});
+  }
+
+});
 
 module.exports = router;

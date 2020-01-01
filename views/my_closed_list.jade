@@ -119,12 +119,18 @@ block content
                           | 경조사(취업규칙에근거)
                   tr
                     th 무급
-                    td(colspan=2)
+                    td
+                      .form-check.text-left.text-nowrap
+                        label.form-check-label
+                          input.form-check-input(type="checkbox", name='closed_type', value='noPay', onclick='fnSelectType(this)')
+                          span.form-check-sign
+                          | 무급
+                    td
                       .form-check.text-left.text-nowrap
                         label.form-check-label
                           input.form-check-input(type="checkbox", name='closed_type', value='Absenteeism', onclick='fnSelectType(this)')
                           span.form-check-sign
-                          | 무단결근(현장보고 및 본사에 휴가계 사후제출 시)
+                          | 무단결근
                     td
                       .form-check.text-left.text-nowrap
                         label.form-check-label
@@ -171,7 +177,7 @@ block content
             .input-group.mb-3
               .file-wrap
                 label(for='closedAttach').text-nowrap 첨부파일
-                input#closedAttach(type='file', name='closedAttach[]', multiple, style='max-width:200px;', onchange='fnUploadClosedAttach()')
+                input#closedAttach(type='file', name='closedAttach[]', multiple, style='max-width:200px;')
               //label(for='closedAttach') 첨부파일
             p 위와 같이 휴무계를 사용하고자 하오니 허가하여 주시기 바랍니다.
             - var date = new Date();
@@ -233,12 +239,18 @@ block content
                           | 경조사(취업규칙에근거)
                   tr
                     th 무급
-                    td(colspan=2)
+                    td
+                      .form-check.text-left.text-nowrap
+                        label.form-check-label
+                          input.form-check-input(type="checkbox", name='closed_type', value='noPay', disabled)
+                          span.form-check-sign
+                          | 무급
+                    td
                       .form-check.text-left.text-nowrap
                         label.form-check-label
                           input.form-check-input(type="checkbox", name='closed_type', value='Absenteeism', disabled)
                           span.form-check-sign
-                          | 무단결근(현장보고 및 본사에 휴가계 사후제출 시)
+                          | 무단결근
                     td
                       .form-check.text-left.text-nowrap
                         label.form-check-label
@@ -295,13 +307,16 @@ block content
             p.text-danger.mb-0 ※ 휴무의 당일 현장보고 및 회사보고 = 무급에 해당함.
             p.text-danger &nbsp;&nbsp;&nbsp; 단, 병가로 인한 경우 병원 진단서 또는 진료확인서 제출시에는 연차 처리 가능.
             h4 KTOP Inc. 대표이사 귀하
-
+            .row
+              .col-md-6(title='isImproveFileUploaded')
+                a(name='updatedImproveFile', target='_blank')
+              .col-md-6(title='isNotImproveFileUploaded')
+                .input-group
+                  input.form-control(type="file", name='fileImprove')
+                  button.btn.btn-primary.my-0(type='button', onclick='fnUploadImprove()') 증빙파일제출
         .modal-footer.justify-content-center
           button.btn.btn-danger.mr-3(type="button" data-dismiss="modal") 닫기
           button.btn.btn-info(type="button", name='btnDelete', onclick='fnDeleteDoc()') 삭제요청
           input(type='hidden', name='doc_id')
 block append_js
   script(src='/assets/js/custom/closed.js', type='text/javascript')
-  script.
-    console.log(!{JSON.stringify(list)});
-    console.log(!{JSON.stringify(user)});
