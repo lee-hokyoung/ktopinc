@@ -23,9 +23,9 @@
 /*  휴무계 관련 css */
 #tableClosed .form-check-sign::before, #tableClosed .form-check-sign::after{top:0px; left:0px;}
 #tableClosed .form-check{width:inherit;}
-#tableClosed input{border:none; width:100%; background-color:transparent; text-align: center;}
-#tableClosed input:focus, input.type_num:focus{outline:none;}
-#tableClosed td.input-td{background-color:lightgoldenrodyellow}
+#tableClosed input, .mobileTd input{border:none; width:100%; background-color:transparent; text-align: center;}
+#tableClosed input:focus, input.type_num:focus, .mobileTd input:focus{outline:none;}
+#tableClosed td.input-td, .mobileTd input{background-color:lightgoldenrodyellow}
 #tableClosed td{padding:0.3rem;}
 #tableClosed input.type_num, input.type_num{width:50px; background-color:lightgoldenrodyellow; border:none;}
 
@@ -46,6 +46,38 @@
 #selectedRangeModal .glyphicon.glyphicon-chevron-right:before{content: "\f054";}
 #selectedRangeModal .bootstrap-datetimepicker-widget table td.selected>div{background-color: #6c757d;color: #fff;box-shadow: 0 1px 10px 0 rgba(0, 0, 0, .2);}
 #reportDate {position: relative;}
+
+.mobileTdWrap{
+    display: flex;
+    justify-content: start;
+    border-top:1px solid #ccc;
+    border-left:1px solid #ccc;
+    border-right:1px solid #ccc;
+}
+.mobileTdWrap:last-child{border-bottom:1px solid #ccc;}
+.w105{width:105px;}
+.bg-lightGray{
+    background-color:#ddd;
+}
+.mobileTdWrap label.mobileTh{
+    color: black;
+    padding: 0 0.5rem;
+    font-weight: bold;
+    margin: auto 0;
+    vertical-align: middle;
+}
+.mobileTdWrap .form-check{
+    margin-top:0;
+    padding: .2rem;
+}
+p.mobileTitle{
+    margin: 0;
+    font-size: .9rem;
+    font-weight: 700;
+    padding: .25rem;
+}
+.mobileTd{flex:1;}
+.mobileTd input{padding:.5rem 0;}
 /*pc 버전에만 해당*/
 @media (min-width: 768px) {
     .bd-links {

@@ -83,6 +83,11 @@ $('#datepicker-inline').datetimepicker({
   document.querySelector('#reportDate').value = selected.dataset.day;
 });
 
+// 보고일시 선택 모바일
+$('#reportDate_mobile').on('focus', function(){
+  $('#selectCalendarModal').modal('show');
+});
+
 // 신청기간 선택
 $('#application_period').on('focus', function () {
   $('#selectedRangeModal').modal('show');
