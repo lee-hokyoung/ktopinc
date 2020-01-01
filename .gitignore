@@ -6,6 +6,7 @@
 /docs/
 /yarn.lock
 /public/assets/demo/
+/public/assets/scss/
 /public/assets/fonts/
 /public/assets/img/
 /public/assets/js/core/
@@ -13,3 +14,6 @@
 /public/assets_bak/
 /public/assets/js/now-ui-kit.js
 /public/assets/js/now-ui-dashboard.js
+temps/
+/2차개발_중간점검회의.xlsx
+/K-Top.tar

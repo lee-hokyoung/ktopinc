@@ -59,8 +59,12 @@ $('#reportDate').on('click', function () {
   $('#selectCalendarModal').modal('show');
 });
 $('#selectCalendarModal').on('shown.bs.modal', function(){
-  let current_date = document.querySelector('#reportDate');
-  console.log('current date : ', current_date);
+  let isMobile = detectmob();
+  let current_date = !isMobile ?
+    document.querySelector('#reportDate'):
+    document.querySelector('#reportDate_mobile');
+
+  // 보고일시가 공란으로 되어 있을 떄 오늘 날짜를 엽력해준다.
   if(current_date.value === ''){
     current_date.value = document.querySelector('#selectCalendarModal .table-condensed td.today').dataset.day;
   }
@@ -74,8 +78,13 @@ $('#datepicker-inline').datetimepicker({
   document.querySelector('#reportDate').value = selected.dataset.day;
 });
 
+// 보고일시 선택 모바일
+$('#reportDate_mobile').on('focus', function(){
+  $('#selectCalendarModal').modal('show');
+});
+
 // 신청기간 선택
-$('#application_period').on('click', function () {
+$('#application_period').on('focus', function () {
   $('#selectedRangeModal').modal('show');
 });
 $('#datepickerStart').datetimepicker({
@@ -96,12 +105,10 @@ $('#datepickerEnd').datetimepicker({
   useCurrent: false
 }).on('dp.change', function(){
   let end_date = document.querySelector('#datepickerEnd td.day.active').dataset.day;
-  console.log('end : ', end_date);
   let p_start = document.querySelector('#datepickerStart td.day.active').dataset.day;
   let p_end = document.querySelector('#datepickerEnd td.day.active').dataset.day;
   let d_start = new Date(p_start.slice(0, p_start.length - 1).replace(/\./g, '-'));
   let d_end = new Date(p_end.slice(0, p_end.length - 1).replace(/\./g, '-'));
-  console.log('start : ', d_start, ', end : ', d_end);
   let period = Math.abs(d_start - d_end) + 1;
   document.querySelector('input[name="selectedRange"]').value = p_start + '~' + p_end;
   document.querySelector('input[name="period"]').value =  Math.ceil(period / (1000 * 60 * 60 * 24));
@@ -121,7 +128,6 @@ function fnDeleteDoc(){
   xhr.onreadystatechange = function(){
     if(this.readyState === XMLHttpRequest.DONE && this.status === 200){
       let res = JSON.parse(this.response);
-      console.log('res : ', res);
       if(res.ok === 1){
         alert('삭제요청 했습니다.');
         location.reload();
@@ -153,12 +159,14 @@ function fnSelectType(btn) {
 /*  휴무계 작성 완료 */
 function fnCompleteWrite() {
   let formData = {};
+  let isMobile = detectmob();
   let closed_type = document.querySelector('input[name="closed_type"]:checked');
   if (!closed_type) {
     alert('신청구분을 선택해주세요.');
     return false;
   }
   formData['closed_type'] = closed_type.value;
+
   let department = document.querySelector('input[name="department"]');
   if (!department.value) {
     alert('부서를 입력해주세요.');
@@ -166,55 +174,77 @@ function fnCompleteWrite() {
     return false;
   }
   formData['department'] = department.value;
-  let rank = document.querySelector('input[name="rank"]');
+
+  let rank = !isMobile ?
+    document.querySelector('input[name="rank"]') :
+    document.querySelector('input[name="rank_mobile"]');
   if (!rank.value) {
     alert('직급을 입력해주세요.');
     rank.focus();
     return false;
   }
   formData['rank'] = rank.value;
-  let application_period = document.querySelector('input[name="application_period"]');
+
+  let application_period = !isMobile ?
+    document.querySelector('input[name="application_period"]'):
+    document.querySelector('input[name="application_period_mobile"]');
   if (!application_period.value) {
     alert('신청 기간을 입력해주세요.');
     application_period.focus();
     return false;
   }
   formData['application_period'] = application_period.value;
-  let days = document.querySelector('input[name="days"]');
+
+  let days = !isMobile ?
+    document.querySelector('input[name="days"]'):
+    document.querySelector('input[name="days_mobile"]');
   if (!days.value) {
     alert('신청 일수를 입력해주세요.');
     days.focus();
     return false;
   }
   formData['days'] = days.value;
-  let reason = document.querySelector('input[name="reason"]');
+
+  let reason = !isMobile ?
+    document.querySelector('input[name="reason"]'):
+    document.querySelector('input[name="reason_mobile"]');
   if (!reason.value) {
     alert('사유를 입력해주세요.');
     reason.focus();
     return false;
   }
   formData['reason'] = reason.value;
-  let licenserName = document.querySelector('input[name="licenserName"]');
+
+  let licenserName = !isMobile ?
+    document.querySelector('input[name="licenserName"]'):
+    document.querySelector('input[name="licenserName_mobile"]');
   if (!licenserName.value) {
     alert('허가자 성명을 입력해주세요.');
     licenserName.focus();
     return false;
   }
   formData['licenserName'] = licenserName.value;
-  let reportDate = document.querySelector('input[name="reportDate"]');
+
+  let reportDate = !isMobile ?
+    document.querySelector('input[name="reportDate"]'):
+    document.querySelector('input[name="reportDate_mobile"]');
   if (!reportDate.value) {
     alert('보고일시를 입력해주세요.');
     reportDate.focus();
     return false;
   }
   formData['reportDate'] = reportDate.value;
-  let licenserTel = document.querySelector('input[name="licenserTel"]');
+
+  let licenserTel = !isMobile ?
+    document.querySelector('input[name="licenserTel"]'):
+    document.querySelector('input[name="licenserTel_mobile"]');
   if (!licenserTel.value) {
     alert('허가자 연락처를 입력해주세요');
     licenserTel.focus();
     return false;
   }
   formData['licenserTel'] = licenserTel.value;
+
   let closed_year = document.querySelector('input[name="closed_year"]');
   if (!closed_year.value) {
     alert('작성일시를 입력해주세요');
@@ -222,6 +252,7 @@ function fnCompleteWrite() {
     return false;
   }
   formData['closed_year'] = closed_year.value;
+
   let closed_month = document.querySelector('input[name="closed_month"]');
   if (!closed_month.value) {
     alert('작성일시를 입력해주세요');
@@ -229,6 +260,7 @@ function fnCompleteWrite() {
     return false;
   }
   formData['closed_month'] = closed_month.value;
+
   let closed_day = document.querySelector('input[name="closed_day"]');
   if (!closed_day.value) {
     alert('작성일시를 입력해주세요');
@@ -236,6 +268,7 @@ function fnCompleteWrite() {
     return false;
   }
   formData['closed_day'] = closed_day.value;
+
   // file upload
   let original = document.querySelector('input[name="closedAttachOriginalFileName"]');
   let path = document.querySelector('input[name="closedAttachPath"]');

@@ -1,0 +1,207 @@
+#closedWriteModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="closedWriteModalLabel", aria-hidden="true")
+	.modal-dialog.modal-lg(role="document")
+		.modal-content
+			.modal-header
+				h5#closedWriteModalLabel.modal-title 휴무계 작성
+				button.close.text-dark(type='button', data-dismiss='modal', aria-label='Close')
+					span(aria-hidden='true') x
+			.modal-body
+				form#formClosed
+					.table.table-responsive.mb-0.d-none.d-md-block
+						table.table.text-center.table-bordered#tableClosed
+							colgroup
+								col(style='background-color:#aaa;')
+								col(style='background-color:#aaa;')
+								col(width=200)
+								col(width=200)
+								col(width=200)
+							tbody
+								tr
+									th.text-nowrap(rowspan=2, width='80px') 신청구분
+									th.text-nowrap(width='60px') 유급
+									td
+										.form-check.text-left.text-nowrap
+											label.form-check-label
+												input.form-check-input(type="checkbox", name='closed_type', value='annualLeave', onclick='fnSelectType(this)')
+												span.form-check-sign
+												| 연차
+									td
+										.form-check.text-left.text-nowrap
+											label.form-check-label
+												input.form-check-input(type="checkbox", name='closed_type', value='reserveForces', onclick='fnSelectType(this)')
+												span.form-check-sign
+												| 예비군/민방위훈련
+									td
+										.form-check.text-left.text-nowrap
+											label.form-check-label
+												input.form-check-input(type="checkbox", name='closed_type', value='familyEvent', onclick='fnSelectType(this)')
+												span.form-check-sign
+												| 경조사(취업규칙에근거)
+								tr
+									th 무급
+									td
+										.form-check.text-left.text-nowrap
+											label.form-check-label
+												input.form-check-input(type="checkbox", name='closed_type', value='noPay', onclick='fnSelectType(this)')
+												span.form-check-sign
+												| 무급
+									td
+										.form-check.text-left.text-nowrap
+											label.form-check-label
+												input.form-check-input(type="checkbox", name='closed_type', value='Absenteeism', onclick='fnSelectType(this)')
+												span.form-check-sign
+												| 무단결근
+									td
+										.form-check.text-left.text-nowrap
+											label.form-check-label
+												input.form-check-input(type="checkbox", name='closed_type', value='tardy', onclick='fnSelectType(this)')
+												span.form-check-sign
+												| 지각/조퇴
+								tr
+									th(colspan=2, rowspan=2) 신청인
+									td 부서
+									td 직급
+									td 성명
+								tr
+									td.input-td
+										input(type='text', name='department', value=user.user_team)
+									td.input-td
+										input(type='text', name='rank')
+									td.input-td
+										input(type='text', name='user_nick', value=user.user_nick)
+								tr
+									th(colspan=2, rowspan=2) 신청기간
+									td.input-td(colspan=3)
+										input#application_period(type='text', name='application_period')
+								tr
+									td(colspan=3)
+										| ( &nbsp;
+										input.text-center.type_num(type='text', name='days')
+										| &nbsp; ) &nbsp; 일 간
+								tr
+									th(colspan=2) 사유
+									td.input-td(colspan=3)
+										input(type='text', name='reason')
+								tr
+									th(colspan=2, rowspan=2) 현장보고
+									td 허가자 성명
+									td 보고일시
+									td 허가자 연락처
+								tr
+									td.input-td
+										input(type='text', name='licenserName')
+									td.input-td
+										input#reportDate(type='text', name='reportDate')
+									td.input-td
+										input(type='text', name='licenserTel')
+
+					// 모바일 화면
+					.d-block.d-md-none
+						p.mobileTitle.bg-default 신청구분
+						.mobileTdWrap
+							.bg-lightGray
+								label.mobileTh 유급
+							.chkWrap
+								.form-check.text-left.text-nowrap
+									label.form-check-label
+										input.form-check-input(type="checkbox", name='closed_type', value='annualLeave', onclick='fnSelectType(this)')
+										span.form-check-sign
+										| 연차
+								.form-check.text-left.text-nowrap
+									label.form-check-label
+										input.form-check-input(type="checkbox", name='closed_type', value='reserveForces', onclick='fnSelectType(this)')
+										span.form-check-sign
+										| 예비군/민방위훈련
+								.form-check.text-left.text-nowrap
+									label.form-check-label
+										input.form-check-input(type="checkbox", name='closed_type', value='familyEvent', onclick='fnSelectType(this)')
+										span.form-check-sign
+										| 경조사(취업규칙에근거)
+						.mobileTdWrap
+							.bg-lightGray
+								label.mobileTh 무급
+							.chkWrap
+								.form-check.text-left.text-nowrap
+									label.form-check-label
+										input.form-check-input(type="checkbox", name='closed_type', value='noPay', onclick='fnSelectType(this)')
+										span.form-check-sign
+										| 무급
+								.form-check.text-left.text-nowrap
+									label.form-check-label
+										input.form-check-input(type="checkbox", name='closed_type', value='Absenteeism', onclick='fnSelectType(this)')
+										span.form-check-sign
+										| 무단결근
+								.form-check.text-left.text-nowrap
+									label.form-check-label
+										input.form-check-input(type="checkbox", name='closed_type', value='tardy', onclick='fnSelectType(this)')
+										span.form-check-sign
+										| 지각/조퇴
+						p.mobileTitle.bg-default 신청인
+						.mobileTdWrap
+							.bg-lightGray
+								label.mobileTh 부서
+							.mobileTd
+								input(type='text', name='department', value=user.user_team)
+						.mobileTdWrap
+							.bg-lightGray
+								label.mobileTh 직급
+							.mobileTd
+								input(type='text', name='rank_mobile')
+						.mobileTdWrap
+							.bg-lightGray
+								label.mobileTh 성명
+							.mobileTd
+								input(type='text', name='user_nick', value=user.user_nick)
+						p.mobileTitle.bg-default 신청기간
+						.mobileTdWrap
+							.mobileTd
+								input#application_period_mobile(type='text', name='application_period_mobile')
+						.mobileTdWrap
+							.mobileTd.text-center
+								| ( &nbsp;
+								input.text-center.type_num(type='text', name='days_mobile')
+								| &nbsp; ) &nbsp; 일 간
+						p.mobileTitle.bg-default 사유
+						.mobileTdWrap
+							.mobileTd
+								input(type='text', name='reason_mobile')
+						p.mobileTitle.bg-default 현장보고
+						.mobileTdWrap
+							.bg-lightGray.w105
+								label.mobileTh 허가자 성명
+							.mobileTd
+								input(type='text', name='licenserName_mobile')
+						.mobileTdWrap
+							.bg-lightGray.w105
+								label.mobileTh 보고일시
+							.mobileTd
+								input#reportDate_mobile(type='text', name='reportDate_mobile')
+						.mobileTdWrap
+							.bg-lightGray.w105
+								label.mobileTh 허가자 연락처
+							.mobileTd
+								input(type='text', name='licenserTel_mobile')
+
+					.input-group.my-3
+						.file-wrap
+							label(for='closedAttach').text-nowrap 첨부파일
+							input#closedAttach(type='file', name='closedAttach[]', multiple, style='max-width:200px;')
+						//label(for='closedAttach') 첨부파일
+					p 위와 같이 휴무계를 사용하고자 하오니 허가하여 주시기 바랍니다.
+					- var date = new Date();
+					.text-right
+						input.type_num.text-center(type='text', name='closed_year', value=date.getFullYear(), readonly)
+						span 년
+						input.type_num.text-center(type='text', name='closed_month', value=date.getMonth() + 1, readonly)
+						span 월
+						input.type_num.text-center(type='text', name='closed_day', value=date.getDate(), readonly)
+						span 일
+					br
+					p.text-danger.mb-0 ※ 휴무의 당일 현장보고 및 회사보고 = 무급에 해당함.
+					p.text-danger &nbsp;&nbsp;&nbsp; 단, 병가로 인한 경우 병원 진단서 또는 진료확인서 제출시에는 연차 처리 가능.
+					h4 KTOP Inc. 대표이사 귀하
+			.modal-footer.justify-content-center
+				button.btn.btn-danger.mr-3(type="button" data-dismiss="modal") 닫기
+				button.btn.btn-info(type="button", onclick='fnCompleteWrite()') 작성완료
+	input(type='hidden', name='closedAttachOriginalFileName')
+	input(type='hidden', name='closedAttachPath')

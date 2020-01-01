@@ -1,0 +1,11 @@
+#selectCalendarModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby="selectCalendarModalLabel", aria-hidden="true", style='z-index:1100;')
+	.modal-dialog.modal-sm(role='document')
+		.modal-content
+			.modal-header
+				h5#selectCalendarModalLabel.modal-title 달력선택
+				button.close.text-dark(type='button', data-dismiss='modal', aria-label='Close')
+					span(aria-hidden='true') x
+			.modal-body
+				#datepicker-inline
+			.modal-footer.justify-content-center
+				button.btn.btn-primary(type="button" data-dismiss="modal") 선택

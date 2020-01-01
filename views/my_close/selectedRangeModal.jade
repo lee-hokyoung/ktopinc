@@ -1,0 +1,23 @@
+#selectedRangeModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby="selectedRangeModalLabel", aria-hidden="true", style='z-index:1100;')
+	.modal-dialog(role='document')
+		.modal-content
+			.modal-header
+				h5#selectedRangeModalLabel.modal-title 달력선택
+				button.close.text-dark(type='button', data-dismiss='modal', aria-label='Close')
+					span(aria-hidden='true') x
+			.modal-body
+				.form-group
+					label 기간
+					input.form-control.rounded-0(type='text', name='selectedRange', style='flex:1')
+					input.form-control.rounded-0.ml-3(type='hidden', name='period', style='width:6rem;')
+				.row
+					.col-md-6
+						.start-wrarp.mr-3
+							//.header.h6 시작
+							#datepickerStart
+					.col-md-6
+						.end-wrap
+							//.header.h6 끝
+							#datepickerEnd
+			.modal-footer.justify-content-center
+				button.btn.btn-primary(type="button" onclick='fnSelectedPeriod()') 선택

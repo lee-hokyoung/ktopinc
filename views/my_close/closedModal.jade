@@ -1,0 +1,120 @@
+#closedModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="closedModalLabel", aria-hidden="true")
+	.modal-dialog.modal-lg(role="document")
+		.modal-content
+			.modal-header
+				h5#closedModalLabel.modal-title 휴무계 작성
+				button.close(type='button', data-dismiss='modal', aria-label='Close')
+					span(aria-hidden='true') x
+			.modal-body
+				form#formClosedRead
+					.table.table-responsive
+						table.table.text-center.table-bordered#tableClosedRead
+							colgroup
+								col(style='background-color:#aaa;')
+								col(style='background-color:#aaa;')
+								col(width=200)
+								col(width=200)
+								col(width=200)
+							tbody
+								tr
+									th.text-nowrap(rowspan=2, width='80px') 신청구분
+									th.text-nowrap(width='60px') 유급
+									td
+										.form-check.text-left.text-nowrap
+											label.form-check-label
+												input.form-check-input(type="checkbox", name='closed_type', value='annualLeave', disabled)
+												span.form-check-sign
+												| 연차
+									td
+										.form-check.text-left.text-nowrap
+											label.form-check-label
+												input.form-check-input(type="checkbox", name='closed_type', value='reserveForces', disabled)
+												span.form-check-sign
+												| 예비군/민방위훈련
+									td
+										.form-check.text-left.text-nowrap
+											label.form-check-label
+												input.form-check-input(type="checkbox", name='closed_type', value='familyEvent', disabled)
+												span.form-check-sign
+												| 경조사(취업규칙에근거)
+								tr
+									th 무급
+									td
+										.form-check.text-left.text-nowrap
+											label.form-check-label
+												input.form-check-input(type="checkbox", name='closed_type', value='noPay', disabled)
+												span.form-check-sign
+												| 무급
+									td
+										.form-check.text-left.text-nowrap
+											label.form-check-label
+												input.form-check-input(type="checkbox", name='closed_type', value='Absenteeism', disabled)
+												span.form-check-sign
+												| 무단결근
+									td
+										.form-check.text-left.text-nowrap
+											label.form-check-label
+												input.form-check-input(type="checkbox", name='closed_type', value='tardy', disabled)
+												span.form-check-sign
+												| 지각/조퇴
+								tr
+									th(colspan=2, rowspan=2) 신청인
+									td 부서
+									td 직급
+									td 성명
+								tr
+									td.input-td
+										input(type='text', name='department', readonly)
+									td.input-td
+										input(type='text', name='rank', readonly)
+									td.input-td
+										input(type='text', name='user_nick', readonly)
+								tr
+									th(colspan=2, rowspan=2) 신청기간
+									td.input-td(colspan=3)
+										input(type='text', name='application_period', readonly)
+								tr
+									td(colspan=3)
+										| ( &nbsp;
+										input.text-center.type_num(type='text', name='days', readonly)
+										| &nbsp; ) &nbsp; 일 간
+								tr
+									th(colspan=2) 사유
+									td.input-td(colspan=3)
+										input(type='text', name='reason', readonly)
+								tr
+									th(colspan=2, rowspan=2) 현장보고
+									td 허가자 성명
+									td 보고일시
+									td 허가자 연락처
+								tr
+									td.input-td
+										input(type='text', name='licenserName', readonly)
+									td.input-td
+										input(type='text', name='reportDate', readonly)
+									td.input-td
+										input(type='text', name='licenserTel', readonly)
+						#closedAttachedFile
+					p 위와 같이 휴무계를 사용하고자 하오니 허가하여 주시기 바랍니다.
+					.text-right
+						input.type_num.text-center(type='text', name='closed_year', readonly)
+						span 년
+						input.type_num.text-center(type='text', name='closed_month', readonly)
+						span 월
+						input.type_num.text-center(type='text', name='closed_day', readonly)
+						span 일
+					br
+					p.text-danger.mb-0 ※ 휴무의 당일 현장보고 및 회사보고 = 무급에 해당함.
+					p.text-danger &nbsp;&nbsp;&nbsp; 단, 병가로 인한 경우 병원 진단서 또는 진료확인서 제출시에는 연차 처리 가능.
+					h4 KTOP Inc. 대표이사 귀하
+					.row
+						.col-md-6(title='isImproveFileUploaded')
+							a(name='updatedImproveFile', target='_blank')
+						.col-md-6(title='isNotImproveFileUploaded')
+							.input-group
+								input.form-control(type="file", name='fileImprove')
+								button.btn.btn-primary.my-0(type='button', onclick='fnUploadImprove()') 증빙파일제출
+			.modal-footer.justify-content-center
+				button.btn.btn-danger.mr-3(type="button" data-dismiss="modal") 닫기
+				button.btn.btn-info(type="button", name='btnDelete', onclick='fnDeleteDoc()') 삭제요청
+				input(type='hidden', name='doc_id')
