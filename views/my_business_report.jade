@@ -328,8 +328,12 @@ block append_js
       xhr.onreadystatechange = function(){
         if(this.readyState === XMLHttpRequest.DONE && this.status === 200){
           let res = JSON.parse(this.response);
-          alert('정상적으로 등록되었습니다.');
-          location.href = '/work/business/list';
+          if(res.code === 1){
+            alert(res.message);
+            location.href = '/work/business/list';
+          }else{
+            alert(res.message)
+          }
         }
       }
       xhr.send(data);

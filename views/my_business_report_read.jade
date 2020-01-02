@@ -125,17 +125,17 @@ block content
                 tr
                   th 문 제 점
                   td
-                    input(type='text', name='accident_problem', value=data.accident_problem)
+                    textarea.form-control(name='accident_problem', rows=5) !{data.accident_problem}
                 tr
                   th 사고대처방안
                   td
-                    input(type='text', name='accident_manual', value=data.accident_manual)
+                    textarea.form-control(type='text', name='accident_manual', rows=5) !{data.accident_manual}
                 tr
                   th
                     span 현장사고사례
                     h6 (*사고발생 時 작성)
                   td
-                    input(type='text', placeholder='(* 사고내용, 협력사명 등 기술)', name='accident_example', value=data.accident_example)
+                    textarea.form-control(placeholder='(* 사고내용, 협력사명 등 기술)', name='accident_example', rows=5) !{data.accident_example}
           br
           h5.font-weight-bold 3. 현장 업무 Skill 및 일본어 능력 자기 평가
           ul.list-group#businessList(style='border:2px solid #555;')
@@ -302,7 +302,7 @@ block content
                   td (*바닥 및 기타 파손 및 훼손여부 기술)
                 tr
                   td
-                    input(type='text', placeholder='(숙소 점검 내용)', name='dormitory', value=data.dormitory)
+                    textarea.form-control(placeholder='(숙소 점검 내용)', name='dormitory', rows=5) !{data.dormitory}
           br
           h5.font-weight-bold 5. 기타 사항
           .table.accident.overflow-auto

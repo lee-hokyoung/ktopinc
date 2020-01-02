@@ -17,7 +17,16 @@ block content
                     span 월간업무보고서
             .card-footer
               .d-flex.justify-content-center
-                a(href='/work/business').btn.btn-primary 보고서 작성
+                if(isReportBusiness)
+                  a(href='#', onclick='fnShowBusiness("' + '/work/business/' + business.user_id + '/' + business.year + '/' + business.month + '")').btn.btn-primary 보고서 작성
+                else
+                  a(href='/work/business').btn.btn-primary 보고서 작성
 block append_js
   script.
+    function fnShowBusiness(url){
+      if(confirm('이번달에 이미 작성된 월간업무보고서가 있습니다. 작성된 내용을 확인하시겠습니까?')){
+        location.href = url;
+      }
+    }
     console.log(!{JSON.stringify(list)});
+    console.log('business : ', !{JSON.stringify(business)});
