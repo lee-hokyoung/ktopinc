@@ -24,3 +24,57 @@ table.dataTable tr th.select-checkbox.selected::after {
 }
 table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before{content:none;}
 #list-closed .form-check .form-check-sign::before, #list-closed .form-check .form-check-sign::after{top:-22px;}
+
+
+/*  월간업무보고서 */
+.report input {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    width: 45px;
+    text-align: center;
+    outline: none !important;
+    font-size: .85rem;
+}
+
+.location_info div {
+    padding: .5rem 15px;
+}
+
+.location_info input {
+    width: 80px;
+}
+
+.report table th, .report table td {
+    border-color: transparent !important;
+}
+
+.accident table th {
+    width: 200px;
+    text-align: center;
+}
+
+.accident input {
+    outline: none !important;
+    width: 100%;
+    border: none;
+}
+
+.accident .form-check span:before, .accident .form-check span:after {
+    top: 0 !important;
+    left: 0 !important;
+}
+
+.accident .form-check {
+    width: auto;
+}
+
+ul#businessList input {
+    max-width: 30px;
+    border: none;
+    outline: none !important;
+    text-align: center;
+    background-color: lightyellow;
+}
+.list-group a:last-child{border-bottom:1px solid rgba(0,0,0,0.125) !important;}
+.accident .normalTH{width:80px; white-space:normal;}
+/*  월간업무보고서 끝 */

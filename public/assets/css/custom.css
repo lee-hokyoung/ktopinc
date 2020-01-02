@@ -1,90 +1,307 @@
-.or-wrapper{width: 100%; max-width:325px; position:relative; display: block; margin: 0 auto;}
-.or-divider{display:-webkit-box; display:flex; display: -ms-flex; -ms-flex-pack:distribute; justify-content:space-around;
-    vertical-align: middle; text-transform: uppercase; color: #9e9e9e;}
-.or-divider:after, .or-divider:before {content: " ";display: inline-block;border-top: 1px solid #ccc;width: 45%;vertical-align: middle;margin-top: 9px;}
-.or-divider:before{float:left;}
-.or-divider:after{float:right;}
-.w80px{width:80px; !important;}
-.w100px{width:100px !important;}
-.w220px{width:220px !important;}
-.wrapper{
+.or-wrapper {
+    width: 100%;
+    max-width: 325px;
+    position: relative;
+    display: block;
+    margin: 0 auto;
+}
+
+.or-divider {
+    display: -webkit-box;
+    display: flex;
+    display: -ms-flex;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    vertical-align: middle;
+    text-transform: uppercase;
+    color: #9e9e9e;
+}
+
+.or-divider:after, .or-divider:before {
+    content: " ";
+    display: inline-block;
+    border-top: 1px solid #ccc;
+    width: 45%;
+    vertical-align: middle;
+    margin-top: 9px;
+}
+
+.or-divider:before {
+    float: left;
+}
+
+.or-divider:after {
+    float: right;
+}
+
+.w80px {
+    width: 80px;
+!important;
+}
+
+.w100px {
+    width: 100px !important;
+}
+
+.w220px {
+    width: 220px !important;
+}
+
+.wrapper {
     min-height: calc(100vh - 76px);
     background-image: url(/assets/img/bg7.jpg);
     -webkit-background-size: cover;
     background-size: cover;
 }
-.wrapper.filter:before{background-color:rgba(0,0,0,0.2)}
-.content-middle{position: absolute; top: 45%; left: 50%; z-index: 2; transform: translate(-50%,-50%); text-align: center; padding: 0 15px; width: 100%; max-width: 880px;}
-.admin-view .content-middle{max-width:100vw;height: 75vh;top: 50%;}
+
+.wrapper.filter:before {
+    background-color: rgba(0, 0, 0, 0.2)
+}
+
+.content-middle {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 0 15px;
+    width: 100%;
+    max-width: 880px;
+}
+
+.admin-view .content-middle {
+    max-width: 100vw;
+    height: 75vh;
+    top: 50%;
+}
 
 /*  select box 에서 직접입력을 선택할 경우, input <-> select box 간 변환 */
-.addon-switch-selectbox {white-space: nowrap; font-size:.75rem; line-height:37px; margin-left:.5rem;}
+.addon-switch-selectbox {
+    white-space: nowrap;
+    font-size: .75rem;
+    line-height: 37px;
+    margin-left: .5rem;
+}
 
 /*  휴무계 관련 css */
-#tableClosed .form-check-sign::before, #tableClosed .form-check-sign::after{top:0px; left:0px;}
-#tableClosed .form-check{width:inherit;}
-#tableClosed input, .mobileTd input{border:none; width:100%; background-color:transparent; text-align: center;}
-#tableClosed input:focus, input.type_num:focus, .mobileTd input:focus{outline:none;}
-#tableClosed td.input-td, .mobileTd input{background-color:lightgoldenrodyellow}
-#tableClosed td{padding:0.3rem;}
-#tableClosed input.type_num, input.type_num{width:50px; background-color:lightgoldenrodyellow; border:none;}
+#tableClosed .form-check-sign::before, #tableClosed .form-check-sign::after {
+    top: 0px;
+    left: 0px;
+}
 
-#tableClosedRead .form-check-sign::before, #tableClosedRead .form-check-sign::after{top:0px; left:0px;}
-#tableClosedRead .form-check{width:inherit;}
-#tableClosedRead input{border:none; width:100%; background-color:transparent; text-align: center;}
-#tableClosedRead input:focus, input.type_num:focus{outline:none;}
-#tableClosedRead td.input-td{background-color:lightgoldenrodyellow}
-#tableClosedRead td{padding:0.3rem;}
-#tableClosedRead input.type_num, input.type_num{width:50px; background-color:lightgoldenrodyellow; border:none;}
+#tableClosed .form-check {
+    width: inherit;
+}
 
-#selectCalendarModal .bootstrap-datetimepicker-widget table td.day>div,
-#selectedRangeModal .bootstrap-datetimepicker-widget table td.day>div{z-index:1200;}
-#selectCalendarModal .glyphicon, #selectedRangeModal .glyphicon{font-family: "Font Awesome 5 Free"; font-weight: 900;}
+#tableClosed input, .mobileTd input {
+    border: none;
+    width: 100%;
+    background-color: transparent;
+    text-align: center;
+}
+
+#tableClosed input:focus, input.type_num:focus, .mobileTd input:focus {
+    outline: none;
+}
+
+#tableClosed td.input-td, .mobileTd input {
+    background-color: lightgoldenrodyellow
+}
+
+#tableClosed td {
+    padding: 0.3rem;
+}
+
+#tableClosed input.type_num, input.type_num {
+    width: 50px;
+    background-color: lightgoldenrodyellow;
+    border: none;
+}
+
+#tableClosedRead .form-check-sign::before, #tableClosedRead .form-check-sign::after {
+    top: 0px;
+    left: 0px;
+}
+
+#tableClosedRead .form-check {
+    width: inherit;
+}
+
+#tableClosedRead input {
+    border: none;
+    width: 100%;
+    background-color: transparent;
+    text-align: center;
+}
+
+#tableClosedRead input:focus, input.type_num:focus {
+    outline: none;
+}
+
+#tableClosedRead td.input-td {
+    background-color: lightgoldenrodyellow
+}
+
+#tableClosedRead td {
+    padding: 0.3rem;
+}
+
+#tableClosedRead input.type_num, input.type_num {
+    width: 50px;
+    background-color: lightgoldenrodyellow;
+    border: none;
+}
+
+#selectCalendarModal .bootstrap-datetimepicker-widget table td.day > div,
+#selectedRangeModal .bootstrap-datetimepicker-widget table td.day > div {
+    z-index: 1200;
+}
+
+#selectCalendarModal .glyphicon, #selectedRangeModal .glyphicon {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+
 #selectCalendarModal .glyphicon.glyphicon-chevron-left:before,
-#selectedRangeModal .glyphicon.glyphicon-chevron-left:before {content: "\f053";}
-#selectCalendarModal .glyphicon.glyphicon-chevron-right:before,
-#selectedRangeModal .glyphicon.glyphicon-chevron-right:before{content: "\f054";}
-#selectedRangeModal .bootstrap-datetimepicker-widget table td.selected>div{background-color: #6c757d;color: #fff;box-shadow: 0 1px 10px 0 rgba(0, 0, 0, .2);}
-#reportDate {position: relative;}
+#selectedRangeModal .glyphicon.glyphicon-chevron-left:before {
+    content: "\f053";
+}
 
-.mobileTdWrap{
+#selectCalendarModal .glyphicon.glyphicon-chevron-right:before,
+#selectedRangeModal .glyphicon.glyphicon-chevron-right:before {
+    content: "\f054";
+}
+
+#selectedRangeModal .bootstrap-datetimepicker-widget table td.selected > div {
+    background-color: #6c757d;
+    color: #fff;
+    box-shadow: 0 1px 10px 0 rgba(0, 0, 0, .2);
+}
+
+#reportDate {
+    position: relative;
+}
+
+.mobileTdWrap {
     display: flex;
     justify-content: start;
-    border-top:1px solid #ccc;
-    border-left:1px solid #ccc;
-    border-right:1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
 }
-.mobileTdWrap:last-child{border-bottom:1px solid #ccc;}
-.w105{width:105px;}
-.bg-lightGray{
-    background-color:#ddd;
+
+.mobileTdWrap:last-child {
+    border-bottom: 1px solid #ccc;
 }
-.mobileTdWrap label.mobileTh{
+
+.w105 {
+    width: 105px;
+}
+
+.bg-lightGray {
+    background-color: #ddd;
+}
+
+.mobileTdWrap label.mobileTh {
     color: black;
     padding: 0 0.5rem;
     font-weight: bold;
     margin: auto 0;
     vertical-align: middle;
 }
-.mobileTdWrap .form-check{
-    margin-top:0;
+
+.mobileTdWrap .form-check {
+    margin-top: 0;
     padding: .2rem;
 }
-p.mobileTitle{
+
+p.mobileTitle {
     margin: 0;
     font-size: .9rem;
     font-weight: 700;
     padding: .25rem;
 }
-.mobileTd{flex:1;}
-.mobileTd input{padding:.5rem 0;}
+
+.mobileTd {
+    flex: 1;
+}
+
+.mobileTd input {
+    padding: .5rem 0;
+}
+
+/*  월간업무보고서 */
+.report input {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    width: 45px;
+    text-align: center;
+    outline: none !important;
+    font-size: .85rem;
+}
+
+.location_info div {
+    padding: .5rem 15px;
+}
+
+.location_info input {
+    width: 80px;
+}
+
+.report table th, .report table td {
+    border-color: transparent !important;
+}
+
+.accident table th {
+    width: 100px;
+    text-align: center;
+}
+
+.accident input {
+    outline: none !important;
+    width: 100%;
+    border: none;
+}
+
+.accident .form-check span:before, .accident .form-check span:after {
+    top: 0 !important;
+    left: 0 !important;
+}
+
+.accident .form-check {
+    width: auto;
+}
+
+ul#businessList input {
+    max-width: 30px;
+    border: none;
+    outline: none !important;
+    text-align: center;
+    background-color: lightyellow;
+}
+.list-group a:last-child{border-bottom:1px solid rgba(0,0,0,0.125) !important;}
+.accident .normalTH{width:80px; white-space:normal;}
+/*  월간업무보고서 끝 */
+
+/*ul input {max-width:100px; border:none; outline:none !important; text-align: center;}*/
 /*pc 버전에만 해당*/
 @media (min-width: 768px) {
     .bd-links {
         display: block !important;
     }
-    .admin-view .content-middle{max-width:80vw;}
+
+    .admin-view .content-middle {
+        max-width: 80vw;
+    }
 }
-@media screen and (max-width: 991px){
-    .wrapper{height:inherit;}
+
+@media screen and (max-width: 991px) {
+    .wrapper {
+        height: inherit;
+    }
+
+    .location_info input {
+        flex: 1;
+    }
 }

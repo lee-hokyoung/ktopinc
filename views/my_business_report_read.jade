@@ -1,58 +1,41 @@
 extends layout
 
 block content
-  style.
-    .report input{
-      border:none;
-      border-bottom:1px solid #ccc;
-      width:100px;
-      text-align:center;
-      outline:none !important;
-    }
-    .report table th, .report table td{border-color:transparent !important;}
-    .accident table th{width:200px; text-align:center;}
-    .accident input {outline:none !important; width:100%; border:none;}
-    .accident .form-check span:before, .accident .form-check span:after{top:0 !important; left:0 !important;}
-    .accident .form-check{width:auto;}
-    ul input {max-width:100px; border:none; outline:none !important; text-align: center;}
-  .container-fluid
+  .container-fluid.p-0
     form
       .card(style='margin-top:5rem;')
         .card-header
-        .card-body
-          .table.report.text-nowrap.overflow-auto
-            table
-              thead
-                tr.h5.font-weight-bold
-                  th
-                    input(type='number', name='year', value=data.year)
-                    span 년
-                  th
-                    input(type='number', name='month', value=data.month)
-                    span 월
-                  th 월간업무보고서
-                  th
-              tbody
-                tr.h6
-                  td 현장명 :
-                  td
-                    input(name='field', value=data.field)
-                    span 현장,
-                  td
-                    input(name='line', value=data.line)
-                    span 라인
-                  td
-                tr.h6
-                  td 직급, 성명 :
-                  td
-                    span 직급/
-                    input(name='rank', value=data.rank)
-                  td
-                    span , 성명
-                    input(name='user_name', value=data.user_id.user_nick)
-                  td
-                    span , 조정그룹/
-                    input(name='align_group', value=data.align_group)
+        .card-body.p-2
+          .report
+            .row
+              .col
+                .h5.font-weight-bold
+                  input(type='number', name='year', value=data.year, readonly)
+                  span.mr-3 년
+                  input(type='number', name='month', value=data.month, readonly)
+                  span.mr-3 월
+                  span 월간업무보고서
+            .row.h6.location_info
+              .col-12.col-md-1
+                span 현장명 :
+              .col-6.col-md-2.d-flex.justify-content-start
+                input(type='text', name='field', value=data.field)
+                span.mr-3 현장,
+              .col-6.col-md-2
+                input(type='text', name='line', value=data.line)
+                span 라인
+            .row.h6.location_info
+              .col-12.col-md-1
+                span 직급, 성명 :
+              .col-6.col-md-2.d-flex.justify-content-start
+                span.pr-3 직급 :
+                input(type='text', name='rank', value=data.rank)
+              .col-6.col-md-2.d-flex.justify-content-start
+                span.pr-3 성명 :
+                input(type='text', name='user_name', value=data.user_id.user_nick)
+              .col-12.col-md-2.d-flex.justify-content-start
+                span.pr-3 조정그룹 :
+                input(type='text', name='align_group', value=data.align_group)
           br
           h5.font-weight-bold 1. 현장업무 보고
           .table.text-nowrap.overflow-auto
@@ -79,7 +62,7 @@ block content
                     textarea.form-control(rows=5, name='field_problem') #{data.field_problem}
           br
           h5.font-weight-bold 2. 앗차사고 및 현장사고사례
-          .table.accident.text-nowrap.overflow-auto
+          .table.accident.overflow-auto
             table.table.table-bordered
               tbody(style='border:2px solid #555;')
                 tr
@@ -93,43 +76,43 @@ block content
                 tr
                   th 위 험 유 형
                   td
-                    .form-check.form-check-inline.mr-3
+                    .form-check.mr-3
                       label.form-check-label
                         input#danger_1.form-check-input(type="checkbox" value="넘어짐(전도)", name='accident_type', checked=data.accident_type.indexOf('넘어짐(전도)') > -1)
                         | 넘어짐(전도)
                         span.form-check-sign
                           span.check
-                    .form-check.form-check-inline.mr-3
+                    .form-check.mr-3
                       label.form-check-label
                         input#danger_2.form-check-input(type="checkbox" value="떨어짐(추락)", name='accident_type', checked=data.accident_type.indexOf('떨어짐(추락)') > -1)
                         | 떨어짐(추락)
                         span.form-check-sign
                           span.check
-                    .form-check.form-check-inline.mr-3
+                    .form-check.mr-3
                       label.form-check-label
                         input#danger_3.form-check-input(type="checkbox" value="부딪힘(충돌)", name='accident_type', checked=data.accident_type.indexOf('부딪힘(충돌)') > -1)
                         | 부딪힘(충돌)
                         span.form-check-sign
                           span.check
-                    .form-check.form-check-inline.mr-3
+                    .form-check.mr-3
                       label.form-check-label
                         input#danger_4.form-check-input(type="checkbox" value="끼임(협착)", name='accident_type', checked=data.accident_type.indexOf('끼임(충돌)') > -1)
                         | 끼임(협착)
                         span.form-check-sign
                           span.check
-                    .form-check.form-check-inline.mr-3
+                    .form-check.mr-3
                       label.form-check-label
                         input#danger_5.form-check-input(type="checkbox" value="물체에 맞음(낙하, 비례)", name='accident_type', checked=data.accident_type.indexOf('물체에 맞음(낙하, 비례)') > -1)
                         | 물체에 맞음(낙하, 비례)
                         span.form-check-sign
                           span.check
-                    .form-check.form-check-inline.mr-3
+                    .form-check.mr-3
                       label.form-check-label
                         input#danger_6.form-check-input(type="checkbox" value="방전스파크(감전)", name='accident_type', checked=data.accident_type.indexOf('방전스파크(감전)') > -1)
                         | 방전스파크(감전)
                         span.form-check-sign
                           span.check
-                    .form-check.form-check-inline.mr-3
+                    .form-check.mr-3
                       label.form-check-label
                         input#danger_7.form-check-input(type="checkbox" value="기타(사고내용기술)", name='accident_type', checked=data.accident_type.indexOf('기타(사고내용기술)') > -1)
                         | 기타(사고내용기술)
@@ -138,7 +121,7 @@ block content
                 tr
                   th 내 용
                   td
-                    input(type='text' name='accident_content', value=data.accident_content)
+                    textarea.form-control(name='accident_content') !{data.accident_content}
                 tr
                   th 문 제 점
                   td
@@ -155,7 +138,7 @@ block content
                     input(type='text', placeholder='(* 사고내용, 협력사명 등 기술)', name='accident_example', value=data.accident_example)
           br
           h5.font-weight-bold 3. 현장 업무 Skill 및 일본어 능력 자기 평가
-          ul.list-group(style='border:2px solid #555;')
+          ul.list-group#businessList(style='border:2px solid #555;')
             li.list-group-item
               span ① Rail : 경력 (
               input(type='number', name='rail_year', value=data.rail_year)
@@ -164,7 +147,7 @@ block content
               span ) 개월
               .d-flex.justify-content-start
                 each item in ['S', 'A', 'B', 'C']
-                  .form-check.form-check-radio.form-check-inline.mr-3
+                  .form-check.form-check-radio.mr-3
                     label.form-check-label
                       input.form-check-input(type="radio", value=item, name='skill_rail_type', checked=item===data.skill_rail_type)
                       | #{item}
@@ -178,7 +161,7 @@ block content
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
-                    .form-check.form-check-radio.form-check-inline.mr-3
+                    .form-check.form-check-radio.mr-3
                       label.form-check-label
                         input.form-check-input(type="radio", value=item, name='skill_zcu_type', checked=item===data.skill_zcu_type)
                         | #{item}
@@ -192,7 +175,7 @@ block content
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
-                    .form-check.form-check-radio.form-check-inline.mr-3
+                    .form-check.form-check-radio.mr-3
                       label.form-check-label
                         input.form-check-input(type="radio", value=item, name='skill_teaching_type', checked=item === data.skill_teaching_type)
                         | #{item}
@@ -206,7 +189,7 @@ block content
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
-                    .form-check.form-check-radio.form-check-inline.mr-3
+                    .form-check.form-check-radio.mr-3
                       label.form-check-label
                         input.form-check-input(type="radio", value=item, name='skill_stb_type', checked=item === data.skill_stb_type)
                         | #{item}
@@ -220,7 +203,7 @@ block content
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
-                    .form-check.form-check-radio.form-check-inline.mr-3
+                    .form-check.form-check-radio.mr-3
                       label.form-check-label
                         input.form-check-input(type="radio", value=item, name='skill_azfs_type', checked=item === data.skill_azfs_type)
                         | #{item}
@@ -234,7 +217,7 @@ block content
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
-                    .form-check.form-check-radio.form-check-inline.mr-3
+                    .form-check.form-check-radio.mr-3
                       label.form-check-label
                         input.form-check-input(type="radio", value=item, name='skill_vhl_type', checked=item === data.skill_vhl_type)
                         | #{item}
@@ -248,7 +231,7 @@ block content
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
-                    .form-check.form-check-radio.form-check-inline.mr-3
+                    .form-check.form-check-radio.mr-3
                       label.form-check-label
                         input.form-check-input(type="radio", value=item, name='skill_hid_type', checked=item === data.skill_hid_type)
                         | #{item}
@@ -262,7 +245,7 @@ block content
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
-                    .form-check.form-check-radio.form-check-inline.mr-3
+                    .form-check.form-check-radio.mr-3
                       label.form-check-label
                         input.form-check-input(type="radio", value=item, name='skill_cls_type', checked=item === data.skill_cls_type)
                         | #{item}
@@ -276,7 +259,7 @@ block content
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['S', 'A', 'B', 'C']
-                    .form-check.form-check-radio.form-check-inline.mr-3
+                    .form-check.form-check-radio.mr-3
                       label.form-check-label
                         input.form-check-input(type="radio", value=item, name='skill_zt_type', checked=item === data.skill_zt_type)
                         | #{item}
@@ -290,7 +273,7 @@ block content
                 span ) 개월
                 .d-flex.justify-content-start
                   each item in ['상', '중', '하']
-                    .form-check.form-check-radio.form-check-inline.mr-3
+                    .form-check.form-check-radio.mr-3
                       label.form-check-label
                         input.form-check-input(type="radio", value=item, name='skill_jp_type', checked=item === data.skill_jp_type)
                         | #{item}
@@ -311,22 +294,22 @@ block content
           br
           h5.font-weight-bold 4. 기숙사 점검 내용
             small (※ 아파트, 오피스텔 사용자만 작성)
-          .table.accident.text-nowrap.overflow-auto
+          .table.accident.overflow-auto
             table.table.table-bordered
               tbody
                 tr
-                  th(rowspan=2) 점검내용 기술
-                  td (*바닥 및 기타 파손 및 훼손여부 기술 - 촬영사진파일 첨부 제출)
+                  th.normalTH(rowspan=2) 점검내용 기술
+                  td (*바닥 및 기타 파손 및 훼손여부 기술)
                 tr
                   td
                     input(type='text', placeholder='(숙소 점검 내용)', name='dormitory', value=data.dormitory)
           br
           h5.font-weight-bold 5. 기타 사항
-          .table.accident.text-nowrap.overflow-auto
+          .table.accident.overflow-auto
             table.table.table-bordered
               tbody
                 tr
-                  th 하고싶은 말씀
+                  th.normalTH 하고싶은 말씀
                   td
                     textarea.form-control(placeholder='(* 자유롭게 기술하세요)', row=10, name='etc') #{data.etc}
         .card-footer

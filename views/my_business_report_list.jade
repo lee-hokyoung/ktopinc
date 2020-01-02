@@ -3,12 +3,12 @@ extends layout
 block content
   .wrapper
     .container
-      .row.content-middle.mx-0.px-0
+      .row.mx-0.px-0
         .col-12.p-0.mt-5
           .card.text-center.mt-3
             .card-header.mt-3
               h4.text-dark 월간업무보고서
-            .card-body.text-dark.overflow-auto(style='height:550px;')
+            .card-body.text-dark.overflow-auto(style='max-height:550px;')
               .list-group
                 each item in list
                   a(href='/work/business/' + item.user_id + '/' + item.year + '/' + item.month).list-group-item.list-group.group-item.list-group-item-action
@@ -19,3 +19,5 @@ block content
               .d-flex.justify-content-center
                 a(href='/work/business').btn.btn-primary 보고서 작성
 block append_js
+  script.
+    console.log(!{JSON.stringify(list)});
