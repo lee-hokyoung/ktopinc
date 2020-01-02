@@ -39,7 +39,7 @@ router.get('/', middle.isLoggedIn, async (req, res, next) => {
   // 해당월에 제출된 월간업무 보고서가 있는지 확인
   let isReportBusiness = false;
   let date = new Date();
-  let business = await Business.findOne({user_id:mongoose.Types.ObjectId(user_id), month:date.getMonth() + 1});
+  let business = await Business.findOne({user_id:mongoose.Types.ObjectId(user_id), year:date.getFullYear(), month:date.getMonth() + 1});
   if(business){
     isReportBusiness = true;
   }
@@ -307,7 +307,7 @@ router.get('/business/list', middle.isLoggedIn, async (req, res) => {
   // 해당월에 제출된 월간업무 보고서가 있는지 확인
   let isReportBusiness = false;
   let date = new Date();
-  let business = await Business.findOne({user_id:mongoose.Types.ObjectId(user_id), month:date.getMonth() + 1});
+  let business = await Business.findOne({user_id:mongoose.Types.ObjectId(user_id), year:date.getFullYear(), month:date.getMonth() + 1});
   if(business){
     isReportBusiness = true;
   }
@@ -332,7 +332,7 @@ router.get('/business/:id/:year/:month', middle.isLoggedIn, async (req, res) => 
 router.post('/business', middle.isLoggedIn, async (req, res) => {
   // 해당월에 제출된 월간업무 보고서가 있는지 확인
   let user_id = req.session.passport.user._id;
-  let business = await Business.findOne({user_id:mongoose.Types.ObjectId(user_id), month:req.body.month});
+  let business = await Business.findOne({user_id:mongoose.Types.ObjectId(user_id), year:req.body.year, month:req.body.month});
   if(business){
     res.json({code:0, message:'이미 등록되어 있는 월간업무보고서가 있습니다.'})
   }else{
