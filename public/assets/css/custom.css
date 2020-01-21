@@ -304,4 +304,6 @@ ul#businessList input {
     .location_info input {
         flex: 1;
     }
+    #notice_content img {width:100%;}
+    #notice_content .postBody{padding:.5rem !important;}
 }

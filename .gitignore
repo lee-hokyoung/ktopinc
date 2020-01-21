@@ -17,3 +17,6 @@
 temps/
 /2차개발_중간점검회의.xlsx
 /K-Top.tar
+*.xls
+.vscode
+controller

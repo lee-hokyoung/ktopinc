@@ -50,6 +50,7 @@ block content
               .col-1(style='min-width:100px;')
                 select.selectpicker.d-block.w-100(data-style="select-with-transition btn-primary p-2" name='year')
                   option(value='2019') 2019
+                  option(value='2020') 2020
               label.col-form-label 년
               .col-1(style='min-width:90px;')
                 select.selectpicker.d-block.w-100(data-style="select-with-transition btn-primary p-2" name='month')
@@ -270,10 +271,10 @@ block append_js
       // 증빙파일
       let isImproveFileUploaded = document.querySelector('#isImproveFileUploaded');
       if(doc.improvePath !== ''){
-        let improveFile = document.querySelector('a[name="updatedImproveFile"]');
-        improveFile.innerText = doc.improveOriginal;
-        improveFile.href = doc.improvePath.replace('./', '/');
-        isImproveFileUploaded.className = 'd-block';
+        // let improveFile = document.querySelector('a[name="updatedImproveFile"]');
+        // improveFile.innerText = doc.improveOriginal;
+        // improveFile.href = doc.improvePath.replace('./', '/');
+        // isImproveFileUploaded.className = 'd-block';
       }else{
         isImproveFileUploaded.className = 'd-none';
       }
