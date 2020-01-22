@@ -38,5 +38,5 @@ block content
               a.btn.btn-info(href='/notice') 목록으로
 block append_js
   script.
-    let notice_content = "!{article.content.replace(/\r\n/g, '')}";
+    let notice_content = '!{article.content.replace(/\r\n/g, "")}';
     document.querySelector('#notice_content').innerHTML = notice_content;
