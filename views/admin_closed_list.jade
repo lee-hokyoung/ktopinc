@@ -93,7 +93,7 @@ block content
                   when 'reserveForces'
                     - type = '예비군/민방위훈련';
                   when 'familyEvent'
-                    - type = '';
+                    - type = '경조사(취업규칙에 근거)';
                   when 'Absenteeism'
                     - type = '무단결근';
                   when 'tardy'
@@ -248,6 +248,7 @@ block append_js
   script(src='/assets/js/custom/admin_closed.js', type='text/javascript')
   script.
     let list = !{JSON.stringify(list)};
+    console.log('list : ', !{JSON.stringify(list)})
     // 휴무계 읽기
     function fnShowClosedModal(id) {
       let doc = list.filter(function (v) {
