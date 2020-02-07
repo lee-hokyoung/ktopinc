@@ -38,6 +38,7 @@ block content
     .status-color[data-color="정상"]{color:blue;}
     .status-color[data-color="삭제"]{color:#888;}
     .status-color[data-color="삭제요청"]{color:red;}
+    .dropdown-menu{min-width:inherit !important;}
   .panel-header.panel-header-sm
   .content
     .row
@@ -49,8 +50,8 @@ block content
             .form-group.row
               .col-1(style='min-width:100px;')
                 select.selectpicker.d-block.w-100(data-style="select-with-transition btn-primary p-2" name='year')
-                  option(value='2019') 2019
-                  option(value='2020') 2020
+                  option(value='2019', selected=year==2019) 2019
+                  option(value='2020', selected=year==2020) 2020
               label.col-form-label 년
               .col-1(style='min-width:90px;')
                 select.selectpicker.d-block.w-100(data-style="select-with-transition btn-primary p-2" name='month')
@@ -247,7 +248,6 @@ block append_js
   script(src='/assets/js/custom/admin_closed.js', type='text/javascript')
   script.
     let list = !{JSON.stringify(list)};
-    console.log('list : ', list);
     // 휴무계 읽기
     function fnShowClosedModal(id) {
       let doc = list.filter(function (v) {
@@ -256,7 +256,8 @@ block append_js
       document.querySelectorAll('input[name="closed_type"]').forEach(function (v) {
         v.checked = false;
       });
-      document.querySelector('input[value="' + doc.closed_type + '"]').checked = true;
+      if(document.querySelector('input[value="' + doc.closed_type + '"'))
+        document.querySelector('input[value="' + doc.closed_type + '"]').checked = true;
       document.querySelectorAll('input[type="text"]:not([name="searchEmployee"])').forEach(function (v) {
         if (v.name === 'user_nick') v.value = doc.user_id.user_nick;
         else v.value = doc[v.name];
