@@ -96,6 +96,22 @@ html(lang='en')
                   a.nav-link(rel='tooltip', title='업무일지', data-placement='bottom', href='/work/list')
                     i.now-ui-icons.ui-1_calendar-60
                     p.d-lg-none.d-xl-none 업무일지
+                li.nav-item
+                  a.nav-link(rel='tooltip', title='공지사항', data-placement='bottom', href='/notice')
+                    i.now-ui-icons.objects_diamond
+                    p.d-lg-none.d-xl-none 공지사항
+                li.nav-item
+                  a.nav-link(rel='tooltip', title='휴무계', data-placement='bottom', href='/work/closed/list')
+                    i.now-ui-icons.shopping_shop
+                    p.d-lg-none.d-xl-none 휴무계
+                li.nav-item
+                  a.nav-link(rel='tooltip', title='가동보고서 확인', data-placement='bottom', href='/work/operate/report')
+                    i.now-ui-icons.education_atom
+                    p.d-lg-none.d-xl-none 가동보고서 확인
+                li.nav-item
+                  a.nav-link(rel='tooltip', title='월간업무보고서', data-placement='bottom', href='/work/business/list')
+                    i.now-ui-icons.education_paper
+                    p.d-lg-none.d-xl-none 월간업무보고서
                 if(user_lv > 1)
                   li.nav-item.dropdown
                     a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
@@ -108,6 +124,8 @@ html(lang='en')
                       a.dropdown-item(href='/admin/work') 작업관리
                       a.dropdown-item(href='/admin/notice/list') 공지사항
                       a.dropdown-item(href='/admin/closed/list') 휴무계 관리
+                      a.dropdown-item(href='/admin/business/list') 월간업무보고서 관리
+                      a.dropdown-item(href='/admin/operate/report') 월가동보고서 관리
                       a.dropdown-item(href='/admin/superAdmin') 전체회원관리
         block content
     // Core JS Files
@@ -161,7 +179,7 @@ html(lang='en')
       let isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
       if (isWindows) {
         // if we are on windows OS we activate the perfectScrollbar function
-        var ps = new PerfectScrollbar('.sidebar-wrapper');
+        // var ps = new PerfectScrollbar('.sidebar');
         var ps2 = new PerfectScrollbar('.main-panel');
         $('html').addClass('perfect-scrollbar-on');
       } else {
